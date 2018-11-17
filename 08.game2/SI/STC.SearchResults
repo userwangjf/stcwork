@@ -1,0 +1,4 @@
+---- game_info_update Æ¥Åä (3 in 1 ÎÄ¼ş) ----
+Tetris_init.c (tetris):void game_info_update()
+Tetris_init.c (tetris):		game_info_update();
+Tetris_init.c (tetris):		//game_info_update();
