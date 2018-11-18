@@ -1,34 +1,34 @@
 /*******************************************************************************************************
-** Descriptions:		sd ¿¨Çı¶¯Èí¼ş°ü: SD¿¨ÎïÀí²ã ÓÃ»§APIº¯Êı
+** Descriptions:		sd å¡é©±åŠ¨è½¯ä»¶åŒ…: SDå¡ç‰©ç†å±‚ ç”¨æˆ·APIå‡½æ•°
 ********************************************************************************************************/
 #include "sddriver.h"
 
 extern bool	SanDisk;
 
-/* SD¿¨ĞÅÏ¢½á¹¹Ìå±äÁ¿ the information structure variable of SD Card */
+/* SDå¡ä¿¡æ¯ç»“æ„ä½“å˜é‡ the information structure variable of SD Card */
 sd_struct sds;
 
-/* ³¬Ê±Ê±¼äµ¥Î»±í(µ¥Î»:0.000000001ns) timeout unit table */
+/* è¶…æ—¶æ—¶é—´å•ä½è¡¨(å•ä½:0.000000001ns) timeout unit table */
 const INT32U time_unit[8] = {1000000000,100000000,10000000,1000000,100000,10000,1000,100};
 
-/* ³¬Ê±Ê±¼ä±í timeout value table */
+/* è¶…æ—¶æ—¶é—´è¡¨ timeout value table */
 const INT8U time_value[16] = {0,10,12,13,15,20,25,30,35,40,45,50,55,60,70,80};
 
-/* ³¬Ê±Ê±¼äÒòÊı±í timeout factor table */
+/* è¶…æ—¶æ—¶é—´å› æ•°è¡¨ timeout factor table */
 const INT8U r2w_fator[6] = {1,2,4,8,16,32};
 
 /********************************************************************************************
 
-ÓÃ»§APIº¯Êı:  ³õÊ¼»¯,¶Á,Ğ´,²Á SD¿¨  User API Function: Initialize,read,write,erase SD Card
+ç”¨æˆ·APIå‡½æ•°:  åˆå§‹åŒ–,è¯»,å†™,æ“¦ SDå¡  User API Function: Initialize,read,write,erase SD Card
 
 ********************************************************************************************/
 
 
 /*******************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_Initialize()				Name:	  INT8U SD_Initialize()
-** ¹¦ÄÜÃèÊö: ³õÊ¼»¯SD¿¨							Function: initialize sd card
-** Êä¡¡  Èë: ÎŞ									Input:	  NULL
-** Êä ¡¡ ³ö: 0:   ÕıÈ·    >0:   ´íÎóÂë		  	Output:	  0:  right		>0:  error code
+** å‡½æ•°åç§°: INT8U SD_Initialize()				Name:	  INT8U SD_Initialize()
+** åŠŸèƒ½æè¿°: åˆå§‹åŒ–SDå¡							Function: initialize sd card
+** è¾“ã€€  å…¥: æ— 									Input:	  NULL
+** è¾“ ã€€ å‡º: 0:   æ­£ç¡®    >0:   é”™è¯¯ç 		  	Output:	  0:  right		>0:  error code
 ********************************************************************************************************************/
 INT8U SD_Initialize(void)
 {
@@ -37,46 +37,46 @@ INT8U SD_Initialize(void)
 	//test
 	DelayX(100);
 	
-	SD_HardWareInit();					    		/* ³õÊ¼»¯¶ÁĞ´SD¿¨µÄÓ²¼şÌõ¼ş Initialize the hardware that access SD Card */
+	SD_HardWareInit();					    		/* åˆå§‹åŒ–è¯»å†™SDå¡çš„ç¡¬ä»¶æ¡ä»¶ Initialize the hardware that access SD Card */
 
 	SPI_Clk400k();
 	
-	SD_StartSD();									/* ÏòOSÉêÇë·ÃÎÊ¿¨ĞÅºÅÁ¿ request semaphore acessed SD/MMC to OS */
+	SD_StartSD();									/* å‘OSç”³è¯·è®¿é—®å¡ä¿¡å·é‡ request semaphore acessed SD/MMC to OS */
 	
     if (SD_ChkCard() != 0)
     {
     	SD_EndSD();
 //    	printf("card is not inserted entirely!\n");
-    	return SD_ERR_NO_CARD;   					/* ¿¨Ã»ÍêÈ«²åÈë¿¨ÖĞ card is not inserted entirely */
+    	return SD_ERR_NO_CARD;   					/* å¡æ²¡å®Œå…¨æ’å…¥å¡ä¸­ card is not inserted entirely */
 	}
 
-	SPI_CS_Assert();								/* 1. ÖÃCSÎªµÍ assert CS */
+	SPI_CS_Assert();								/* 1. ç½®CSä¸ºä½ assert CS */
 
 	//test
 	DelayX(30);
-//	SD_SPIDelay(30);								/* 2. ÖÁÉÙÑÓÊ± 74 clock delay more than 74 clock */
-	SPI_CS_Deassert();								/* 3. ÖÃCSÎª¸ß dessert CS */
+//	SD_SPIDelay(30);								/* 2. è‡³å°‘å»¶æ—¶ 74 clock delay more than 74 clock */
+	SPI_CS_Deassert();								/* 3. ç½®CSä¸ºé«˜ dessert CS */
 
 	//test
 	DelayX(8);
-//	SD_SPIDelay(8);									/* 4. ÑÓÊ±2(8 clock) delay 2(8 clock) */
+//	SD_SPIDelay(8);									/* 4. å»¶æ—¶2(8 clock) delay 2(8 clock) */
 	SPI_CS_Assert();
 
-	ret = SD_ResetSD();								/* 5. ·¢³öCMDOÃüÁî¸´Î»SD¿¨ send CMD0 command to reset sd card */
+	ret = SD_ResetSD();								/* 5. å‘å‡ºCMDOå‘½ä»¤å¤ä½SDå¡ send CMD0 command to reset sd card */
 
 //	printf("SD Reset ret=0x%x\n",ret);
 
     if (ret != SD_NO_ERR)
         return ret;
 
- 	ret = SD_ActiveInit();							/* 6. ¼¤»î¿¨½øÈë³õÊ¼»¯¹ı³Ì. active card initialize process */
+ 	ret = SD_ActiveInit();							/* 6. æ¿€æ´»å¡è¿›å…¥åˆå§‹åŒ–è¿‡ç¨‹. active card initialize process */
 
 //	printf("SD ActiveInit ret=0x%x\n",ret);
 
  	if (ret != SD_NO_ERR)
  		return ret;
 
-   	ret = SD_ReadOCR(4, recbuf);  					/* 7. ¶ÁOCR¼Ä´æÆ÷,²éÑ¯¿¨Ö§³ÖµÄµçÑ¹Öµ read OCR register,get the supported voltage */
+   	ret = SD_ReadOCR(4, recbuf);  					/* 7. è¯»OCRå¯„å­˜å™¨,æŸ¥è¯¢å¡æ”¯æŒçš„ç”µå‹å€¼ read OCR register,get the supported voltage */
 
 //	printf("SD Read OCR ret=0x%x\n",ret);
 //	printf("OCR[]=%x %x %x %x\n",recbuf[0],recbuf[1],recbuf[2],recbuf[3]);
@@ -87,13 +87,13 @@ INT8U SD_Initialize(void)
 	if ((recbuf[1] & MSK_OCR_33) != MSK_OCR_33)
 	{
 		printf("do not support 3.3V\n");
-	    return SD_ERR_VOL_NOTSUSP;					/* ²»Ö§³Ö3.3V,·µ»Ø´íÎóÂë  not support 3.3V,return error code */
+	    return SD_ERR_VOL_NOTSUSP;					/* ä¸æ”¯æŒ3.3V,è¿”å›é”™è¯¯ç   not support 3.3V,return error code */
 	}
 
-    SPI_ClkToMax();									/* 8. ÉèÖÃSPIÊ±ÖÓµ½×î´óÖµ set SPI clock to maximum */
+    SPI_ClkToMax();									/* 8. è®¾ç½®SPIæ—¶é’Ÿåˆ°æœ€å¤§å€¼ set SPI clock to maximum */
 
 	#if SD_CRC_EN
-	    ret = SD_EnableCRC(1);						/* Ê¹ÄÜCRCĞ£Ñé enable CRC check */
+	    ret = SD_EnableCRC(1);						/* ä½¿èƒ½CRCæ ¡éªŒ enable CRC check */
 
 //		printf("SD Enable CRC ret=0x%x\n",ret);
 
@@ -101,16 +101,16 @@ INT8U SD_Initialize(void)
 		  	return ret;
 	#endif
 
-    ret = SD_SetBlockLen(SD_BLOCKSIZE);				/* 9. ÉèÖÃ¿éµÄ³¤¶È: 512Bytes Set the block length: 512Bytes */
+    ret = SD_SetBlockLen(SD_BLOCKSIZE);				/* 9. è®¾ç½®å—çš„é•¿åº¦: 512Bytes Set the block length: 512Bytes */
 
 //	printf("SD SetBlockLen ret=0x%x\n",ret);
 
 	if (ret != SD_NO_ERR)
 	    return ret;
 
-	ret=SD_GetCardInfo();							/* 10. ¶ÁCSD¼Ä´æÆ÷,»ñÈ¡SD¿¨ĞÅÏ¢ read CSD register, get the information of SD card */
+	ret=SD_GetCardInfo();							/* 10. è¯»CSDå¯„å­˜å™¨,è·å–SDå¡ä¿¡æ¯ read CSD register, get the information of SD card */
 	
-	SD_EndSD();										/* ¹é»¹·ÃÎÊ¿¨ĞÅºÅÁ¿ return semaphore acessed SD/MMC to OS */
+	SD_EndSD();										/* å½’è¿˜è®¿é—®å¡ä¿¡å·é‡ return semaphore acessed SD/MMC to OS */
 	
 	SPI_ClkToMax();
 	
@@ -118,11 +118,11 @@ INT8U SD_Initialize(void)
 }
 
 /********************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_ReadBlock()					Name:	  INT8U SD_ReadBlock()
-** ¹¦ÄÜÃèÊö: ´ÓSD/MMC¿¨ÖĞ¶ÁÒ»¸ö¿é					Function: read a single block from SD/MMC card
-** Êä¡¡  Èë: INT32U blockaddr: ¿éµØÖ·				Input:    INT32U blockaddr: address of block
-			 INT8U *recbuf   : ½ÓÊÕ»º³åÇø,³¤¶È512Bytes	 	  INT8U *recbuf   : the buffer of receive,length is 512Bytes
-** Êä    ³ö: 0:   ³É¹¦    >0:  ´íÎóÂë				Output:	  0:  right			>0:  error code
+** å‡½æ•°åç§°: INT8U SD_ReadBlock()					Name:	  INT8U SD_ReadBlock()
+** åŠŸèƒ½æè¿°: ä»SD/MMCå¡ä¸­è¯»ä¸€ä¸ªå—					Function: read a single block from SD/MMC card
+** è¾“ã€€  å…¥: INT32U blockaddr: å—åœ°å€				Input:    INT32U blockaddr: address of block
+			 INT8U *recbuf   : æ¥æ”¶ç¼“å†²åŒº,é•¿åº¦512Bytes	 	  INT8U *recbuf   : the buffer of receive,length is 512Bytes
+** è¾“    å‡º: 0:   æˆåŠŸ    >0:  é”™è¯¯ç 				Output:	  0:  right			>0:  error code
 *********************************************************************************************************************/
 INT8U SD_ReadBlock(INT32U blockaddr, INT8U *recbuf)
 {
@@ -132,7 +132,7 @@ INT8U SD_ReadBlock(INT32U blockaddr, INT8U *recbuf)
     {
     	SD_EndSD();
     	printf("card is not inserted entirely\n");
-    	return SD_ERR_NO_CARD;   					/* ¿¨Ã»ÍêÈ«²åÈë¿¨ÖĞ card is not inserted entirely */
+    	return SD_ERR_NO_CARD;   					/* å¡æ²¡å®Œå…¨æ’å…¥å¡ä¸­ card is not inserted entirely */
 	}
 
 	if (blockaddr > sds.block_num)
@@ -140,10 +140,10 @@ INT8U SD_ReadBlock(INT32U blockaddr, INT8U *recbuf)
 		SD_EndSD();
 		printf("SD ReadBlock\nblockaddr=0x%x sds.block_num=0x%x\n",blockaddr,sds.block_num);
 		printf("operate over the card range\n");
-		return SD_ERR_OVER_CARDRANGE;				/* ²Ù×÷³¬³ö¿¨ÈİÁ¿·¶Î§ operate over the card range */
+		return SD_ERR_OVER_CARDRANGE;				/* æ“ä½œè¶…å‡ºå¡å®¹é‡èŒƒå›´ operate over the card range */
 	}
 
- 	ret = SD_ReadSingleBlock(blockaddr);			/* ¶Áµ¥¿éÃüÁî read single blocks command */
+ 	ret = SD_ReadSingleBlock(blockaddr);			/* è¯»å•å—å‘½ä»¤ read single blocks command */
  	if (ret != SD_NO_ERR)
  	{
  		printf("SD Read Single Block Address Error!\n");
@@ -151,19 +151,19 @@ INT8U SD_ReadBlock(INT32U blockaddr, INT8U *recbuf)
  		return ret;
  	}
 
-  	ret = SD_ReadBlockData(SD_BLOCKSIZE, recbuf);	/* ¶Á³öÊı¾İ read data from sd card */
-	SD_EndSD();										/* ¹é»¹·ÃÎÊ¿¨ĞÅºÅÁ¿ return semaphore acessed SD/MMC to OS */
+  	ret = SD_ReadBlockData(SD_BLOCKSIZE, recbuf);	/* è¯»å‡ºæ•°æ® read data from sd card */
+	SD_EndSD();										/* å½’è¿˜è®¿é—®å¡ä¿¡å·é‡ return semaphore acessed SD/MMC to OS */
 
 	return ret;
 }
 
 /********************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_ReadMultiBlock()				Name:	  INT8U SD_ReadMultiBlock()
-** ¹¦ÄÜÃèÊö: ´ÓSD/MMC¿¨ÖĞ¶Á¶à¸ö¿é					Function: read multi blocks from SD/MMC card
-** Êä¡¡  Èë: INT32U blockaddr: ¿éµØÖ·				Input:	  INT32U blockaddr: address of block
-			 INT32U blocknum : ¿éÊıÁ¿						  INT32U blocknum : the numbers of block
-			 INT8U *recbuf   : ½ÓÊÕ»º³åÇø,Ã¿¿é512×Ö½Ú		  INT8U *recbuf   : the buffer of receive,each block length is 512Bytes
-** Êä    ³ö: 0:   ³É¹¦    >0:  ´íÎóÂë				Output:	  0:  right			>0:  error code
+** å‡½æ•°åç§°: INT8U SD_ReadMultiBlock()				Name:	  INT8U SD_ReadMultiBlock()
+** åŠŸèƒ½æè¿°: ä»SD/MMCå¡ä¸­è¯»å¤šä¸ªå—					Function: read multi blocks from SD/MMC card
+** è¾“ã€€  å…¥: INT32U blockaddr: å—åœ°å€				Input:	  INT32U blockaddr: address of block
+			 INT32U blocknum : å—æ•°é‡						  INT32U blocknum : the numbers of block
+			 INT8U *recbuf   : æ¥æ”¶ç¼“å†²åŒº,æ¯å—512å­—èŠ‚		  INT8U *recbuf   : the buffer of receive,each block length is 512Bytes
+** è¾“    å‡º: 0:   æˆåŠŸ    >0:  é”™è¯¯ç 				Output:	  0:  right			>0:  error code
 *********************************************************************************************************************/
 #if SD_ReadMultiBlock_EN
 INT8U SD_ReadMultiBlock(INT32U blockaddr, INT32U blocknum, INT8U *recbuf)
@@ -177,7 +177,7 @@ INT8U SD_ReadMultiBlock(INT32U blockaddr, INT32U blocknum, INT8U *recbuf)
     {
     	SD_EndSD();
     	printf("card is not inserted entirely\n");
-    	return SD_ERR_NO_CARD;   					/* ¿¨Ã»ÍêÈ«²åÈë¿¨ÖĞ card is not inserted entirely */
+    	return SD_ERR_NO_CARD;   					/* å¡æ²¡å®Œå…¨æ’å…¥å¡ä¸­ card is not inserted entirely */
 	}
 
 	if ((blockaddr + blocknum) > sds.block_num)
@@ -185,18 +185,18 @@ INT8U SD_ReadMultiBlock(INT32U blockaddr, INT32U blocknum, INT8U *recbuf)
 		SD_EndSD(); 
 		printf("blockaddr=0x%x\nblocknum=0x%x sds.block_num=0x%x\n",blockaddr,blocknum,sds.block_num);
 		printf("operate over the card range\n");
-		return SD_ERR_OVER_CARDRANGE;				/* ²Ù×÷³¬³ö¿¨ÈİÁ¿·¶Î§ operate over the card range */
+		return SD_ERR_OVER_CARDRANGE;				/* æ“ä½œè¶…å‡ºå¡å®¹é‡èŒƒå›´ operate over the card range */
 	}
 
-	ret = SD_ReadMultipleBlock(blockaddr);			/* ¶Á¶à¿éÃüÁî read multiple blocks command */
+	ret = SD_ReadMultipleBlock(blockaddr);			/* è¯»å¤šå—å‘½ä»¤ read multiple blocks command */
 	if (ret != SD_NO_ERR)
 	{
-		SD_EndSD();									/* ¹é»¹·ÃÎÊ¿¨ĞÅºÅÁ¿ return semaphore acessed SD/MMC to OS */
+		SD_EndSD();									/* å½’è¿˜è®¿é—®å¡ä¿¡å·é‡ return semaphore acessed SD/MMC to OS */
 		return ret;
     }
 
     for (i = 0; i < blocknum; i++)
-    {												/* ¶Á³öÊı¾İ read data from SD/MMC card */
+    {												/* è¯»å‡ºæ•°æ® read data from SD/MMC card */
     	ret = SD_ReadBlockData(SD_BLOCKSIZE, recbuf);
     	if (ret == SD_NO_ERR)
     	{
@@ -210,7 +210,7 @@ INT8U SD_ReadMultiBlock(INT32U blockaddr, INT32U blocknum, INT8U *recbuf)
     	}
     }
 
- 	ret = SD_StopTransmission();				    /* ½áÊøÊı¾İ´«Êä stop transmission operation */
+ 	ret = SD_StopTransmission();				    /* ç»“æŸæ•°æ®ä¼ è¾“ stop transmission operation */
 
  	SD_EndSD();
  	
@@ -218,12 +218,12 @@ INT8U SD_ReadMultiBlock(INT32U blockaddr, INT32U blocknum, INT8U *recbuf)
 	return ret;
 }
 /********************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_ReadMultiBlockSanDisk()				Name:	  INT8U SD_ReadMultiBlockSanDisk()
-** ¹¦ÄÜÃèÊö: ´ÓSD/MMC¿¨ÖĞ¶Á¶à¸ö¿é					Function: read multi blocks from SD/MMC card
-** Êä¡¡  Èë: INT32U blockaddr: ¿éµØÖ·				Input:	  INT32U blockaddr: address of block
-			 INT32U blocknum : ¿éÊıÁ¿						  INT32U blocknum : the numbers of block
-			 INT8U *recbuf   : ½ÓÊÕ»º³åÇø,Ã¿¿é512×Ö½Ú		  INT8U *recbuf   : the buffer of receive,each block length is 512Bytes
-** Êä    ³ö: 0:   ³É¹¦    >0:  ´íÎóÂë				Output:	  0:  right			>0:  error code
+** å‡½æ•°åç§°: INT8U SD_ReadMultiBlockSanDisk()				Name:	  INT8U SD_ReadMultiBlockSanDisk()
+** åŠŸèƒ½æè¿°: ä»SD/MMCå¡ä¸­è¯»å¤šä¸ªå—					Function: read multi blocks from SD/MMC card
+** è¾“ã€€  å…¥: INT32U blockaddr: å—åœ°å€				Input:	  INT32U blockaddr: address of block
+			 INT32U blocknum : å—æ•°é‡						  INT32U blocknum : the numbers of block
+			 INT8U *recbuf   : æ¥æ”¶ç¼“å†²åŒº,æ¯å—512å­—èŠ‚		  INT8U *recbuf   : the buffer of receive,each block length is 512Bytes
+** è¾“    å‡º: 0:   æˆåŠŸ    >0:  é”™è¯¯ç 				Output:	  0:  right			>0:  error code
 *********************************************************************************************************************/
 INT8U SD_ReadMultiBlockSanDisk(INT32U blockaddr, INT32U blocknum, INT8U *recbuf)
 {
@@ -236,7 +236,7 @@ INT8U SD_ReadMultiBlockSanDisk(INT32U blockaddr, INT32U blocknum, INT8U *recbuf)
     {
     	SD_EndSD();
     	printf("card is not inserted entirely\n");
-    	return SD_ERR_NO_CARD;   					/* ¿¨Ã»ÍêÈ«²åÈë¿¨ÖĞ card is not inserted entirely */
+    	return SD_ERR_NO_CARD;   					/* å¡æ²¡å®Œå…¨æ’å…¥å¡ä¸­ card is not inserted entirely */
 	}
 
 	if ((blockaddr + blocknum) > sds.block_num)
@@ -244,11 +244,11 @@ INT8U SD_ReadMultiBlockSanDisk(INT32U blockaddr, INT32U blocknum, INT8U *recbuf)
 		SD_EndSD(); 
 		printf("blocknum=0x%x sds.block_num=0x%x\n",blocknum,sds.block_num);
 		printf("operate over the card range\n");
-		return SD_ERR_OVER_CARDRANGE;				/* ²Ù×÷³¬³ö¿¨ÈİÁ¿·¶Î§ operate over the card range */
+		return SD_ERR_OVER_CARDRANGE;				/* æ“ä½œè¶…å‡ºå¡å®¹é‡èŒƒå›´ operate over the card range */
 	}
 
     for (i = 0; i < blocknum; i++)
-    {												/* ¶Á³öÊı¾İ read data from SD/MMC card */
+    {												/* è¯»å‡ºæ•°æ® read data from SD/MMC card */
 		ret=SD_ReadBlock(blockaddr,recbuf);
     	if (ret == SD_NO_ERR)
     	{
@@ -263,7 +263,7 @@ INT8U SD_ReadMultiBlockSanDisk(INT32U blockaddr, INT32U blocknum, INT8U *recbuf)
     	}
     }
 
-// 	ret = SD_StopTransmission();				    /* ½áÊøÊı¾İ´«Êä stop transmission operation */
+// 	ret = SD_StopTransmission();				    /* ç»“æŸæ•°æ®ä¼ è¾“ stop transmission operation */
 
  	SD_EndSD();
  	
@@ -273,11 +273,11 @@ INT8U SD_ReadMultiBlockSanDisk(INT32U blockaddr, INT32U blocknum, INT8U *recbuf)
 #endif
 
 /********************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_WriteBlock()					Name:	  INT8U SD_WriteBlock()
-** ¹¦ÄÜÃèÊö: ÏòSD/MMC¿¨ÖĞĞ´ÈëÒ»¸ö¿é					Function: write a block to SD/MMC card
-** Êä¡¡  Èë: INT32U blockaddr: ¿éµØÖ·				Input: 	  INT32U blockaddr: address of block
-			 INT8U *sendbuf  : ·¢ËÍ»º³åÇø,³¤¶È512Bytes	  	  INT8U *sendbuf  : the buffer of send,length is 512Bytes
-** Êä    ³ö: 0:   ³É¹¦    >0:  ´íÎóÂë				Output:	  0:  right			>0:  error code
+** å‡½æ•°åç§°: INT8U SD_WriteBlock()					Name:	  INT8U SD_WriteBlock()
+** åŠŸèƒ½æè¿°: å‘SD/MMCå¡ä¸­å†™å…¥ä¸€ä¸ªå—					Function: write a block to SD/MMC card
+** è¾“ã€€  å…¥: INT32U blockaddr: å—åœ°å€				Input: 	  INT32U blockaddr: address of block
+			 INT8U *sendbuf  : å‘é€ç¼“å†²åŒº,é•¿åº¦512Bytes	  	  INT8U *sendbuf  : the buffer of send,length is 512Bytes
+** è¾“    å‡º: 0:   æˆåŠŸ    >0:  é”™è¯¯ç 				Output:	  0:  right			>0:  error code
 *********************************************************************************************************************/
 INT8U SD_WriteBlock(INT32U blockaddr, INT8U *sendbuf)
 {
@@ -287,24 +287,24 @@ INT8U SD_WriteBlock(INT32U blockaddr, INT8U *sendbuf)
     {
     	SD_EndSD();
     	printf("card is not inserted entirely\n");
-    	return SD_ERR_NO_CARD;   								/* ¿¨Ã»ÍêÈ«²åÈë¿¨ÖĞ card is not inserted entirely */
+    	return SD_ERR_NO_CARD;   								/* å¡æ²¡å®Œå…¨æ’å…¥å¡ä¸­ card is not inserted entirely */
 	}
 
 	if (blockaddr > sds.block_num)
 	{
 		SD_EndSD();
 		printf("operate over the card range\n");
-		return SD_ERR_OVER_CARDRANGE;							/* ²Ù×÷³¬³ö¿¨ÈİÁ¿·¶Î§ operate over the card range */
+		return SD_ERR_OVER_CARDRANGE;							/* æ“ä½œè¶…å‡ºå¡å®¹é‡èŒƒå›´ operate over the card range */
 	}
 
 	if (SD_ChkCardWP() != 0)
 	{
 		SD_EndSD();
     	printf("\ncard write protect\n");		
-		return SD_ERR_WRITE_PROTECT;							/* ¿¨ÓĞĞ´±£»¤ card write protect*/
+		return SD_ERR_WRITE_PROTECT;							/* å¡æœ‰å†™ä¿æŠ¤ card write protect*/
 	}
 
-	ret = SD_WriteSingleBlock(blockaddr);						/* Ğ´µ¥¿éÃüÁî write single block */
+	ret = SD_WriteSingleBlock(blockaddr);						/* å†™å•å—å‘½ä»¤ write single block */
 	if (ret != SD_NO_ERR)
 	{
 		SD_EndSD();
@@ -312,35 +312,35 @@ INT8U SD_WriteBlock(INT32U blockaddr, INT8U *sendbuf)
 		return ret;
 	}
 
-	ret = SD_WriteBlockData(0, SD_BLOCKSIZE, sendbuf);			/* Ğ´ÈëÊı¾İ write data */
- 	if (ret == SD_NO_ERR)										/* ¶ÁCard Status¼Ä´æÆ÷, ¼ì²éĞ´ÈëÊÇ·ñ³É¹¦ */
+	ret = SD_WriteBlockData(0, SD_BLOCKSIZE, sendbuf);			/* å†™å…¥æ•°æ® write data */
+ 	if (ret == SD_NO_ERR)										/* è¯»Card Statuså¯„å­˜å™¨, æ£€æŸ¥å†™å…¥æ˜¯å¦æˆåŠŸ */
  	{															/* read Card Status register to check write wheather sucessfully */
  		ret = SD_ReadCard_Status(2, tmp);
  		if (ret != SD_NO_ERR)
  		{
  			SD_EndSD();
  			printf("read register fail\n");
- 			return ret;											/* ¶Á¼Ä´æÆ÷Ê§°Ü read register fail */
+ 			return ret;											/* è¯»å¯„å­˜å™¨å¤±è´¥ read register fail */
 		}
 
  		if((tmp[0] != 0) || (tmp[1] != 0))
  		{
  			SD_EndSD();
-			ret = SD_ERR_WRITE_BLK; 			     			/* ÏìÓ¦Ö¸Ê¾Ğ´Ê§°Ü response indicate write fail */
+			ret = SD_ERR_WRITE_BLK; 			     			/* å“åº”æŒ‡ç¤ºå†™å¤±è´¥ response indicate write fail */
  		}
  	}
 
     SD_EndSD();
- 	return ret;													/* ·µ»ØĞ´Èë½á¹û return the result of writing */
+ 	return ret;													/* è¿”å›å†™å…¥ç»“æœ return the result of writing */
 }
 
 /**********************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_WriteMultiBlock()				Name:	  INT8U SD_WriteMultiBlock()
-** ¹¦ÄÜÃèÊö: ÏòSD/MMC¿¨ÖĞĞ´Èë¶à¸ö¿é					Function: write multi blocks to SD/MMC card
-** Êä¡¡  Èë: INT32U blockaddr: ¿éµØÖ·				Input:	  INT32U blockaddr: address of block
-			 INT32U blocknum : ¿éÊıÁ¿						  INT32U blocknum : the numbers of block
-			 INT8U *sendbuf  : ·¢ËÍ»º³åÇøÃ¿¿é512×Ö½Ú    	  INT8U *sendbuf  : the send buffer,each block length is 512Bytes
-** Êä    ³ö: 0:   ³É¹¦    >0:  ´íÎóÂë				Output:	  0:  right			>0:  error code
+** å‡½æ•°åç§°: INT8U SD_WriteMultiBlock()				Name:	  INT8U SD_WriteMultiBlock()
+** åŠŸèƒ½æè¿°: å‘SD/MMCå¡ä¸­å†™å…¥å¤šä¸ªå—					Function: write multi blocks to SD/MMC card
+** è¾“ã€€  å…¥: INT32U blockaddr: å—åœ°å€				Input:	  INT32U blockaddr: address of block
+			 INT32U blocknum : å—æ•°é‡						  INT32U blocknum : the numbers of block
+			 INT8U *sendbuf  : å‘é€ç¼“å†²åŒºæ¯å—512å­—èŠ‚    	  INT8U *sendbuf  : the send buffer,each block length is 512Bytes
+** è¾“    å‡º: 0:   æˆåŠŸ    >0:  é”™è¯¯ç 				Output:	  0:  right			>0:  error code
 ***********************************************************************************************************************/
 #if SD_WriteMultiBlock_EN
 INT8U SD_WriteMultiBlock(INT32U blockaddr, INT32U blocknum, INT8U *sendbuf)
@@ -355,24 +355,24 @@ INT8U SD_WriteMultiBlock(INT32U blockaddr, INT32U blocknum, INT8U *sendbuf)
     {
     	SD_EndSD();
     	printf("card is not inserted entirely\n");
-    	return SD_ERR_NO_CARD;   								/* ¿¨Ã»ÍêÈ«²åÈë¿¨ÖĞ card is not inserted entirely */
+    	return SD_ERR_NO_CARD;   								/* å¡æ²¡å®Œå…¨æ’å…¥å¡ä¸­ card is not inserted entirely */
 	}
 
 	if ((blockaddr + blocknum) > sds.block_num)
 	{
 		SD_EndSD();
 		printf("operate over the card range\n");
-		return SD_ERR_OVER_CARDRANGE;							/* ²Ù×÷³¬³ö¿¨ÈİÁ¿·¶Î§ operate over the card range */
+		return SD_ERR_OVER_CARDRANGE;							/* æ“ä½œè¶…å‡ºå¡å®¹é‡èŒƒå›´ operate over the card range */
 	}
 
 	if (SD_ChkCardWP() != 0)
 	{
 		SD_EndSD();
     	printf("\ncard write protect\n");		
-		return SD_ERR_WRITE_PROTECT;							/* ¿¨ÓĞĞ´±£»¤ card write protect*/
+		return SD_ERR_WRITE_PROTECT;							/* å¡æœ‰å†™ä¿æŠ¤ card write protect*/
 	}
 
-	ret = SD_WriteMultipleBlock(blockaddr);						/* Ğ´¶à¿éÃüÁî write multiple blocks command */
+	ret = SD_WriteMultipleBlock(blockaddr);						/* å†™å¤šå—å‘½ä»¤ write multiple blocks command */
 	if (ret != SD_NO_ERR)
 	{
 		printf("SD Write MultipleBlock Address Error!\n");
@@ -383,21 +383,21 @@ INT8U SD_WriteMultiBlock(INT32U blockaddr, INT32U blocknum, INT8U *sendbuf)
 	
     for (i = 0; i < blocknum; i++)
     {
- 		ret = SD_WriteBlockData(1, SD_BLOCKSIZE, sendbuf);		/* Ğ´ÈëÊı¾İ write data */
+ 		ret = SD_WriteBlockData(1, SD_BLOCKSIZE, sendbuf);		/* å†™å…¥æ•°æ® write data */
  		if (ret == SD_NO_ERR)
  			sendbuf = sendbuf + SD_BLOCKSIZE;
  		else
- 		{														/* Ğ´Ê§°Ü write fail */
-			SD_StopTransmission();								/* Í£Ö¹Êı¾İ´«Êä stop data transmission */
-			SD_WaitBusy(SD_WAIT_WRITE);							/* µÈ´ı waiting */
+ 		{														/* å†™å¤±è´¥ write fail */
+			SD_StopTransmission();								/* åœæ­¢æ•°æ®ä¼ è¾“ stop data transmission */
+			SD_WaitBusy(SD_WAIT_WRITE);							/* ç­‰å¾… waiting */
 			SD_EndSD();
 			return ret;
 		}
 	}
 
-    SD_StopMultiToken();										/* ·¢ËÍÊı¾İÍ£Ö¹ÁîÅÆ send data stop token */
+    SD_StopMultiToken();										/* å‘é€æ•°æ®åœæ­¢ä»¤ç‰Œ send data stop token */
 
-    ret = SD_WaitBusy(SD_WAIT_WRITE);							/* µÈ´ıĞ´ÈëµÄÍê³É wait for finishing writing */
+    ret = SD_WaitBusy(SD_WAIT_WRITE);							/* ç­‰å¾…å†™å…¥çš„å®Œæˆ wait for finishing writing */
 //    if (ret != SD_NO_ERR)
 //    {
 //    	SD_EndSD();
@@ -407,7 +407,7 @@ INT8U SD_WriteMultiBlock(INT32U blockaddr, INT32U blocknum, INT8U *sendbuf)
 //
 //    if (sds.card_type == CARDTYPE_SD)
 //    {
-//   		ret = SD_GetNumWRBlcoks(&i);							/* ¶ÁÕıÈ·Ğ´ÈëµÄ¿éÊı read the blocks that be written correctly */
+//   		ret = SD_GetNumWRBlcoks(&i);							/* è¯»æ­£ç¡®å†™å…¥çš„å—æ•° read the blocks that be written correctly */
 //   		if (ret != SD_NO_ERR)
 //   		{
 //   			SD_EndSD();
@@ -417,7 +417,7 @@ INT8U SD_WriteMultiBlock(INT32U blockaddr, INT32U blocknum, INT8U *sendbuf)
 //   		if(i != blocknum)
 //   		{
 //   			printf("the blocks that be written correctly is error\n\n");
-//			ret =  SD_ERR_WRITE_BLKNUMS;						/* ÕıÈ·Ğ´Èë¿éÊı´íÎó the blocks that be written correctly is error */
+//			ret =  SD_ERR_WRITE_BLKNUMS;						/* æ­£ç¡®å†™å…¥å—æ•°é”™è¯¯ the blocks that be written correctly is error */
 //		}
 //   	}
 //   	else
@@ -427,29 +427,29 @@ INT8U SD_WriteMultiBlock(INT32U blockaddr, INT32U blocknum, INT8U *sendbuf)
 // 		{
 // 			SD_EndSD();
 // 			printf("read register fail\n");
-// 			return ret;											/* ¶Á¼Ä´æÆ÷Ê§°Ü read register fail */
+// 			return ret;											/* è¯»å¯„å­˜å™¨å¤±è´¥ read register fail */
 //		}
 // 		if((tmp[0] != 0) || (tmp[1] != 0))
 // 		{
 // 			printf("response indicate write fail\n");
-//			ret = SD_ERR_WRITE_BLK; 			     			/* ÏìÓ¦Ö¸Ê¾Ğ´Ê§°Ü response indicate write fail */
+//			ret = SD_ERR_WRITE_BLK; 			     			/* å“åº”æŒ‡ç¤ºå†™å¤±è´¥ response indicate write fail */
 //		}
 //   	}
 //
    	SD_EndSD();
    	
 //	printf("SD WriteMultiBlock Done!\n");
-	return ret;													/* ·µ»ØĞ´Èë³É¹¦ return write sucessfully */
+	return ret;													/* è¿”å›å†™å…¥æˆåŠŸ return write sucessfully */
 }
 #endif
 
 /*********************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_EraseBlock()					Name:	  INT8U SD_EraseBlock()
-** ¹¦ÄÜÃèÊö: ²Á³ıSD/MMC¿¨ÖĞµÄ¿é						Function: Erase the block of SD/MMC card
-** Êä¡¡  Èë: INT32U startaddr: ÆğÊ¼µØÖ·				Input:    INT32U startaddr: start address
-			 INT32U endaddr  : ÖÕÖ¹µØÖ·						  INT32U endaddr  : end address
-** Êä    ³ö: 0:   ³É¹¦    >0:  ´íÎóÂë				Output:	  0:  right			>0:  error code
-** ×¢    Òâ: startaddr ºÍ blocknum ½¨ÒéÎª sds.erase_unit µÄÕûÊı±¶, ÒòÎªÓĞµÄ¿¨Ö»ÄÜÒÔ sds.erase_unit Îªµ¥Î»½øĞĞ²Á³ı
+** å‡½æ•°åç§°: INT8U SD_EraseBlock()					Name:	  INT8U SD_EraseBlock()
+** åŠŸèƒ½æè¿°: æ“¦é™¤SD/MMCå¡ä¸­çš„å—						Function: Erase the block of SD/MMC card
+** è¾“ã€€  å…¥: INT32U startaddr: èµ·å§‹åœ°å€				Input:    INT32U startaddr: start address
+			 INT32U endaddr  : ç»ˆæ­¢åœ°å€						  INT32U endaddr  : end address
+** è¾“    å‡º: 0:   æˆåŠŸ    >0:  é”™è¯¯ç 				Output:	  0:  right			>0:  error code
+** æ³¨    æ„: startaddr å’Œ blocknum å»ºè®®ä¸º sds.erase_unit çš„æ•´æ•°å€, å› ä¸ºæœ‰çš„å¡åªèƒ½ä»¥ sds.erase_unit ä¸ºå•ä½è¿›è¡Œæ“¦é™¤
 *********************************************************************************************************************/
 #if SD_EraseBlock_EN
 INT8U SD_EraseBlock(INT32U startaddr, INT32U blocknum)
@@ -461,27 +461,27 @@ INT8U SD_EraseBlock(INT32U startaddr, INT32U blocknum)
     {
     	SD_EndSD();
     	printf("card is not inserted entirely\n");
-    	return SD_ERR_NO_CARD;   								/* ¿¨Ã»ÍêÈ«²åÈë¿¨ÖĞ card is not inserted entirely */
+    	return SD_ERR_NO_CARD;   								/* å¡æ²¡å®Œå…¨æ’å…¥å¡ä¸­ card is not inserted entirely */
 	}
 
 	if ((startaddr + blocknum) > sds.block_num)
 	{
 		SD_EndSD();
 		printf("operate over the card range\n");
-		return SD_ERR_OVER_CARDRANGE;							/* ²Ù×÷³¬³ö¿¨ÈİÁ¿·¶Î§ operate over the card range */
+		return SD_ERR_OVER_CARDRANGE;							/* æ“ä½œè¶…å‡ºå¡å®¹é‡èŒƒå›´ operate over the card range */
 	}
 
 	if (SD_ChkCardWP() != 0)
 	{
 		SD_EndSD();
     	printf("\ncard write protect\n");		
-		return SD_ERR_WRITE_PROTECT;							/* ¿¨ÓĞĞ´±£»¤ card write protect*/
+		return SD_ERR_WRITE_PROTECT;							/* å¡æœ‰å†™ä¿æŠ¤ card write protect*/
 	}
 
 	tmp = blocknum*512/sds.erase_unit;
-	while(tmp >= 0)												/* Ã¿´Î²Á³ıÉÈÇø once erase is sector size */
+	while(tmp >= 0)												/* æ¯æ¬¡æ“¦é™¤æ‰‡åŒº once erase is sector size */
 	{
-		ret = SD_EraseStartBlock(startaddr);					/* Ñ¡ÔñÆğÊ¼¿éµØÖ· select start address */
+		ret = SD_EraseStartBlock(startaddr);					/* é€‰æ‹©èµ·å§‹å—åœ°å€ select start address */
 		if (ret != SD_NO_ERR)
 		{
 			printf("tmp=%d\nSD Erase Start Block Address Error!\n",tmp);
@@ -489,7 +489,7 @@ INT8U SD_EraseBlock(INT32U startaddr, INT32U blocknum)
 			return ret;
 		}
 
-		ret = SD_EraseEndBlock(startaddr + sds.erase_unit - 1);		/* Ñ¡ÔñÖÕÖ¹¿éµØÖ· select end address */
+		ret = SD_EraseEndBlock(startaddr + sds.erase_unit - 1);		/* é€‰æ‹©ç»ˆæ­¢å—åœ°å€ select end address */
 		if (ret != SD_NO_ERR)
 		{
 			printf("tmp=%d\nSD Erase End Block Address Error!\n",tmp);
@@ -497,7 +497,7 @@ INT8U SD_EraseBlock(INT32U startaddr, INT32U blocknum)
 			return ret;
 		}
 
-		ret = SD_EraseSelectedBlock();							/* ²Á³ıËùÑ¡µÄ¿é erase blocks selected */
+		ret = SD_EraseSelectedBlock();							/* æ“¦é™¤æ‰€é€‰çš„å— erase blocks selected */
 		if (ret != SD_NO_ERR)
 		{
 			printf("tmp=%d\nSD Erase Selected Block Error!\n",tmp);
@@ -505,13 +505,13 @@ INT8U SD_EraseBlock(INT32U startaddr, INT32U blocknum)
 			return ret;
 		}
 
-		startaddr += sds.erase_unit;								/* ÆğÊ¼µØÖ·µİÔö */
+		startaddr += sds.erase_unit;								/* èµ·å§‹åœ°å€é€’å¢ */
 //		blocknum  -= sds.erase_unit;
 		tmp--;
 //		tmp = blocknum - sds.erase_unit;
 	}
 
-	if (blocknum*512%sds.erase_unit > 0)											/* ²Á³ı²»¹»once_erase¿é */
+	if (blocknum*512%sds.erase_unit > 0)											/* æ“¦é™¤ä¸å¤Ÿonce_eraseå— */
 	{															/* erase blocks that numbers is not enough once_erase */
 		ret = SD_EraseStartBlock(startaddr);
 		if (ret != SD_NO_ERR)
@@ -539,15 +539,15 @@ INT8U SD_EraseBlock(INT32U startaddr, INT32U blocknum)
 	}
 
 	SD_EndSD();
-	return SD_NO_ERR;											/* ·µ»Ø²Á³ı³É¹¦ return erase sucessfully */
+	return SD_NO_ERR;											/* è¿”å›æ“¦é™¤æˆåŠŸ return erase sucessfully */
 }
 #endif
 
 /*******************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_GetCardInfo()				Name:	  INT8U SD_GetCardInfo()
-** ¹¦ÄÜÃèÊö: »ñµÃSD¿¨µÄĞÅÏ¢						Function: get the information of SD card
-** Êä¡¡  Èë: INT8U cardtype: ¿¨ÀàĞÍ				Input:    INT8U cardtype: card type
-** Êä ¡¡ ³ö: 0:   ÕıÈ·    >0:   ´íÎóÂë		  	Output:	  0:  right		>0:  error code
+** å‡½æ•°åç§°: INT8U SD_GetCardInfo()				Name:	  INT8U SD_GetCardInfo()
+** åŠŸèƒ½æè¿°: è·å¾—SDå¡çš„ä¿¡æ¯						Function: get the information of SD card
+** è¾“ã€€  å…¥: INT8U cardtype: å¡ç±»å‹				Input:    INT8U cardtype: card type
+** è¾“ ã€€ å‡º: 0:   æ­£ç¡®    >0:   é”™è¯¯ç 		  	Output:	  0:  right		>0:  error code
 *******************************************************************************************************************/
 INT8U SD_GetCardInfo()
 {
@@ -564,19 +564,19 @@ INT8U SD_GetCardInfo()
 	if(cidbuf[0]==0x03)
 		SanDisk	=true;
 		
-	ret = SD_ReadCSD(16,csdbuf);	 								    		/* ¶ÁCSD¼Ä´æÆ÷    read CSD register */
+	ret = SD_ReadCSD(16,csdbuf);	 								    		/* è¯»CSDå¯„å­˜å™¨    read CSD register */
 
 //	printf("SD Read CSD ret=%d\n",ret);
 	
 	if (ret != SD_NO_ERR)
 		return ret;
 	
-	SD_CalTimeout(csdbuf);														/* ¼ÆËã³¬Ê±Ê±¼äÖµ calculate timeout value */
+	SD_CalTimeout(csdbuf);														/* è®¡ç®—è¶…æ—¶æ—¶é—´å€¼ calculate timeout value */
 
-	/* ¼ÆËã¿éµÄ×î´ó³¤¶È  */														/* calculate the size of a sector */
+	/* è®¡ç®—å—çš„æœ€å¤§é•¿åº¦  */														/* calculate the size of a sector */
 	sds.block_len = 1 << (csdbuf[READ_BL_LEN_POS] & READ_BL_LEN_MSK);  			/* (2 ^ READ_BL_LEN) */
 
-	/* ¼ÆËã¿¨ÖĞ¿éµÄ¸öÊı */														/* calculate the sector numbers of the SD Card */
+	/* è®¡ç®—å¡ä¸­å—çš„ä¸ªæ•° */														/* calculate the sector numbers of the SD Card */
 	sds.block_num = ((csdbuf[C_SIZE_POS1] & C_SIZE_MSK1) << 10) +
 	      			 (csdbuf[C_SIZE_POS2] << 2) +
 	 	 			((csdbuf[C_SIZE_POS3] & C_SIZE_MSK3) >> 6) + 1;				/* (C_SIZE + 1)*/
@@ -584,10 +584,10 @@ INT8U SD_GetCardInfo()
 	tmp = ((csdbuf[C_SIZE_MULT_POS1] & C_SIZE_MULT_MSK1) << 1) +
 	      ((csdbuf[C_SIZE_MULT_POS2] & C_SIZE_MULT_MSK2) >> 7) + 2;				/* (C_SIZE_MULT + 2) */
 
-    /* »ñµÃ¿¨ÖĞ¿éµÄÊıÁ¿ */														/* get the block numbers in card */
+    /* è·å¾—å¡ä¸­å—çš„æ•°é‡ */														/* get the block numbers in card */
 	sds.block_num = sds.block_num * (1 << tmp);									/* (C_SIZE + 1) * 2 ^ (C_SIZE_MULT + 2) */
 
-	/* ¼ÆËãÉÈÇø´óĞ¡ */															/*calculate the size of sector */
+	/* è®¡ç®—æ‰‡åŒºå¤§å° */															/*calculate the size of sector */
 	sds.erase_unit = ((csdbuf[SECTOR_SIZE_POS1] & SECTOR_SIZE_MSK1) << 1) +
 	                 ((csdbuf[SECTOR_SIZE_POS2] & SECTOR_SIZE_MSK2) >> 7) + 1; /* SD (SECTOR_SIZE + 1) */
 
@@ -617,43 +617,43 @@ INT8U SD_GetCardInfo()
 	if(sds.block_len==1024)
 		sds.block_num=sds.block_num*2;
 	
-	return SD_NO_ERR;															/* ·µ»ØÖ´ĞĞ³É¹¦ return perform sucessfully */
+	return SD_NO_ERR;															/* è¿”å›æ‰§è¡ŒæˆåŠŸ return perform sucessfully */
 }
 
 /*******************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_CalTimeout()				Name:	  INT8U SD_CalTimeout()
-** ¹¦ÄÜÃèÊö: ¼ÆËã¶Á/Ğ´/²Á³¬Ê±Ê±¼ä				Function: get the information of SD card
-** Êä¡¡  Èë: INT8U cardtype: ¿¨ÀàĞÍ				Input:    INT8U cardtype: card type
-			 INT8U *csdbuf : CSD¼Ä´æÆ÷ÄÚÈİ		 	      INT8U *csdbuf : CSD register content
-** Êä ¡¡ ³ö: 0:   ÕıÈ·    >0:   ´íÎóÂë		  	Output:	  0:  right		>0:  error code
+** å‡½æ•°åç§°: INT8U SD_CalTimeout()				Name:	  INT8U SD_CalTimeout()
+** åŠŸèƒ½æè¿°: è®¡ç®—è¯»/å†™/æ“¦è¶…æ—¶æ—¶é—´				Function: get the information of SD card
+** è¾“ã€€  å…¥: INT8U cardtype: å¡ç±»å‹				Input:    INT8U cardtype: card type
+			 INT8U *csdbuf : CSDå¯„å­˜å™¨å†…å®¹		 	      INT8U *csdbuf : CSD register content
+** è¾“ ã€€ å‡º: 0:   æ­£ç¡®    >0:   é”™è¯¯ç 		  	Output:	  0:  right		>0:  error code
 *******************************************************************************************************************/
 void SD_CalTimeout(INT8U *csdbuf)
 {
 	INT32U tmp;
 	INT8U time_u,time_v,fator;
 
-	sds.timeout_read = READ_TIMEOUT_100MS;								/* Ä¬ÈÏ¶Á³¬Ê±Îª100ms */
-	sds.timeout_write = WRITE_TIMEOUT_250MS;							/* Ä¬ÈÏĞ´³¬Ê±Îª250ms */
+	sds.timeout_read = READ_TIMEOUT_100MS;								/* é»˜è®¤è¯»è¶…æ—¶ä¸º100ms */
+	sds.timeout_write = WRITE_TIMEOUT_250MS;							/* é»˜è®¤å†™è¶…æ—¶ä¸º250ms */
 	sds.timeout_erase = WRITE_TIMEOUT_250MS;
 
-	time_u = (csdbuf[TAAC_POS] & TAAC_MSK);								/* ¶Á³¬Ê±Ê±¼äµ¥Î» read timeout unit */
-	time_v = (csdbuf[TAAC_POS] & NSAC_MSK) >> 3;						/* ¶Á³¬Ê±Ê±¼äÖµ   read timeout value */
-	fator = (csdbuf[R2WFACTOR_POS] & R2WFACTOR_MSK) >> 2;				/* Ğ´³¬Ê±Ê±¼äÒòÊı write timeout factor */
+	time_u = (csdbuf[TAAC_POS] & TAAC_MSK);								/* è¯»è¶…æ—¶æ—¶é—´å•ä½ read timeout unit */
+	time_v = (csdbuf[TAAC_POS] & NSAC_MSK) >> 3;						/* è¯»è¶…æ—¶æ—¶é—´å€¼   read timeout value */
+	fator = (csdbuf[R2WFACTOR_POS] & R2WFACTOR_MSK) >> 2;				/* å†™è¶…æ—¶æ—¶é—´å› æ•° write timeout factor */
 
 	if(time_v == 0)	return;
 	if(fator >= 6) return;
 
-	tmp = SPI_CLOCK * time_value[time_v] / 10 / time_unit[time_u];		/* TACC * f (µ¥Î» unit: clock) */
-	tmp = tmp + csdbuf[NSAC_POS] * 100;									/* TACC * f + NSAC * 100 (µ¥Î» unit: clock) */
+	tmp = SPI_CLOCK * time_value[time_v] / 10 / time_unit[time_u];		/* TACC * f (å•ä½ unit: clock) */
+	tmp = tmp + csdbuf[NSAC_POS] * 100;									/* TACC * f + NSAC * 100 (å•ä½ unit: clock) */
 
-	/* ¼ÆËãµÃµ½µÄ³¬Ê±Öµ the timeout value of being calculated */
+	/* è®¡ç®—å¾—åˆ°çš„è¶…æ—¶å€¼ the timeout value of being calculated */
 	sds.timeout_read = tmp;
-	sds.timeout_write = tmp * r2w_fator[fator];							/* (TACC * f + NSAC * 100) * R2WFACTOR (µ¥Î» unit:clock)*/
+	sds.timeout_write = tmp * r2w_fator[fator];							/* (TACC * f + NSAC * 100) * R2WFACTOR (å•ä½ unit:clock)*/
 
-	sds.timeout_read  = sds.timeout_read * 100 / 8;						/* Êµ¼ÊÖµÎª¼ÆËãÖµµÄ100±¶ */
+	sds.timeout_read  = sds.timeout_read * 100 / 8;						/* å®é™…å€¼ä¸ºè®¡ç®—å€¼çš„100å€ */
 	sds.timeout_write = sds.timeout_write * 100 / 8;
 
-	if (sds.timeout_read > READ_TIMEOUT_100MS)							/* È¡¼ÆËãÖµÓëÄ¬ÈÏÖµÖĞµÄ×îĞ¡Öµ */
+	if (sds.timeout_read > READ_TIMEOUT_100MS)							/* å–è®¡ç®—å€¼ä¸é»˜è®¤å€¼ä¸­çš„æœ€å°å€¼ */
 		sds.timeout_read = READ_TIMEOUT_100MS;
 
 	if (sds.timeout_write > WRITE_TIMEOUT_250MS)
@@ -663,13 +663,13 @@ void SD_CalTimeout(INT8U *csdbuf)
 }
 
 /*******************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_ActiveInit()				Name:	  INT8U SD_ActiveInit()
-** ¹¦ÄÜÃèÊö: ¼ÆËã¶Á/Ğ´/²Á³¬Ê±Ê±¼ä				Function: get the Idle state of SD card
-** Êä¡¡  Èë: void							 	Input:    void
-** Êä ¡¡ ³ö: 0:   ÕıÈ·    >0:   ´íÎóÂë		  	Output:	  0:  right		>0:  error code
-** º¯ÊıËµÃ÷: ¸ÃÃüÁî²»¶ÏÖØ¸´·¢ËÍµ½SD¿¨£¬Ö±µ½ÏìÓ¦R1µÄBit0(Idle)Î»Îª0£¬±íÊ¾SD¿¨ÄÚ²¿³õÊ¼»¯´¦ÀíÍê³É¡£
-		     µ±ÏìÓ¦µÄIdleÎ»Îª0Ê±£¬SD¿¨¾ÍÍêÈ«½øÈëSPIÄ£Ê½ÁË¡£µ±È»ÖØ¸´·¢ËÍÃüÁîCMD1ÊÇÓĞ´ÎÊıÏŞÖÆµÄ£¬
-		     ×î´ó´ÎÊıÎªºê¶¨ÒåSD_IDLE_WAIT_MAX.
+** å‡½æ•°åç§°: INT8U SD_ActiveInit()				Name:	  INT8U SD_ActiveInit()
+** åŠŸèƒ½æè¿°: è®¡ç®—è¯»/å†™/æ“¦è¶…æ—¶æ—¶é—´				Function: get the Idle state of SD card
+** è¾“ã€€  å…¥: void							 	Input:    void
+** è¾“ ã€€ å‡º: 0:   æ­£ç¡®    >0:   é”™è¯¯ç 		  	Output:	  0:  right		>0:  error code
+** å‡½æ•°è¯´æ˜: è¯¥å‘½ä»¤ä¸æ–­é‡å¤å‘é€åˆ°SDå¡ï¼Œç›´åˆ°å“åº”R1çš„Bit0(Idle)ä½ä¸º0ï¼Œè¡¨ç¤ºSDå¡å†…éƒ¨åˆå§‹åŒ–å¤„ç†å®Œæˆã€‚
+		     å½“å“åº”çš„Idleä½ä¸º0æ—¶ï¼ŒSDå¡å°±å®Œå…¨è¿›å…¥SPIæ¨¡å¼äº†ã€‚å½“ç„¶é‡å¤å‘é€å‘½ä»¤CMD1æ˜¯æœ‰æ¬¡æ•°é™åˆ¶çš„ï¼Œ
+		     æœ€å¤§æ¬¡æ•°ä¸ºå®å®šä¹‰SD_IDLE_WAIT_MAX.
 *******************************************************************************************************************/
 INT8U SD_ActiveInit(void)
 {
@@ -677,7 +677,7 @@ INT8U SD_ActiveInit(void)
 	INT32U i = 0;
 
 	do
-	{													/* ·¢³öCMD1, ²éÑ¯¿¨µÄ×´Ì¬, send CMD1 to poll card status */
+	{													/* å‘å‡ºCMD1, æŸ¥è¯¢å¡çš„çŠ¶æ€, send CMD1 to poll card status */
 		ret = SD_SendCmd(CMD1, param, CMD1_R, resp);
 		if (ret != SD_NO_ERR)
 			return ret;
@@ -689,10 +689,10 @@ INT8U SD_ActiveInit(void)
 //		printf("CMD1 resp[0]=0x%x\n",resp[0]);
 //		SD_SPIDelay(10);
 	}
-	while (((resp[0] & MSK_IDLE) == MSK_IDLE) && (i < SD_IDLE_WAIT_MAX)); 		/* Èç¹ûÏìÓ¦R1µÄ×îµÍÎ»IdleÎ»Îª1,Ôò¼ÌĞøÑ­»· */
+	while (((resp[0] & MSK_IDLE) == MSK_IDLE) && (i < SD_IDLE_WAIT_MAX)); 		/* å¦‚æœå“åº”R1çš„æœ€ä½ä½Idleä½ä¸º1,åˆ™ç»§ç»­å¾ªç¯ */
 	
 	if (i >= SD_IDLE_WAIT_MAX)
-		return SD_ERR_TIMEOUT_WAITIDLE;					/* ³¬Ê±,·µ»Ø´íÎó time out,return error */
+		return SD_ERR_TIMEOUT_WAITIDLE;					/* è¶…æ—¶,è¿”å›é”™è¯¯ time out,return error */
 
     ret = SD_SendCmd(CMD55, param, CMD55_R, resp);
 
@@ -701,7 +701,7 @@ INT8U SD_ActiveInit(void)
 	if(ret != SD_NO_ERR)
 		return ret;
 
-    ret = SD_SendCmd(ACMD41, param, ACMD41_R, resp);		/* ¼¤»îÄÚ²¿³õÊ¼»¯ÃüÁî active card to initialize process internal */
+    ret = SD_SendCmd(ACMD41, param, ACMD41_R, resp);		/* æ¿€æ´»å†…éƒ¨åˆå§‹åŒ–å‘½ä»¤ active card to initialize process internal */
 
 //	printf("SD ActiveInit ACMD41 ret=0x%x\n",ret);
 
@@ -710,12 +710,12 @@ INT8U SD_ActiveInit(void)
 	
 	if ((resp[0] & 0xFE) == 0)
 	{
-	  	sds.card_type = CARDTYPE_SD;						/* ÊÇSD¿¨ the card is SD card */
+	  	sds.card_type = CARDTYPE_SD;						/* æ˜¯SDå¡ the card is SD card */
 	  	printf("the card is SD card\n");
 	}
 	else
 	{
-		sds.card_type = CARDTYPE_MMC;						/* ÊÇMMC¿¨ the card is MMC card */
+		sds.card_type = CARDTYPE_MMC;						/* æ˜¯MMCå¡ the card is MMC card */
 		printf("the card is MMC card\n");
 	}
 
@@ -723,29 +723,29 @@ INT8U SD_ActiveInit(void)
 }
 
 /*******************************************************************************************************************
-** º¯ÊıÃû³Æ: void SD_StartSD()					Name:	  INT8U SD_StartSD()
-** ¹¦ÄÜÃèÊö: Ïò²Ù×÷ÏµÍ³ÉêÇë·ÃÎÊSD¿¨µÄÈ¨ÏŞ		Function: request the right of operating sd to OS
-** Êä¡¡  Èë: ÎŞ									Input:	  NULL
-** ·µ	 »Ø: ÎŞ									return:	  NULL
+** å‡½æ•°åç§°: void SD_StartSD()					Name:	  INT8U SD_StartSD()
+** åŠŸèƒ½æè¿°: å‘æ“ä½œç³»ç»Ÿç”³è¯·è®¿é—®SDå¡çš„æƒé™		Function: request the right of operating sd to OS
+** è¾“ã€€  å…¥: æ— 									Input:	  NULL
+** è¿”	 å›: æ— 									return:	  NULL
 ********************************************************************************************************************/
 void SD_StartSD(void)
 {
 	#if SD_UCOSII_EN
 		INT8U ret;
 
-		OSSemPend(pSemSD, 0, &ret);					/* µÈ´ı·ÃÎÊ¿¨ĞÅºÅÁ¿¿ÉÓÃ wait for semaphore that accessed Card */
+		OSSemPend(pSemSD, 0, &ret);					/* ç­‰å¾…è®¿é—®å¡ä¿¡å·é‡å¯ç”¨ wait for semaphore that accessed Card */
 	#endif
 }
 
 /*******************************************************************************************************************
-** º¯ÊıÃû³Æ: void SD_EndSD()					Name:	  INT8U SD_EndSD()
-** ¹¦ÄÜÃèÊö: ·ÃÎÊSD¿¨µÄÈ¨ÏŞ¹é»¹²Ù×÷ÏµÍ³			Function: return the right of operating sd to OS
-** Êä¡¡  Èë: ÎŞ									Input:	  NULL
-** ·µ	 »Ø: ÎŞ									return:	  NULL
+** å‡½æ•°åç§°: void SD_EndSD()					Name:	  INT8U SD_EndSD()
+** åŠŸèƒ½æè¿°: è®¿é—®SDå¡çš„æƒé™å½’è¿˜æ“ä½œç³»ç»Ÿ			Function: return the right of operating sd to OS
+** è¾“ã€€  å…¥: æ— 									Input:	  NULL
+** è¿”	 å›: æ— 									return:	  NULL
 ********************************************************************************************************************/
 void SD_EndSD(void)
 {
 	#if SD_UCOSII_EN
-		OSSemPost(pSemSD);							/* ½«·ÃÎÊ¿¨ĞÅºÅÁ¿»¹¸ø²Ù×÷ÏµÍ³ return the semaphore accessing Card to OS */
+		OSSemPost(pSemSD);							/* å°†è®¿é—®å¡ä¿¡å·é‡è¿˜ç»™æ“ä½œç³»ç»Ÿ return the semaphore accessing Card to OS */
 	#endif
 }

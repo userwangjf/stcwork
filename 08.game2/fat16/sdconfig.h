@@ -1,5 +1,5 @@
 /******************************************************************************************************
-** Descriptions:		sd ¿¨Çı¶¯Èí¼ş°ü: ÅäÖÃÎÄ¼ş
+** Descriptions:		sd å¡é©±åŠ¨è½¯ä»¶åŒ…: é…ç½®æ–‡ä»¶
 ********************************************************************************************************/
 #ifndef __SDCONFIG_H__
 #define __SDCONFIG_H__
@@ -7,38 +7,38 @@
 #include <cdefBF533.h>
 #include <defBF533.h>
 
-typedef unsigned char  INT8U;                   /* ÎŞ·ûºÅ8Î»ÕûĞÍ±äÁ¿                        */
-typedef signed   char  INT8;                    /* ÓĞ·ûºÅ8Î»ÕûĞÍ±äÁ¿                        */
-typedef unsigned short INT16U;                  /* ÎŞ·ûºÅ16Î»ÕûĞÍ±äÁ¿                       */
-typedef signed   short INT16;                   /* ÓĞ·ûºÅ16Î»ÕûĞÍ±äÁ¿                       */
-typedef unsigned int   INT32U;                  /* ÎŞ·ûºÅ32Î»ÕûĞÍ±äÁ¿                       */
-typedef signed   int   INT32;                   /* ÓĞ·ûºÅ32Î»ÕûĞÍ±äÁ¿                       */
-typedef float          FP32;                    /* µ¥¾«¶È¸¡µãÊı£¨32Î»³¤¶È£©                 */
-typedef double         FP64;                    /* Ë«¾«¶È¸¡µãÊı£¨64Î»³¤¶È£©                 */
+typedef unsigned char  INT8U;                   /* æ— ç¬¦å·8ä½æ•´å‹å˜é‡                        */
+typedef signed   char  INT8;                    /* æœ‰ç¬¦å·8ä½æ•´å‹å˜é‡                        */
+typedef unsigned short INT16U;                  /* æ— ç¬¦å·16ä½æ•´å‹å˜é‡                       */
+typedef signed   short INT16;                   /* æœ‰ç¬¦å·16ä½æ•´å‹å˜é‡                       */
+typedef unsigned int   INT32U;                  /* æ— ç¬¦å·32ä½æ•´å‹å˜é‡                       */
+typedef signed   int   INT32;                   /* æœ‰ç¬¦å·32ä½æ•´å‹å˜é‡                       */
+typedef float          FP32;                    /* å•ç²¾åº¦æµ®ç‚¹æ•°ï¼ˆ32ä½é•¿åº¦ï¼‰                 */
+typedef double         FP64;                    /* åŒç²¾åº¦æµ®ç‚¹æ•°ï¼ˆ64ä½é•¿åº¦ï¼‰                 */
 
-#define SPI_CLOCK			400000		/* Õı³£Í¨ĞÅÊ±,SPIÊ±ÖÓÆµÂÊ frequency (Hz) */
-#define SD_BLOCKSIZE		512			//SD¿¨¿éµÄ³¤¶È
+#define SPI_CLOCK			400000		/* æ­£å¸¸é€šä¿¡æ—¶,SPIæ—¶é’Ÿé¢‘ç‡ frequency (Hz) */
+#define SD_BLOCKSIZE		512			//SDå¡å—çš„é•¿åº¦
 #define SD_BLOCKSIZE_NBITS	9
 
-/*ÊÇ·ñÓĞÏµÍ³*/
-#define SD_UCOSII_EN			0			/* ÊÇ·ñÔÚUCOS-IIÉÏÔËĞĞ±¾Ä£¿é */
+/*æ˜¯å¦æœ‰ç³»ç»Ÿ*/
+#define SD_UCOSII_EN			0			/* æ˜¯å¦åœ¨UCOS-IIä¸Šè¿è¡Œæœ¬æ¨¡å— */
 
-/* ÉèÖÃÊı¾İ´«ÊäÊ±ÊÇ·ñÊ¹ÓÃCRC */
+/* è®¾ç½®æ•°æ®ä¼ è¾“æ—¶æ˜¯å¦ä½¿ç”¨CRC */
 #define SD_CRC_EN		   		0
 
-/* ÏÂÃæº¯Êı²»³£ÓÃ,Èç¹ûÓÃ»§²»ĞèÒª,¿ÉÖÃÎª 0 ²Ã¼ôÖ¸¶¨º¯Êı */
-#define SD_ReadMultiBlock_EN    1			/* ÊÇ·ñÊ¹ÄÜ¶Á¶à¿éº¯Êı */
-#define SD_WriteMultiBlock_EN   1			/* ÊÇ·ñÊ¹ÄÜĞ´¶à¿éº¯Êı */
-#define SD_EraseBlock_EN		1			/* ÊÇ·ñÊ¹ÄÜ²Á¿¨º¯Êı */
-#define SD_ProgramCSD_EN   		0			/* ÊÇ·ñÊ¹ÄÜĞ´CSD¼Ä´æÆ÷º¯Êı */
-#define SD_ReadCID_EN	   		1			/* ÊÇ·ñÊ¹ÄÜ¶ÁCID¼Ä´æÆ÷º¯Êı */
-#define	SD_ReadSD_Status_EN		0			/* ÊÇ·ñÊ¹ÄÜ¶ÁSD_Status¼Ä´æÆ÷º¯Êı */
-#define	SD_ReadSCR_EN			0			/* ÊÇ·ñÊ¹ÄÜ¶ÁSCR¼Ä´æÆ÷º¯Êı */
+/* ä¸‹é¢å‡½æ•°ä¸å¸¸ç”¨,å¦‚æœç”¨æˆ·ä¸éœ€è¦,å¯ç½®ä¸º 0 è£å‰ªæŒ‡å®šå‡½æ•° */
+#define SD_ReadMultiBlock_EN    1			/* æ˜¯å¦ä½¿èƒ½è¯»å¤šå—å‡½æ•° */
+#define SD_WriteMultiBlock_EN   1			/* æ˜¯å¦ä½¿èƒ½å†™å¤šå—å‡½æ•° */
+#define SD_EraseBlock_EN		1			/* æ˜¯å¦ä½¿èƒ½æ“¦å¡å‡½æ•° */
+#define SD_ProgramCSD_EN   		0			/* æ˜¯å¦ä½¿èƒ½å†™CSDå¯„å­˜å™¨å‡½æ•° */
+#define SD_ReadCID_EN	   		1			/* æ˜¯å¦ä½¿èƒ½è¯»CIDå¯„å­˜å™¨å‡½æ•° */
+#define	SD_ReadSD_Status_EN		0			/* æ˜¯å¦ä½¿èƒ½è¯»SD_Statuså¯„å­˜å™¨å‡½æ•° */
+#define	SD_ReadSCR_EN			0			/* æ˜¯å¦ä½¿èƒ½è¯»SCRå¯„å­˜å™¨å‡½æ•° */
 
-/* ¿¨ÍêÈ«²åÈë¿¨×ù¼ì²âÒı½Å */	//SD_INSERT_STATUS==1	Insert			SD_WP_STATUS==1	Unlock
-#define  SD_INSERT_STATUS()  	(*pFIO_FLAG_D & PF10)			/* ¶ÁÈ¡ INSERT ¿ÚµÄ×´Ì¬ */
+/* å¡å®Œå…¨æ’å…¥å¡åº§æ£€æµ‹å¼•è„š */	//SD_INSERT_STATUS==1	Insert			SD_WP_STATUS==1	Unlock
+#define  SD_INSERT_STATUS()  	(*pFIO_FLAG_D & PF10)			/* è¯»å– INSERT å£çš„çŠ¶æ€ */
 
-/* ¿¨Ğ´±£»¤¼ì²âÒı½Å */
-#define  SD_WP_STATUS()  		(*pFIO_FLAG_D & PF9)			/* ¶ÁÈ¡ WP ¿ÚµÄ×´Ì¬ */
+/* å¡å†™ä¿æŠ¤æ£€æµ‹å¼•è„š */
+#define  SD_WP_STATUS()  		(*pFIO_FLAG_D & PF9)			/* è¯»å– WP å£çš„çŠ¶æ€ */
 
 #endif

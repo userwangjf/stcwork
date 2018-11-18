@@ -3,14 +3,14 @@
 #include "bsp/config.h"
 #include "xmodem/xmodem.h"
 
-//ÔÝ²»Ê¹ÓÃ¡£
+//æš‚ä¸ä½¿ç”¨ã€‚
 u16 xmodem_crc16(const u8 *buf, int sz)
 {
 	u16 crc = 0;
 	while (--sz >= 0)
 	{
 		u8 i;
-		crc ^= ((u16)*buf++) << 8;
+		crc ^= ((u16) * buf++) << 8;
 		for (i = 0; i < 8; i++)
 		{
 			if (crc & 0x8000)
@@ -21,40 +21,40 @@ u16 xmodem_crc16(const u8 *buf, int sz)
 			{
 				crc <<= 1;
 			}
-        }
+		}
 	}
 	return crc;
 }
 
-//¼ÆËãÐ£ÑéºÍ
+//è®¡ç®—æ ¡éªŒå’Œ
 u8 xmodem_sum(const u8 *buf, int sz)
 {
 	u8 sum = 0;
-	for(;sz>0;sz--)
+	for (; sz > 0; sz--)
 	{
-	 	sum += *buf++;
+		sum += *buf++;
 	}
 	return sum;
 }
 
-//¼ì²é°üÊÇ·ñÕýÈ·£¬ÕýÈ··µ»Ø1¡£
+//æ£€æŸ¥åŒ…æ˜¯å¦æ­£ç¡®ï¼Œæ­£ç¡®è¿”å›ž1ã€‚
 u8 xmodem_check(u8* buff, u8 pkt_num)
 {
-	//°üÐòºÅ¼ì²é
+	//åŒ…åºå·æ£€æŸ¥
 	if (pkt_num != buff[1])return 0;
 
-	//°üÐòºÅ·´Âë¼ì²é
-	if(buff[1] + buff[2] != 0xFF)return 0;
+	//åŒ…åºå·åç æ£€æŸ¥
+	if (buff[1] + buff[2] != 0xFF)return 0;
 
-	//¼ì²é°üµÄsum
-	if(buff[131] != xmodem_sum(&buff[3], 128))return 0;
+	//æ£€æŸ¥åŒ…çš„sum
+	if (buff[131] != xmodem_sum(&buff[3], 128))return 0;
 
 	return 1;
 }
 
-//½ÓÊÕ
+//æŽ¥æ”¶
 s8 xmodem_start(struct xmodem_receiver *rx)
-{	
+{
 	u8 cur_char = 0;
 	u8 wrong_char = 0;
 	u8 cur_packet = 1;
@@ -63,38 +63,38 @@ s8 xmodem_start(struct xmodem_receiver *rx)
 	u8 *prx;
 
 	prx = rx->rx_buf;
-	while(1)
+	while (1)
 	{
-		while(cur_char < XMODEM_BUF_LEN)
+		while (cur_char < XMODEM_BUF_LEN)
 		{
 			ch = rx->get_char();
-			if(ch == -1)return -2;//³¬Ê±
+			if (ch == -1)return -2; //è¶…æ—¶
 			prx[cur_char] = (u8)ch;
-			if(cur_char == 0)
+			if (cur_char == 0)
 			{
-				switch(prx[cur_char])
+				switch (prx[cur_char])
 				{
-					case SOH:
+				case SOH:
+				{
+					cur_char++;
+					break;
+				}
+				case EOT:
+				{
+					rx->put_char(ACK);
+					rx->put_char(ACK);
+					return 0;
+				}
+				default:
+				{
+					wrong_char++;
+					if (wrong_char >= 5)
 					{
-						cur_char++;
-						break;
+						return -1;
 					}
-					case EOT:
-					{
-						rx->put_char(ACK);
-						rx->put_char(ACK);
-						return 0;
-					}
-					default:
-					{
-						wrong_char++;
-						if (wrong_char >= 5)
-						{
-							return -1;
-						}
-						rx->put_char(NAK);
-						break;
-					}
+					rx->put_char(NAK);
+					break;
+				}
 				}
 			}
 			else
@@ -102,20 +102,20 @@ s8 xmodem_start(struct xmodem_receiver *rx)
 				cur_char++;
 			}
 		}
-			  
-		if(xmodem_check(prx, cur_packet))
+
+		if (xmodem_check(prx, cur_packet))
 		{
-			cur_packet++;	
-			//»Øµ÷º¯Êý
-			rx->writer(&prx[3],128);
-			#if 1
-			for(i=0;i<cur_char;i++)
+			cur_packet++;
+			//å›žè°ƒå‡½æ•°
+			rx->writer(&prx[3], 128);
+#if 1
+			for (i = 0; i < cur_char; i++)
 			{
 				Uart2_Tx(byte2str(prx[i]));
 				Uart2_Tx(",");
 			}
 			Uart2_Tx("\r\n");
-			#endif
+#endif
 			rx->rx_ok_cnt++;
 			cur_char = 0;
 			rx->put_char(ACK);
@@ -134,18 +134,18 @@ s8 xmodem_rx(struct xmodem_receiver *rx)
 {
 	u8 retry_count = 0;
 
-	while(retry_count < XMODEM_MAX_RETRY)
+	while (retry_count < XMODEM_MAX_RETRY)
 	{
 		retry_count++;
 
-		//CRC·½Ê½²»ÐÐ,Ð£ÑéºÍ·½Ê½¼æÈÝÐÔºÃ¡£
+		//CRCæ–¹å¼ä¸è¡Œ,æ ¡éªŒå’Œæ–¹å¼å…¼å®¹æ€§å¥½ã€‚
 		//rx->put_char('C');
 		rx->put_char(NAK);
-		
-		//³¬¼¶ÖÕ¶Ë/CRT¶¼»á¶à·¢Ò»¸ö0x01£¬ÐèÒªÏÈÌÞ³ý¡£
-		if(rx->get_first())
+
+		//è¶…çº§ç»ˆç«¯/CRTéƒ½ä¼šå¤šå‘ä¸€ä¸ª0x01ï¼Œéœ€è¦å…ˆå‰”é™¤ã€‚
+		if (rx->get_first())
 		{
-			break;	
+			break;
 		}
 		rx->delay_1s();
 	}

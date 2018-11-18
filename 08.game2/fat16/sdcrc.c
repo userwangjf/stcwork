@@ -1,11 +1,11 @@
 /*******************************************************************************************************
-** Descriptions:		sd ¿¨Çı¶¯Èí¼ş°ü: SD¿¨Ïà¹Ø¹¤¾ßº¯Êı ---- CRCĞ£Ñé
+** Descriptions:		sd å¡é©±åŠ¨è½¯ä»¶åŒ…: SDå¡ç›¸å…³å·¥å…·å‡½æ•° ---- CRCæ ¡éªŒ
 ********************************************************************************************************/
 
 #include "sdcrc.h"
 
 #if SD_CRC_EN
-//X16 + X12 + X5 + 1 ÓàÊ½±í
+//X16 + X12 + X5 + 1 ä½™å¼è¡¨
 INT16U const CRCTable[256]={0x0000,0x1021,0x2042,0x3063,0x4084,0x50a5,0x60c6,0x70e7,
 							0x8108,0x9129,0xa14a,0xb16b,0xc18c,0xd1ad,0xe1ce,0xf1ef,
 							0x1231,0x0210,0x3273,0x2252,0x52b5,0x4294,0x72f7,0x62d6,
@@ -41,11 +41,11 @@ INT16U const CRCTable[256]={0x0000,0x1021,0x2042,0x3063,0x4084,0x50a5,0x60c6,0x7
 						   };
 
 /********************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_GetCRC16()					Name:	  INT8U SD_GetCRC16()
-** ¹¦ÄÜÃèÊö: ¼ÆËãCRC16								Function: calculate CRC16
-** Êä¡¡  Èë: INT8U *pSource: Êı¾İ					Input:    INT8U *pSource: data
-			 INT16U len    : ³¤¶È							  INT16U len    : len
-** Êä ¡¡ ³ö: CRC16Âë								Output:	  CRC16 code
+** å‡½æ•°åç§°: INT8U SD_GetCRC16()					Name:	  INT8U SD_GetCRC16()
+** åŠŸèƒ½æè¿°: è®¡ç®—CRC16								Function: calculate CRC16
+** è¾“ã€€  å…¥: INT8U *pSource: æ•°æ®					Input:    INT8U *pSource: data
+			 INT16U len    : é•¿åº¦							  INT16U len    : len
+** è¾“ ã€€ å‡º: CRC16ç 								Output:	  CRC16 code
 ********************************************************************************************************************/
 INT16U SD_GetCRC16(INT8U *pSource, INT16U len)
 {
@@ -59,11 +59,11 @@ INT16U SD_GetCRC16(INT8U *pSource, INT16U len)
 }
 
 /*******************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_GetCmdByte6()					Name:	  INT8U SD_GetCmdByte6()
-** ¹¦ÄÜÃèÊö: »ñÈ¡SD¿¨ÃüÁîµÄCRC7						Function: get the CRC7 of the command of SD card
-** Êä¡¡  Èë: INT8U cmd   : ÃüÁî						Input:    INT8U cmd   :	command
-			 INT8U *param: ÃüÁîµÄ²ÎÊı,³¤¶ÈÎª4×Ö½Ú			  INT8U *param: the param of command,length is 4 bytes
-** Êä ¡¡ ³ö: CRC7Âë									Output:	  CRC7 code
+** å‡½æ•°åç§°: INT8U SD_GetCmdByte6()					Name:	  INT8U SD_GetCmdByte6()
+** åŠŸèƒ½æè¿°: è·å–SDå¡å‘½ä»¤çš„CRC7						Function: get the CRC7 of the command of SD card
+** è¾“ã€€  å…¥: INT8U cmd   : å‘½ä»¤						Input:    INT8U cmd   :	command
+			 INT8U *param: å‘½ä»¤çš„å‚æ•°,é•¿åº¦ä¸º4å­—èŠ‚			  INT8U *param: the param of command,length is 4 bytes
+** è¾“ ã€€ å‡º: CRC7ç 									Output:	  CRC7 code
 ********************************************************************************************************************/
 INT8U SD_GetCmdByte6(INT8U cmd, INT8U *param)
 {
@@ -72,10 +72,10 @@ INT8U SD_GetCmdByte6(INT8U cmd, INT8U *param)
 	INT8U array[5];
 
 	array[0] = cmd;
-	for (i = 1; i < 5; i++)						/* ½«²ÎÊıµÄË³ĞòÖØĞÂÅÅÁĞ */
+	for (i = 1; i < 5; i++)						/* å°†å‚æ•°çš„é¡ºåºé‡æ–°æ’åˆ— */
 		array[i] = param[4 - i];
 
-	for (i = 0; i < 5; i++)						/* ¼ÆËã5¸ö×Ö½ÚµÄCRC7 */
+	for (i = 0; i < 5; i++)						/* è®¡ç®—5ä¸ªå­—èŠ‚çš„CRC7 */
 	{
 	    for (j = 0; j < 8; j++)
 	    {
@@ -84,6 +84,6 @@ INT8U SD_GetCmdByte6(INT8U cmd, INT8U *param)
 	    }
 	}
 
-	return ((reg << 1) + 0x01) ;				/* ¼ÆËã½á¹ûµÄCRC7×óÒÆÒ»Î»,²¢½«×îµÍÎ»ÖÃ1 */
+	return ((reg << 1) + 0x01) ;				/* è®¡ç®—ç»“æœçš„CRC7å·¦ç§»ä¸€ä½,å¹¶å°†æœ€ä½ä½ç½®1 */
 }
 #endif

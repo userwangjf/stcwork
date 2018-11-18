@@ -3,10 +3,6 @@
 #include "tetris/tetris.h"
 
 
-
-
-
-
 u8 is_game_over = 0;
 
 
@@ -74,7 +70,7 @@ brick_t curr_brick;              // 当前方块
 void create_new_brick ( brick_t* brick )
 {
 	//随机的方块类型
-	u8 bt = random() % BRICK_TYPE;
+	u8 bt = get_random_num() % BRICK_TYPE;
 
 	// 初始坐标
 	brick->x = BRICK_START_X;

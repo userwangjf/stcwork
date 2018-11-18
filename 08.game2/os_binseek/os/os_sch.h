@@ -4,20 +4,20 @@
 
 #define OS_DBG_EN
 
-//¶¨ÒåÏµÍ³Ö§³ÖµÄ×î´óÈÎÎñ¸öÊı£¬¿ÉÓÃÈÎÎñÎªOS_TSK_MAX-1¡£
+//å®šä¹‰ç³»ç»Ÿæ”¯æŒçš„æœ€å¤§ä»»åŠ¡ä¸ªæ•°ï¼Œå¯ç”¨ä»»åŠ¡ä¸ºOS_TSK_MAX-1ã€‚
 //#define OS_TSK_MAX		8
 
-//¶¨ÒåÏµÍ³µÄÊı¾İ¡¢´úÂë´æ´¢ÀàĞÍ
+//å®šä¹‰ç³»ç»Ÿçš„æ•°æ®ã€ä»£ç å­˜å‚¨ç±»å‹
 #define OS_DATA		idata
 #define OS_CODE		code
 
-//tickÊ¹ÓÃµÄ¶¨Ê±Æ÷
+//tickä½¿ç”¨çš„å®šæ—¶å™¨
 #define TICK_BYTE0	TL0
 #define TICK_BYTE1	TH0
 
 //#define OS_DBG_EN			1
 
-//C51Ê¹ÓÃ´ó¶Ë´æ´¢Ä£Ê½
+//C51ä½¿ç”¨å¤§ç«¯å­˜å‚¨æ¨¡å¼
 //byte[0] = dword[31:24]
 //byte[1] = dword[23:16]
 //byte[2] = dword[15:8]
@@ -36,10 +36,10 @@ typedef struct os_task {
 
 };
 
-//ÔÚ¶¨Ê±ÖĞµ÷ÓÃ´Ëº¯Êı
+//åœ¨å®šæ—¶ä¸­è°ƒç”¨æ­¤å‡½æ•°
 void os_incTick(void);
 
-//Íâ²¿µ÷ÓÃµÄ²Ù×÷ÏµÍ³º¯Êı
+//å¤–éƒ¨è°ƒç”¨çš„æ“ä½œç³»ç»Ÿå‡½æ•°
 void os_init(void);
 void os_runing();
 void os_taskCreate(u8 task_id, void (code *task_func)(void), u32 delay);

@@ -1,40 +1,40 @@
 /*****************************************************************************************************
-** Descriptions:		sd ¿¨Çı¶¯Èí¼ş°ü: SD¿¨ÎïÀí²ã ---- SD¿¨SPIÄ£Ê½Ö§³ÖµÄÃüÁî
+** Descriptions:		sd å¡é©±åŠ¨è½¯ä»¶åŒ…: SDå¡ç‰©ç†å±‚ ---- SDå¡SPIæ¨¡å¼æ”¯æŒçš„å‘½ä»¤
 ********************************************************************************************************/
 #include "sdcmd.h"
 
 extern bool	WrtRedBLKPrt;
 
 /********************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_SendCmd()						Name:	  INT8U SD_SendCmd()
-** ¹¦ÄÜÃèÊö: Ïò¿¨·¢ËÍÃüÁî,²¢È¡µÃÏìÓ¦				Function: send command to the card,and get a response
-** Êä¡¡  Èë: INT8U cmd	    : ÃüÁî×Ö				Input:	  INT8U cmd	    : command byte
-			 INT8U *param	: ÃüÁî²ÎÊı,³¤¶ÈÎª4×Ö½Ú			  INT8U *param	: command parameter,length is 4 bytes
-			 INT8U resptype : ÏìÓ¦ÀàĞÍ						  INT8U resptype: response type
-			 INT8U *resp	: ÏìÓ¦,³¤¶ÈÎª1-5×Ö½Ú			  INT8U *resp	: response,length is 1-5 bytes
-** Êä ¡¡ ³ö: 0:   ÕıÈ·    >0:   ´íÎóÂë		  		Output:	  0:  right		>0:  error code
+** å‡½æ•°åç§°: INT8U SD_SendCmd()						Name:	  INT8U SD_SendCmd()
+** åŠŸèƒ½æè¿°: å‘å¡å‘é€å‘½ä»¤,å¹¶å–å¾—å“åº”				Function: send command to the card,and get a response
+** è¾“ã€€  å…¥: INT8U cmd	    : å‘½ä»¤å­—				Input:	  INT8U cmd	    : command byte
+			 INT8U *param	: å‘½ä»¤å‚æ•°,é•¿åº¦ä¸º4å­—èŠ‚			  INT8U *param	: command parameter,length is 4 bytes
+			 INT8U resptype : å“åº”ç±»å‹						  INT8U resptype: response type
+			 INT8U *resp	: å“åº”,é•¿åº¦ä¸º1-5å­—èŠ‚			  INT8U *resp	: response,length is 1-5 bytes
+** è¾“ ã€€ å‡º: 0:   æ­£ç¡®    >0:   é”™è¯¯ç 		  		Output:	  0:  right		>0:  error code
 ********************************************************************************************************************/
 INT8U SD_SendCmd(INT8U cmd, INT8U *param, INT8U resptype, INT8U *resp)
 {
-	INT32 i,rlen;									 //ËùÓĞSD¿¨ÃüÁî¶¼ÊÇ6×Ö½Ú³¤
+	INT32 i,rlen;									 //æ‰€æœ‰SDå¡å‘½ä»¤éƒ½æ˜¯6å­—èŠ‚é•¿
 	INT8U tmp;
 
-	SPI_CS_Assert();							     //Æ¬Ñ¡SPI´Ó»ú
+	SPI_CS_Assert();							     //ç‰‡é€‰SPIä»æœº
 
-    SPI_SendByte((cmd & 0x3F) | 0x40);				 /* ·¢ËÍÃüÁîÍ·ºÍÃüÁî×Ö send command header and word */
-    												 //ÆğÊ¼Î»Îª0£¨bit47£©£¬´«ÊäÎ»Îª1£¨bit46£©
+    SPI_SendByte((cmd & 0x3F) | 0x40);				 /* å‘é€å‘½ä»¤å¤´å’Œå‘½ä»¤å­— send command header and word */
+    												 //èµ·å§‹ä½ä¸º0ï¼ˆbit47ï¼‰ï¼Œä¼ è¾“ä½ä¸º1ï¼ˆbit46ï¼‰
     for (i = 3; i >= 0; i--)
-        SPI_SendByte(param[i]);						 /* ·¢ËÍ²ÎÊı send parameters */
+        SPI_SendByte(param[i]);						 /* å‘é€å‚æ•° send parameters */
 
 	#if SD_CRC_EN
 		tmp = SD_GetCmdByte6((cmd & 0x3F) | 0x40, param);
 		SPI_SendByte(tmp);
 	#else
-	    SPI_SendByte(0x95);							/* CRCĞ£ÑéÂë,Ö»ÓÃÓÚµÚ1¸öÃüÁî CRC,only used for the first command */
+	    SPI_SendByte(0x95);							/* CRCæ ¡éªŒç ,åªç”¨äºç¬¬1ä¸ªå‘½ä»¤ CRC,only used for the first command */
 	#endif
 
     rlen = 0;
-    switch (resptype)								 /* ¸ù¾İ²»Í¬µÄÃüÁî,µÃµ½²»Í¬µÄÏìÓ¦³¤¶È */
+    switch (resptype)								 /* æ ¹æ®ä¸åŒçš„å‘½ä»¤,å¾—åˆ°ä¸åŒçš„å“åº”é•¿åº¦ */
     {												 /* according various command,get the various response length */
   		case R1:
    	 	case R1B: rlen = 1;  break;
@@ -45,12 +45,12 @@ INT8U SD_SendCmd(INT8U cmd, INT8U *param, INT8U resptype, INT8U *resp)
 
     	default:  SPI_SendByte(0xFF);
       		      SPI_CS_Deassert();
-        	      return SD_ERR_CMD_RESPTYPE;		 /* ·µ»ØÃüÁîÏìÓ¦ÀàĞÍ´íÎó return error of command response type */
+        	      return SD_ERR_CMD_RESPTYPE;		 /* è¿”å›å‘½ä»¤å“åº”ç±»å‹é”™è¯¯ return error of command response type */
     		      break;
     }
 
     i = 0;
-    do 												 /* µÈ´ıÏìÓ¦,ÏìÓ¦µÄ¿ªÊ¼Î»Îª0 */
+    do 												 /* ç­‰å¾…å“åº”,å“åº”çš„å¼€å§‹ä½ä¸º0 */
     {												 /* Wait for a response,a response is a start bit(zero) */
         tmp = SPI_RecByte();
         i++;
@@ -60,25 +60,25 @@ INT8U SD_SendCmd(INT8U cmd, INT8U *param, INT8U resptype, INT8U *resp)
     if (i >= SD_CMD_TIMEOUT)
     {
         SPI_CS_Deassert();
-        return SD_ERR_CMD_TIMEOUT;					 /* ·µ»ØÃüÁî³¬Ê± return response timeout of command */
+        return SD_ERR_CMD_TIMEOUT;					 /* è¿”å›å‘½ä»¤è¶…æ—¶ return response timeout of command */
     }
 
     for (i = rlen - 1; i >= 0; i--)
     {
         resp[i] = tmp;
-        tmp = SPI_RecByte();					 	 /* Ñ­»·µÄ×îºó·¢ËÍ8clock  at the last recycle,clock out 8 clock */
+        tmp = SPI_RecByte();					 	 /* å¾ªç¯çš„æœ€åå‘é€8clock  at the last recycle,clock out 8 clock */
     }
 
     SPI_CS_Deassert();
-    return SD_NO_ERR;								 /* ·µ»ØÖ´ĞĞ³É¹¦ return perform sucessfully */
+    return SD_NO_ERR;								 /* è¿”å›æ‰§è¡ŒæˆåŠŸ return perform sucessfully */
 }
 
 /********************************************************************************************************************
-** º¯ÊıÃû³Æ: void SD_PackParam()					Name:	  void SD_PackParam()
-** ¹¦ÄÜÃèÊö: ½«32Î»µÄ²ÎÊı×ªÎª×Ö½ÚĞÎÊ½				Function: change 32bit parameter to bytes form
-** Êä¡¡  Èë: INT8U *parameter: ×Ö½Ú²ÎÊı»º³åÇø		Input:	  INT8U *parameter: the buffer of bytes parameter
-			 INT32U value    : 32Î»²ÎÊı						  INT32U value    : 32bit parameter
-** Êä ¡¡ ³ö: ÎŞ										Output:	  NULL
+** å‡½æ•°åç§°: void SD_PackParam()					Name:	  void SD_PackParam()
+** åŠŸèƒ½æè¿°: å°†32ä½çš„å‚æ•°è½¬ä¸ºå­—èŠ‚å½¢å¼				Function: change 32bit parameter to bytes form
+** è¾“ã€€  å…¥: INT8U *parameter: å­—èŠ‚å‚æ•°ç¼“å†²åŒº		Input:	  INT8U *parameter: the buffer of bytes parameter
+			 INT32U value    : 32ä½å‚æ•°						  INT32U value    : 32bit parameter
+** è¾“ ã€€ å‡º: æ— 										Output:	  NULL
 *********************************************************************************************************************/
 void SD_PackParam(INT8U *parameter, INT32U value)
 {
@@ -89,195 +89,195 @@ void SD_PackParam(INT8U *parameter, INT32U value)
 }
 
 /********************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_BlockCommand()				Name:	  INT8U SD_BlockCommand()
-** ¹¦ÄÜÃèÊö: ¿éÃüÁî									Function: command about block operation
-** Êä¡¡  Èë: INT8U cmd	     : ÃüÁî×Ö				Input:	  INT8U cmd	      : command byte
-			 INT8U resptype  : ÏìÓ¦ÀàĞÍ						  INT8U resptype  : response type
-			 INT32U parameter: ¿é²Ù×÷²ÎÊı			 		  INT32U parameter: parameter of block operation
-** Êä ¡¡ ³ö: 0:   ÕıÈ·    >0:   ´íÎóÂë		  		Output:	  0:  right		>0:  error code
+** å‡½æ•°åç§°: INT8U SD_BlockCommand()				Name:	  INT8U SD_BlockCommand()
+** åŠŸèƒ½æè¿°: å—å‘½ä»¤									Function: command about block operation
+** è¾“ã€€  å…¥: INT8U cmd	     : å‘½ä»¤å­—				Input:	  INT8U cmd	      : command byte
+			 INT8U resptype  : å“åº”ç±»å‹						  INT8U resptype  : response type
+			 INT32U parameter: å—æ“ä½œå‚æ•°			 		  INT32U parameter: parameter of block operation
+** è¾“ ã€€ å‡º: 0:   æ­£ç¡®    >0:   é”™è¯¯ç 		  		Output:	  0:  right		>0:  error code
 *********************************************************************************************************************/
 INT8U SD_BlockCommand(INT8U cmd, INT8U resptype, INT32U parameter)
 {
 	INT8U param[4],resp,ret;
 
-	parameter <<= SD_BLOCKSIZE_NBITS;					 /* µ÷ÕûµØÖ·:×óÒÆ9Î» adjust address: move 9 bits left */
+	parameter <<= SD_BLOCKSIZE_NBITS;					 /* è°ƒæ•´åœ°å€:å·¦ç§»9ä½ adjust address: move 9 bits left */
 
-	SD_PackParam(param, parameter);						 /* ½«²ÎÊı×ª»¯Îª×Ö½ÚĞÎÊ½ change the parameter to bytes form */
+	SD_PackParam(param, parameter);						 /* å°†å‚æ•°è½¬åŒ–ä¸ºå­—èŠ‚å½¢å¼ change the parameter to bytes form */
 
 	ret = SD_SendCmd(cmd, param, resptype, &resp);
 	if (ret != SD_NO_ERR)
-	   	 return ret;							 		 /* ½áÊøÊı¾İ´«ÊäÊ§°Ü stop transmission operation fail */
+	   	 return ret;							 		 /* ç»“æŸæ•°æ®ä¼ è¾“å¤±è´¥ stop transmission operation fail */
 
 	if (resp != 0)
-		 return SD_ERR_CMD_RESP;		 				 /* ÏìÓ¦´íÎó response is error */
+		 return SD_ERR_CMD_RESP;		 				 /* å“åº”é”™è¯¯ response is error */
 
 	return SD_NO_ERR;
 }
 
 /*************************************************
 
-	 	ÏÂÃæÎªSD¿¨SPIÃüÁî
+	 	ä¸‹é¢ä¸ºSDå¡SPIå‘½ä»¤
 
 *************************************************/
 
 /********************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_ResetSD()						Name:	  INT8U SD_ResetSD()
-** ¹¦ÄÜÃèÊö: ¸´Î»SD¿¨								Function: reset sd card
-** Êä¡¡  Èë: ÎŞ										Input:	  NULL
-** Êä ¡¡ ³ö: 0:   ÕıÈ·    >0:   ´íÎóÂë		  		Output:	  0:  right		>0:  error code
+** å‡½æ•°åç§°: INT8U SD_ResetSD()						Name:	  INT8U SD_ResetSD()
+** åŠŸèƒ½æè¿°: å¤ä½SDå¡								Function: reset sd card
+** è¾“ã€€  å…¥: æ— 										Input:	  NULL
+** è¾“ ã€€ å‡º: 0:   æ­£ç¡®    >0:   é”™è¯¯ç 		  		Output:	  0:  right		>0:  error code
 *********************************************************************************************************************/
 INT8U SD_ResetSD(void)		/////
 {
 	INT8U param[4] = {0,0,0,0},resp;
 
-    return (SD_SendCmd(CMD0, param, CMD0_R, &resp));	/* ¸´Î»ÃüÁî command that reset sd card */
+    return (SD_SendCmd(CMD0, param, CMD0_R, &resp));	/* å¤ä½å‘½ä»¤ command that reset sd card */
 }
 
 /********************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_ReadCSD()						Name:	  INT8U SD_ReadCSD()
-** ¹¦ÄÜÃèÊö: ¶ÁSD¿¨µÄCSD¼Ä´æÆ÷						Function: read CSD register of sd card
-** Êä¡¡  Èë: INT8U csdlen  : ¼Ä´æÆ÷³¤¶È(¹Ì¶¨Îª16)			  INT8U csdlen  : len of register (fixed,is 16)
-			 INT8U *recbuf : ½ÓÊÕ»º³åÇø					      INT8U *recbuf : recbuffer
-** Êä ¡¡ ³ö: 0:   ÕıÈ·    >0:   ´íÎóÂë		  		Output:	  0:  right		>0:  error code
+** å‡½æ•°åç§°: INT8U SD_ReadCSD()						Name:	  INT8U SD_ReadCSD()
+** åŠŸèƒ½æè¿°: è¯»SDå¡çš„CSDå¯„å­˜å™¨						Function: read CSD register of sd card
+** è¾“ã€€  å…¥: INT8U csdlen  : å¯„å­˜å™¨é•¿åº¦(å›ºå®šä¸º16)			  INT8U csdlen  : len of register (fixed,is 16)
+			 INT8U *recbuf : æ¥æ”¶ç¼“å†²åŒº					      INT8U *recbuf : recbuffer
+** è¾“ ã€€ å‡º: 0:   æ­£ç¡®    >0:   é”™è¯¯ç 		  		Output:	  0:  right		>0:  error code
 *********************************************************************************************************************/
 INT8U SD_ReadCSD(INT8U csdlen, INT8U *recbuf)
 {
     INT8U param[4] = {0,0,0,0},resp,ret;
 
-    ret = SD_SendCmd(CMD9, param, CMD9_R, &resp);		/* ¶ÁCSD¼Ä´æÆ÷ÃüÁî command that read CSD register */
+    ret = SD_SendCmd(CMD9, param, CMD9_R, &resp);		/* è¯»CSDå¯„å­˜å™¨å‘½ä»¤ command that read CSD register */
     if (ret != SD_NO_ERR)
         return ret;
 
     if (resp != 0)
-        return SD_ERR_CMD_RESP;							/* ÏìÓ¦´íÎó response is error */
+        return SD_ERR_CMD_RESP;							/* å“åº”é”™è¯¯ response is error */
 
 	return (SD_ReadRegister(csdlen, recbuf));
 }
 
 /*******************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_ReadCID()						Name:	  INT8U SD_ReadCID()
-** ¹¦ÄÜÃèÊö: ¶ÁSD¿¨µÄCID¼Ä´æÆ÷						Function: read CID register of sd card
-** Êä¡¡  Èë: INT8U cidlen  : ¼Ä´æÆ÷³¤¶È(¹Ì¶¨Îª16)			  INT8U cidlen  : len of register (fixed,is 16)
-			 INT8U *recbuf : ½ÓÊÕ»º³åÇø					      INT8U *recbuf : recbuffer
-** Êä ¡¡ ³ö: 0:   ÕıÈ·    >0:   ´íÎóÂë		  		Output:	  0:  right		>0:  error code
+** å‡½æ•°åç§°: INT8U SD_ReadCID()						Name:	  INT8U SD_ReadCID()
+** åŠŸèƒ½æè¿°: è¯»SDå¡çš„CIDå¯„å­˜å™¨						Function: read CID register of sd card
+** è¾“ã€€  å…¥: INT8U cidlen  : å¯„å­˜å™¨é•¿åº¦(å›ºå®šä¸º16)			  INT8U cidlen  : len of register (fixed,is 16)
+			 INT8U *recbuf : æ¥æ”¶ç¼“å†²åŒº					      INT8U *recbuf : recbuffer
+** è¾“ ã€€ å‡º: 0:   æ­£ç¡®    >0:   é”™è¯¯ç 		  		Output:	  0:  right		>0:  error code
 ********************************************************************************************************************/
 #if SD_ReadCID_EN
 INT8U SD_ReadCID(INT8U cidlen, INT8U *recbuf)
 {
     INT8U param[4] = {0,0,0,0},resp,ret;
 
-    ret = SD_SendCmd(CMD10, param, CMD10_R, &resp);		/* ¶ÁCID¼Ä´æÆ÷ÃüÁî command that read CID register */
+    ret = SD_SendCmd(CMD10, param, CMD10_R, &resp);		/* è¯»CIDå¯„å­˜å™¨å‘½ä»¤ command that read CID register */
     if ( ret != SD_NO_ERR)
    		return ret;
 
     if (resp != 0)
-        return SD_ERR_CMD_RESP;							/* ÏìÓ¦´íÎó response is error */
+        return SD_ERR_CMD_RESP;							/* å“åº”é”™è¯¯ response is error */
 
   	return (SD_ReadRegister(cidlen, recbuf));
 }
 #endif
 
 /********************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_StopTransmission()			Name:	  INT8U SD_StopTransmission()
-** ¹¦ÄÜÃèÊö: Í£Ö¹Êı¾İ´«Êä							Function: stop data transmission
-** Êä¡¡  Èë: ÎŞ								 		Input:    NULL
-** Êä ¡¡ ³ö: 0:   ÕıÈ·    >0:   ´íÎóÂë		  		Output:	  0:  right		>0:  error code
+** å‡½æ•°åç§°: INT8U SD_StopTransmission()			Name:	  INT8U SD_StopTransmission()
+** åŠŸèƒ½æè¿°: åœæ­¢æ•°æ®ä¼ è¾“							Function: stop data transmission
+** è¾“ã€€  å…¥: æ— 								 		Input:    NULL
+** è¾“ ã€€ å‡º: 0:   æ­£ç¡®    >0:   é”™è¯¯ç 		  		Output:	  0:  right		>0:  error code
 *********************************************************************************************************************/
 INT8U SD_StopTransmission(void)
 {
 	INT8U param[4] = {0,0,0,0},resp;
 
- 	return (SD_SendCmd(CMD12, param, CMD12_R, &resp));	/* ½áÊøÊı¾İ´«ÊäÃüÁîÊ§°Ü stop transmission command fail */
+ 	return (SD_SendCmd(CMD12, param, CMD12_R, &resp));	/* ç»“æŸæ•°æ®ä¼ è¾“å‘½ä»¤å¤±è´¥ stop transmission command fail */
 }
 
 /*********************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_ReadCard_Status()				Name:	  INT8U SD_ReadCard_Status()
-** ¹¦ÄÜÃèÊö: ¶ÁSD¿¨µÄ Card Status ¼Ä´æÆ÷			Function: read Card Status register of sd card
-** Êä¡¡  Èë: INT8U len: 	 ¼Ä´æÆ÷³¤¶È(¹Ì¶¨Îª2)			  INT8U len:      len of register (fixed,is 2)
-			 INT8U *recbuf : ½ÓÊÕ»º³åÇø					      INT8U *recbuf : recbuffer
-** Êä ¡¡ ³ö: 0:   ÕıÈ·    >0:   ´íÎóÂë		  		Output:	  0:  right		>0:  error code
+** å‡½æ•°åç§°: INT8U SD_ReadCard_Status()				Name:	  INT8U SD_ReadCard_Status()
+** åŠŸèƒ½æè¿°: è¯»SDå¡çš„ Card Status å¯„å­˜å™¨			Function: read Card Status register of sd card
+** è¾“ã€€  å…¥: INT8U len: 	 å¯„å­˜å™¨é•¿åº¦(å›ºå®šä¸º2)			  INT8U len:      len of register (fixed,is 2)
+			 INT8U *recbuf : æ¥æ”¶ç¼“å†²åŒº					      INT8U *recbuf : recbuffer
+** è¾“ ã€€ å‡º: 0:   æ­£ç¡®    >0:   é”™è¯¯ç 		  		Output:	  0:  right		>0:  error code
 **********************************************************************************************************************/
 INT8U SD_ReadCard_Status(INT8U len, INT8U *buffer)
 {
     INT8U param[4] = {0,0,0,0};
 
-    return (SD_SendCmd(CMD13, param, CMD13_R, buffer)); /* ¶Á Card Status ¼Ä´æÆ÷ */
+    return (SD_SendCmd(CMD13, param, CMD13_R, buffer)); /* è¯» Card Status å¯„å­˜å™¨ */
     									 	 			/* read register of Card Status */
 }
 
 
 /********************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U Sd_SetBlockLen()					Name:	  INT8U Sd_SetBlockLen()
-** ¹¦ÄÜÃèÊö: ÉèÖÃÒ»¸ö¿éµÄ³¤¶È						Function: set a block len of sd card
-** Êä¡¡  Èë: INT32U length	: ¿éµÄ³¤¶ÈÖµ			Input:	  INT32U length	: the length of a block
-** Êä ¡¡ ³ö: 0:   ÕıÈ·    >0:   ´íÎóÂë		  		Output:	  0:  right		>0:  error code
+** å‡½æ•°åç§°: INT8U Sd_SetBlockLen()					Name:	  INT8U Sd_SetBlockLen()
+** åŠŸèƒ½æè¿°: è®¾ç½®ä¸€ä¸ªå—çš„é•¿åº¦						Function: set a block len of sd card
+** è¾“ã€€  å…¥: INT32U length	: å—çš„é•¿åº¦å€¼			Input:	  INT32U length	: the length of a block
+** è¾“ ã€€ å‡º: 0:   æ­£ç¡®    >0:   é”™è¯¯ç 		  		Output:	  0:  right		>0:  error code
 *********************************************************************************************************************/
 INT8U SD_SetBlockLen(INT32U length)
 {
 	INT8U param[4],resp,ret;
 
-    SD_PackParam(param, length);					/* ½«²ÎÊı×ª»¯Îª×Ö½ÚĞÎÊ½ change the parameter to bytes form */
+    SD_PackParam(param, length);					/* å°†å‚æ•°è½¬åŒ–ä¸ºå­—èŠ‚å½¢å¼ change the parameter to bytes form */
 
     ret = SD_SendCmd(CMD16, param, CMD16_R, &resp);
     if (ret != SD_NO_ERR)
- 		return ret;									/* ÉèÖÃ¿éµÄ³¤¶ÈÎªlengthÊ§°Ü set the length of block to length fail */
+ 		return ret;									/* è®¾ç½®å—çš„é•¿åº¦ä¸ºlengthå¤±è´¥ set the length of block to length fail */
 
 	if (resp != 0)
-    	return SD_ERR_CMD_RESP;			   			/* ÏìÓ¦´íÎó response is error */
+    	return SD_ERR_CMD_RESP;			   			/* å“åº”é”™è¯¯ response is error */
 
-    return SD_NO_ERR; 								/* ·µ»ØÖ´ĞĞ³É¹¦ return perform sucessfully */
+    return SD_NO_ERR; 								/* è¿”å›æ‰§è¡ŒæˆåŠŸ return perform sucessfully */
 }
 
 /********************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_ReadSingleBlock()				Name:	  INT8U SD_ReadSingleBlock()
-** ¹¦ÄÜÃèÊö: ¶Áµ¥¿éÃüÁî								Function: read single block command
-** Êä¡¡  Èë: INT32U blockaddr: ¿éµØÖ·				Input:	  INT32U blockaddr: block address
-** Êä ¡¡ ³ö: 0:   ÕıÈ·    >0:   ´íÎóÂë		  		Output:	  0:  right	>0:  error code
+** å‡½æ•°åç§°: INT8U SD_ReadSingleBlock()				Name:	  INT8U SD_ReadSingleBlock()
+** åŠŸèƒ½æè¿°: è¯»å•å—å‘½ä»¤								Function: read single block command
+** è¾“ã€€  å…¥: INT32U blockaddr: å—åœ°å€				Input:	  INT32U blockaddr: block address
+** è¾“ ã€€ å‡º: 0:   æ­£ç¡®    >0:   é”™è¯¯ç 		  		Output:	  0:  right	>0:  error code
 *********************************************************************************************************************/
 INT8U SD_ReadSingleBlock(INT32U blockaddr)
 {
-	return (SD_BlockCommand(CMD17, CMD17_R, blockaddr)); /* ¶Áµ¥¿éÃüÁî command that read single block */
+	return (SD_BlockCommand(CMD17, CMD17_R, blockaddr)); /* è¯»å•å—å‘½ä»¤ command that read single block */
 }
 
 /********************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_ReadMultipleBlock()			Name:	  INT8U SD_ReadMultipleBlock()
-** ¹¦ÄÜÃèÊö: ¶Á¶à¿éÃüÁî								Function: read multiple block command
-** Êä¡¡  Èë: INT32U blockaddr: ¿éµØÖ·				Input:	  INT32U blockaddr: block address
-** Êä ¡¡ ³ö: 0:   ÕıÈ·    >0:   ´íÎóÂë		  		Output:	  0:  right		>0:  error code
+** å‡½æ•°åç§°: INT8U SD_ReadMultipleBlock()			Name:	  INT8U SD_ReadMultipleBlock()
+** åŠŸèƒ½æè¿°: è¯»å¤šå—å‘½ä»¤								Function: read multiple block command
+** è¾“ã€€  å…¥: INT32U blockaddr: å—åœ°å€				Input:	  INT32U blockaddr: block address
+** è¾“ ã€€ å‡º: 0:   æ­£ç¡®    >0:   é”™è¯¯ç 		  		Output:	  0:  right		>0:  error code
 *********************************************************************************************************************/
 INT8U SD_ReadMultipleBlock(INT32U blockaddr)
 {
-	return (SD_BlockCommand(CMD18, CMD18_R, blockaddr)); /* ¶Á¶à¿éÃüÁî command that read multiple block */
+	return (SD_BlockCommand(CMD18, CMD18_R, blockaddr)); /* è¯»å¤šå—å‘½ä»¤ command that read multiple block */
 }
 
 /********************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_WriteSingleBlock()			Name:	  INT8U SD_WriteSingleBlock()
-** ¹¦ÄÜÃèÊö: Ğ´µ¥¿éÃüÁî								Function: write single block command
-** Êä¡¡  Èë: INT32U blockaddr: block address		Input:	  INT32U blockaddr: block address
-** Êä ¡¡ ³ö: 0:   ÕıÈ·    >0:   ´íÎóÂë		  		Output:	  0:  right		>0:  error code
+** å‡½æ•°åç§°: INT8U SD_WriteSingleBlock()			Name:	  INT8U SD_WriteSingleBlock()
+** åŠŸèƒ½æè¿°: å†™å•å—å‘½ä»¤								Function: write single block command
+** è¾“ã€€  å…¥: INT32U blockaddr: block address		Input:	  INT32U blockaddr: block address
+** è¾“ ã€€ å‡º: 0:   æ­£ç¡®    >0:   é”™è¯¯ç 		  		Output:	  0:  right		>0:  error code
 *********************************************************************************************************************/
 INT8U SD_WriteSingleBlock(INT32U blockaddr)
 {
-	return (SD_BlockCommand(CMD24, CMD24_R, blockaddr)); /* Ğ´µ¥¿éÃüÁî command that write single block */
+	return (SD_BlockCommand(CMD24, CMD24_R, blockaddr)); /* å†™å•å—å‘½ä»¤ command that write single block */
 }
 
 /********************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_WriteMultipleBlock()			Name:	  INT8U SD_WriteMultipleBlock()
-** ¹¦ÄÜÃèÊö: Ğ´¶à¿éÃüÁî								Function: write multiple block command
-** Êä¡¡  Èë: INT32U blockaddr: ¿éµØÖ·				Input:	  INT32U blockaddr: block address
-** Êä ¡¡ ³ö: 0:   ÕıÈ·    >0:   ´íÎóÂë		  		Output:	  0:  right	>0:  error code
+** å‡½æ•°åç§°: INT8U SD_WriteMultipleBlock()			Name:	  INT8U SD_WriteMultipleBlock()
+** åŠŸèƒ½æè¿°: å†™å¤šå—å‘½ä»¤								Function: write multiple block command
+** è¾“ã€€  å…¥: INT32U blockaddr: å—åœ°å€				Input:	  INT32U blockaddr: block address
+** è¾“ ã€€ å‡º: 0:   æ­£ç¡®    >0:   é”™è¯¯ç 		  		Output:	  0:  right	>0:  error code
 *********************************************************************************************************************/
 INT8U SD_WriteMultipleBlock(INT32U blockaddr)
 {
-	return (SD_BlockCommand(CMD25, CMD25_R, blockaddr)); /* Ğ´¶à¿éÃüÁî command that write multiple block */
+	return (SD_BlockCommand(CMD25, CMD25_R, blockaddr)); /* å†™å¤šå—å‘½ä»¤ command that write multiple block */
 }
 
 /********************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_ProgramCSD()						Name:	  INT8U SD_ProgramCSD()
-** ¹¦ÄÜÃèÊö: Ğ´CSD¼Ä´æÆ÷								Function: write CSD register
-** Êä¡¡  Èë: INT8U *buff   		 : CSD¼Ä´æÆ÷ÄÚÈİ		Input:	  INT8U *buff   	  : the content of CSD register
-			 INT8U len	  		 : CSD¼Ä´æÆ÷³¤¶È			  	  INT8U len			  : the length of CSD register
-** Êä ¡¡ ³ö: 0:   ÕıÈ·    >0:   ´íÎóÂë		  			Output:	  0:  right		>0:  error code
+** å‡½æ•°åç§°: INT8U SD_ProgramCSD()						Name:	  INT8U SD_ProgramCSD()
+** åŠŸèƒ½æè¿°: å†™CSDå¯„å­˜å™¨								Function: write CSD register
+** è¾“ã€€  å…¥: INT8U *buff   		 : CSDå¯„å­˜å™¨å†…å®¹		Input:	  INT8U *buff   	  : the content of CSD register
+			 INT8U len	  		 : CSDå¯„å­˜å™¨é•¿åº¦			  	  INT8U len			  : the length of CSD register
+** è¾“ ã€€ å‡º: 0:   æ­£ç¡®    >0:   é”™è¯¯ç 		  			Output:	  0:  right		>0:  error code
 ********************************************************************************************************************/
 #if SD_ProgramCSD_EN
 INT8U SD_ProgramCSD(INT8U len, INT8U *buff)
@@ -286,24 +286,24 @@ INT8U SD_ProgramCSD(INT8U len, INT8U *buff)
 
 	if (len != 16) return SD_ERR_USER_PARAM;
 
-	ret = SD_SendCmd(CMD27, param, CMD27_R, &resp); 	/* ·¢ËÍĞ´CSD¼Ä´æÆ÷ÃüÁî send command that write CSD */
+	ret = SD_SendCmd(CMD27, param, CMD27_R, &resp); 	/* å‘é€å†™CSDå¯„å­˜å™¨å‘½ä»¤ send command that write CSD */
 	if (ret != SD_NO_ERR)
 		return ret;
 
     if (resp != 0)
         return SD_ERR_CMD_RESP;
 
-	buff[15] = (SD_GetCRC7(buff, 15) << 1) + 0x01;  	/* ¼ÆËãCSDÖĞµÄcrc Î»Óò calculate crc field in CSD */
+	buff[15] = (SD_GetCRC7(buff, 15) << 1) + 0x01;  	/* è®¡ç®—CSDä¸­çš„crc ä½åŸŸ calculate crc field in CSD */
 
 	return(SD_WriteBlockData(0, 16, buff));
 }
 
 /********************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_GetCRC7()						Name:	  INT8U SD_GetCRC7()
-** ¹¦ÄÜÃèÊö: ¼ÆËãCRC7								Function: calculate crc7
-** Êä¡¡  Èë: INT8U *pSource: Êı¾İ					Input:    INT8U *pSource: data
-			 INT16U len    : Êı¾İ³¤¶È						  INT16U len   : data length
-** Êä ¡¡ ³ö: CRC7Âë									Output:	  CRC7 code
+** å‡½æ•°åç§°: INT8U SD_GetCRC7()						Name:	  INT8U SD_GetCRC7()
+** åŠŸèƒ½æè¿°: è®¡ç®—CRC7								Function: calculate crc7
+** è¾“ã€€  å…¥: INT8U *pSource: æ•°æ®					Input:    INT8U *pSource: data
+			 INT16U len    : æ•°æ®é•¿åº¦						  INT16U len   : data length
+** è¾“ ã€€ å‡º: CRC7ç 									Output:	  CRC7 code
 *********************************************************************************************************************/
 INT8U SD_GetCRC7(INT8U *pSource, INT16U len)
 {
@@ -328,38 +328,38 @@ INT8U SD_GetCRC7(INT8U *pSource, INT16U len)
 
 #if SD_EraseBlock_EN
 /********************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_EraseStartBlock()				Name:	  INT8U SD_EraseStartBlock()
-** ¹¦ÄÜÃèÊö: ÉèÖÃ¿é²Á³ıÆğÊ¼µØÖ·						Function: select the start block address of erasing operation
-** Êä¡¡  Èë: INT32U startblock: ¿éµØÖ·				Input: 	  INT32U startblock	: block address
-** Êä ¡¡ ³ö: 0:   ÕıÈ·    >0:   ´íÎóÂë		  		Output:	  0:  right	   >0:  error code
+** å‡½æ•°åç§°: INT8U SD_EraseStartBlock()				Name:	  INT8U SD_EraseStartBlock()
+** åŠŸèƒ½æè¿°: è®¾ç½®å—æ“¦é™¤èµ·å§‹åœ°å€						Function: select the start block address of erasing operation
+** è¾“ã€€  å…¥: INT32U startblock: å—åœ°å€				Input: 	  INT32U startblock	: block address
+** è¾“ ã€€ å‡º: 0:   æ­£ç¡®    >0:   é”™è¯¯ç 		  		Output:	  0:  right	   >0:  error code
 *********************************************************************************************************************/
 INT8U SD_EraseStartBlock(INT32U startblock)
 {
 	if (sds.card_type == CARDTYPE_SD)
-		return (SD_BlockCommand(CMD32, CMD32_R, startblock));	/* ·¢ËÍ²Á³ıÆğÊ¼¿éµØÖ· send the start block address of erasing operation */
+		return (SD_BlockCommand(CMD32, CMD32_R, startblock));	/* å‘é€æ“¦é™¤èµ·å§‹å—åœ°å€ send the start block address of erasing operation */
 	else
-		return (SD_BlockCommand(CMD35, CMD35_R, startblock));	/* ·¢ËÍ²Á³ıÆğÊ¼¿éµØÖ· send the start block address of erasing operation */
+		return (SD_BlockCommand(CMD35, CMD35_R, startblock));	/* å‘é€æ“¦é™¤èµ·å§‹å—åœ°å€ send the start block address of erasing operation */
 }
 
 /********************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_EraseEndBlock()				Name:	  INT8U SD_EraseEndBlock()
-** ¹¦ÄÜÃèÊö: ÉèÖÃ¿é²Á³ıÖÕÖ¹µØÖ·						Function: select the end block address of erasing operation
-** Êä¡¡  Èë: INT32U endblock: ¿éµØÖ·				Input:	  INT32U Length	: block address
-** Êä ¡¡ ³ö: 0:   ÕıÈ·    >0:   ´íÎóÂë		  		Output:	  0:  right	   >0:  error code
+** å‡½æ•°åç§°: INT8U SD_EraseEndBlock()				Name:	  INT8U SD_EraseEndBlock()
+** åŠŸèƒ½æè¿°: è®¾ç½®å—æ“¦é™¤ç»ˆæ­¢åœ°å€						Function: select the end block address of erasing operation
+** è¾“ã€€  å…¥: INT32U endblock: å—åœ°å€				Input:	  INT32U Length	: block address
+** è¾“ ã€€ å‡º: 0:   æ­£ç¡®    >0:   é”™è¯¯ç 		  		Output:	  0:  right	   >0:  error code
 *********************************************************************************************************************/
 INT8U SD_EraseEndBlock(INT32U endblock)
 {
 	if (sds.card_type == CARDTYPE_SD)
-		return (SD_BlockCommand(CMD33, CMD33_R, endblock));     /* ·¢ËÍ²Á³ıÖÕÖ¹¿éµØÖ· send the end block address of erasing operation */
+		return (SD_BlockCommand(CMD33, CMD33_R, endblock));     /* å‘é€æ“¦é™¤ç»ˆæ­¢å—åœ°å€ send the end block address of erasing operation */
 	else
-		return (SD_BlockCommand(CMD36, CMD36_R, endblock));     /* ·¢ËÍ²Á³ıÖÕÖ¹¿éµØÖ· send the end block address of erasing operation */
+		return (SD_BlockCommand(CMD36, CMD36_R, endblock));     /* å‘é€æ“¦é™¤ç»ˆæ­¢å—åœ°å€ send the end block address of erasing operation */
 }
 
 /********************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_EraseSelectedBlock()			Name:	  INT8U SD_EraseSelectedBlock()
-** ¹¦ÄÜÃèÊö: ²Á³ıÒÑÑ¡ÖĞµÄ¿é							Function: erase block selected
-** Êä¡¡  Èë: ÎŞ										Input:	  NULL
-** Êä ¡¡ ³ö: 0:   ÕıÈ·    >0:   ´íÎóÂë		  		Output:	  0:  right		>0:  error code
+** å‡½æ•°åç§°: INT8U SD_EraseSelectedBlock()			Name:	  INT8U SD_EraseSelectedBlock()
+** åŠŸèƒ½æè¿°: æ“¦é™¤å·²é€‰ä¸­çš„å—							Function: erase block selected
+** è¾“ã€€  å…¥: æ— 										Input:	  NULL
+** è¾“ ã€€ å‡º: 0:   æ­£ç¡®    >0:   é”™è¯¯ç 		  		Output:	  0:  right		>0:  error code
 *********************************************************************************************************************/
 INT8U SD_EraseSelectedBlock(void)
 {
@@ -367,11 +367,11 @@ INT8U SD_EraseSelectedBlock(void)
 
 	SD_PackParam(param, 0);
 
-	tmp = SD_SendCmd(CMD38, param, CMD38_R, &resp);	 	    /* ²Á³ıËùÑ¡ÔñµÄ¿é  erase blocks selected */
+	tmp = SD_SendCmd(CMD38, param, CMD38_R, &resp);	 	    /* æ“¦é™¤æ‰€é€‰æ‹©çš„å—  erase blocks selected */
 	if (tmp != SD_NO_ERR)
 		return tmp;
 
-	if (SD_WaitBusy(SD_WAIT_ERASE) != SD_NO_ERR)			/* µÈ´ı²Á³ıÍê³É wait for finishing erasing */
+	if (SD_WaitBusy(SD_WAIT_ERASE) != SD_NO_ERR)			/* ç­‰å¾…æ“¦é™¤å®Œæˆ wait for finishing erasing */
 		return SD_ERR_TIMEOUT_ERASE;
 	else
 		return SD_NO_ERR;
@@ -379,37 +379,37 @@ INT8U SD_EraseSelectedBlock(void)
 #endif
 
 /*********************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_ReadOCR()						Name:	  INT8U SD_ReadOCR()
-** ¹¦ÄÜÃèÊö: ¶Á²Ù×÷Ìõ¼ş¼Ä´æÆ÷OCR					Function: read OCR register of sd card
-** Êä¡¡  Èë: INT8U ocrlen  : ¼Ä´æÆ÷³¤¶È(¹Ì¶¨Îª4)	Input:	  INT8U ocrlen  : len of register (fixed,is 4)
-			 INT8U *recbuf : ½ÓÊÕ»º³åÇø					      INT8U *recbuf : recbuffer
-** Êä ¡¡ ³ö: 0:   ÕıÈ·    >0:   ´íÎóÂë		  		Output:	  0:  right		>0:  error code
+** å‡½æ•°åç§°: INT8U SD_ReadOCR()						Name:	  INT8U SD_ReadOCR()
+** åŠŸèƒ½æè¿°: è¯»æ“ä½œæ¡ä»¶å¯„å­˜å™¨OCR					Function: read OCR register of sd card
+** è¾“ã€€  å…¥: INT8U ocrlen  : å¯„å­˜å™¨é•¿åº¦(å›ºå®šä¸º4)	Input:	  INT8U ocrlen  : len of register (fixed,is 4)
+			 INT8U *recbuf : æ¥æ”¶ç¼“å†²åŒº					      INT8U *recbuf : recbuffer
+** è¾“ ã€€ å‡º: 0:   æ­£ç¡®    >0:   é”™è¯¯ç 		  		Output:	  0:  right		>0:  error code
 **********************************************************************************************************************/
 INT8U SD_ReadOCR(INT8U ocrlen, INT8U *recbuf)		/////
 {
     INT8U param[4] = {0,0,0,0},resp[5],tmp;
 
-    tmp = SD_SendCmd(CMD58, param, CMD58_R, resp);			/* ¶Á OCR ¼Ä´æÆ÷ÃüÁî */
+    tmp = SD_SendCmd(CMD58, param, CMD58_R, resp);			/* è¯» OCR å¯„å­˜å™¨å‘½ä»¤ */
     if (tmp != SD_NO_ERR)									/* read OCR register command */
     	return tmp;
 
 	if (resp[0] != 0) 
 	{
 		printf("resp[0]=0x%x\n",resp[0]);
-		return SD_ERR_CMD_RESP;			 					/* ÏìÓ¦´íÎó response is error */
+		return SD_ERR_CMD_RESP;			 					/* å“åº”é”™è¯¯ response is error */
 	}
 
     for (tmp = 0; tmp < 4; tmp++)
-    	recbuf[tmp] = resp[tmp + 1];						/* ¸´ÖÆOCR¼Ä´æÆ÷ÄÚÈİµ½½ÓÊÕ»º³åÇø */
+    	recbuf[tmp] = resp[tmp + 1];						/* å¤åˆ¶OCRå¯„å­˜å™¨å†…å®¹åˆ°æ¥æ”¶ç¼“å†²åŒº */
 
     return SD_NO_ERR;
 }
 
 /********************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_EnableCRC()					Name:	  INT8U SD_EnableCRC()
-** ¹¦ÄÜÃèÊö: Ê¹ÄÜSD¿¨µÄCRCĞ£Ñé¹¦ÄÜ					Function: enable crc check of SD Card
-** Êä¡¡  Èë: INT8U bEnable : 1:Ê¹ÄÜ 0:½ûÖ¹			Input:	  INT8U bEnable : 1:enable  0: disable
-** Êä ¡¡ ³ö: 0:   ÕıÈ·    >0:   ´íÎóÂë		  		Output:	  0:  right		>0:  error code
+** å‡½æ•°åç§°: INT8U SD_EnableCRC()					Name:	  INT8U SD_EnableCRC()
+** åŠŸèƒ½æè¿°: ä½¿èƒ½SDå¡çš„CRCæ ¡éªŒåŠŸèƒ½					Function: enable crc check of SD Card
+** è¾“ã€€  å…¥: INT8U bEnable : 1:ä½¿èƒ½ 0:ç¦æ­¢			Input:	  INT8U bEnable : 1:enable  0: disable
+** è¾“ ã€€ å‡º: 0:   æ­£ç¡®    >0:   é”™è¯¯ç 		  		Output:	  0:  right		>0:  error code
 *********************************************************************************************************************/
 #if SD_CRC_EN
 INT8U SD_EnableCRC(INT8U bEnable)
@@ -417,16 +417,16 @@ INT8U SD_EnableCRC(INT8U bEnable)
 	INT8U param[4],resp,ret;
 
 	if (bEnable == 1)
-		param[0] = 1;											/* Ê¹ÄÜcrc enable crc */
+		param[0] = 1;											/* ä½¿èƒ½crc enable crc */
 	else
-		param[1] = 0; 											/* ½ûÖ¹crc disalbe crc */
+		param[1] = 0; 											/* ç¦æ­¢crc disalbe crc */
 
-	ret = SD_SendCmd(CMD59, param, CMD59_R, &resp);				/* "Ê¹ÄÜ/½ûÖ¹CRC"ÃüÁî enable/disable crc command */
+	ret = SD_SendCmd(CMD59, param, CMD59_R, &resp);				/* "ä½¿èƒ½/ç¦æ­¢CRC"å‘½ä»¤ enable/disable crc command */
 	if (ret != SD_NO_ERR)
         return ret;
 
     if (resp != 0)
-       	return SD_ERR_CMD_RESP;									/* ÏìÓ¦´íÎó response is error */
+       	return SD_ERR_CMD_RESP;									/* å“åº”é”™è¯¯ response is error */
 
 	return SD_NO_ERR;
 
@@ -434,116 +434,116 @@ INT8U SD_EnableCRC(INT8U bEnable)
 #endif
 
 /*********************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_Read_SD_Status()				     Name:	   INT8U SD_Read_SD_Status()
-** ¹¦ÄÜÃèÊö: ¶ÁSD¿¨µÄ SD_Status ¼Ä´æÆ÷				     Function: read SD_Status register of sd card
-** Êä¡¡  Èë: INT8U sdslen  		: ¼Ä´æÆ÷³¤¶È(¹Ì¶¨Îª64)	 Input:    INT8U sdslen: len of register (fixed,is 64)
-			 INT8U *recbuf 		: ½ÓÊÕ»º³åÇø				       INT8U *recbuf: recbuffer
-** Êä ¡¡ ³ö: 0:   ÕıÈ·    >0:   ´íÎóÂë		  			 Output:	  0:  right		>0:  error code
-** ×¢    Òâ: Ö»ÓĞSD¿¨²ÅÓĞSD Status ¼Ä´æÆ÷				 Note:     only SD card have SD Status Register
+** å‡½æ•°åç§°: INT8U SD_Read_SD_Status()				     Name:	   INT8U SD_Read_SD_Status()
+** åŠŸèƒ½æè¿°: è¯»SDå¡çš„ SD_Status å¯„å­˜å™¨				     Function: read SD_Status register of sd card
+** è¾“ã€€  å…¥: INT8U sdslen  		: å¯„å­˜å™¨é•¿åº¦(å›ºå®šä¸º64)	 Input:    INT8U sdslen: len of register (fixed,is 64)
+			 INT8U *recbuf 		: æ¥æ”¶ç¼“å†²åŒº				       INT8U *recbuf: recbuffer
+** è¾“ ã€€ å‡º: 0:   æ­£ç¡®    >0:   é”™è¯¯ç 		  			 Output:	  0:  right		>0:  error code
+** æ³¨    æ„: åªæœ‰SDå¡æ‰æœ‰SD Status å¯„å­˜å™¨				 Note:     only SD card have SD Status Register
 **********************************************************************************************************************/
 #if SD_ReadSD_Status_EN
 INT8U SD_ReadSD_Status(INT8U sdslen, INT8U *recbuf)
 {
     INT8U param[4] = {0,0,0,0},resp[2],ret;
 
-    ret = SD_SendCmd(CMD55, param, CMD55_R, resp);			/* ºóĞøÃüÁîÎªÒ»¸öÓ¦ÓÃÃüÁî */
+    ret = SD_SendCmd(CMD55, param, CMD55_R, resp);			/* åç»­å‘½ä»¤ä¸ºä¸€ä¸ªåº”ç”¨å‘½ä»¤ */
     if (ret != SD_NO_ERR)
     	return ret;											/* command that the followed commnad is a specific application */
 
     if (resp[0] != 0)
-        return SD_ERR_CMD_RESP;								/* ÏìÓ¦´íÎó response is error */
+        return SD_ERR_CMD_RESP;								/* å“åº”é”™è¯¯ response is error */
 
-    ret = SD_SendCmd(ACMD13, param, ACMD13_R, resp);		/* ¶Á SD_Status ÃüÁî */
+    ret = SD_SendCmd(ACMD13, param, ACMD13_R, resp);		/* è¯» SD_Status å‘½ä»¤ */
     if (ret != SD_NO_ERR)
     	return ret;											/* command that read SD_Status register */
 
     if ((resp[0] != 0) || (resp[1] != 0))
-        return SD_ERR_CMD_RESP;								/* ÏìÓ¦´íÎó response is error */
+        return SD_ERR_CMD_RESP;								/* å“åº”é”™è¯¯ response is error */
 
-	return (SD_ReadBlockData(sdslen, recbuf));				/* ¶Á³ö¼Ä´æÆ÷ÄÚÈİ read the content of the register */
+	return (SD_ReadBlockData(sdslen, recbuf));				/* è¯»å‡ºå¯„å­˜å™¨å†…å®¹ read the content of the register */
 }
 #endif
 
 /*******************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_ReadSCR()							Name:	  INT8U SD_ReadSCR()
-** ¹¦ÄÜÃèÊö: ¶ÁSD¿¨µÄ SCR ¼Ä´æÆ÷						Function: read SCR register of sd card
-** Êä¡¡  Èë: INT8U scrlen  		: ¼Ä´æÆ÷³¤¶È(¹Ì¶¨Îª8) 	Input:    INT8U scrlen		 : len of register (fixed,is 8)
-			 INT8U *recbuf 		: ½ÓÊÕ»º³åÇø					  INT8U *recbuf		 : recbuffer
-** Êä ¡¡ ³ö: 0:   ÕıÈ·    >0:   ´íÎóÂë		  			Output:	  0:  right		>0:  error code
-** ±¸	 ×¢: MMC¿¨Ã»ÓĞ¸Ã¼Ä´æÆ÷							Note:	  MMC Card have not this register
+** å‡½æ•°åç§°: INT8U SD_ReadSCR()							Name:	  INT8U SD_ReadSCR()
+** åŠŸèƒ½æè¿°: è¯»SDå¡çš„ SCR å¯„å­˜å™¨						Function: read SCR register of sd card
+** è¾“ã€€  å…¥: INT8U scrlen  		: å¯„å­˜å™¨é•¿åº¦(å›ºå®šä¸º8) 	Input:    INT8U scrlen		 : len of register (fixed,is 8)
+			 INT8U *recbuf 		: æ¥æ”¶ç¼“å†²åŒº					  INT8U *recbuf		 : recbuffer
+** è¾“ ã€€ å‡º: 0:   æ­£ç¡®    >0:   é”™è¯¯ç 		  			Output:	  0:  right		>0:  error code
+** å¤‡	 æ³¨: MMCå¡æ²¡æœ‰è¯¥å¯„å­˜å™¨							Note:	  MMC Card have not this register
 ********************************************************************************************************************/
 #if SD_ReadSCR_EN
 INT8U SD_ReadSCR(INT8U scrlen, INT8U *recbuf)
 {
     INT8U param[4] = {0,0,0,0},resp,ret;
 
-    ret = SD_SendCmd(CMD55, param, CMD55_R, &resp);					/* ºóĞøÃüÁîÎªÒ»¸öÓ¦ÓÃÃüÁî */
+    ret = SD_SendCmd(CMD55, param, CMD55_R, &resp);					/* åç»­å‘½ä»¤ä¸ºä¸€ä¸ªåº”ç”¨å‘½ä»¤ */
     if (ret != SD_NO_ERR)											/* command that the followed commnad is a specific application */
     	return ret;
 
     if (resp != 0)
-        return SD_ERR_CMD_RESP;										/* ÏìÓ¦´íÎó response is error */
+        return SD_ERR_CMD_RESP;										/* å“åº”é”™è¯¯ response is error */
 
-    ret = SD_SendCmd(ACMD51, param, ACMD51_R, &resp);   			/* ·¢ËÍ¶Á SD_Status ÃüÁî*/
+    ret = SD_SendCmd(ACMD51, param, ACMD51_R, &resp);   			/* å‘é€è¯» SD_Status å‘½ä»¤*/
     if (ret != SD_NO_ERR)											/* command that read SD_Status register */
    		return ret;
 
     if (resp != 0)
-        return SD_ERR_CMD_RESP;						 				/* ÏìÓ¦´íÎó response is error */
+        return SD_ERR_CMD_RESP;						 				/* å“åº”é”™è¯¯ response is error */
 
-	return (SD_ReadBlockData(scrlen, recbuf));	 	/* ¶Á³ö¼Ä´æÆ÷ÄÚÈİ read the content of the register */
+	return (SD_ReadBlockData(scrlen, recbuf));	 	/* è¯»å‡ºå¯„å­˜å™¨å†…å®¹ read the content of the register */
 }
 #endif
 
 /********************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_GetNumWRBlcoks()				Name:	  INT8U SD_GetNumWRBlcoks()
-** ¹¦ÄÜÃèÊö: µÃµ½ÕıÈ·Ğ´ÈëµÄ¿éÊı						Function: get the block numbers that written correctly
-** Êä¡¡  Èë: INT32U *blocknum: ·µ»ØµÄ¿éÊı			Input:	  INT32U blocknum	: the block numbers returned
-** Êä ¡¡ ³ö: 0:   ÕıÈ·    >0:   ´íÎóÂë		  		Output:	  0:  right		>0:  error code
-** ×¢	 Òâ: MMC¿¨Ã»ÓĞ¸ÃÃüÁî						Note:     MMC Card have no this command
+** å‡½æ•°åç§°: INT8U SD_GetNumWRBlcoks()				Name:	  INT8U SD_GetNumWRBlcoks()
+** åŠŸèƒ½æè¿°: å¾—åˆ°æ­£ç¡®å†™å…¥çš„å—æ•°						Function: get the block numbers that written correctly
+** è¾“ã€€  å…¥: INT32U *blocknum: è¿”å›çš„å—æ•°			Input:	  INT32U blocknum	: the block numbers returned
+** è¾“ ã€€ å‡º: 0:   æ­£ç¡®    >0:   é”™è¯¯ç 		  		Output:	  0:  right		>0:  error code
+** æ³¨	 æ„: MMCå¡æ²¡æœ‰è¯¥å‘½ä»¤						Note:     MMC Card have no this command
 *********************************************************************************************************************/
 #if SD_WriteMultiBlock_EN
 INT8U SD_GetNumWRBlcoks(INT32U *blocknum)
 {
     INT8U tmp[4] = {0,0,0,0},resp,ret;
 
-    ret = SD_SendCmd(CMD55, tmp, CMD55_R, &resp);	  			/* ºóĞøÃüÁîÎªÒ»¸öÓ¦ÓÃÃüÁî */
+    ret = SD_SendCmd(CMD55, tmp, CMD55_R, &resp);	  			/* åç»­å‘½ä»¤ä¸ºä¸€ä¸ªåº”ç”¨å‘½ä»¤ */
     if (ret != SD_NO_ERR) 										/* command that the followed commnad is a specific application */
     	return ret;
 
     if (resp != 0)
     	return SD_ERR_CMD_RESP;
 
-   	ret = SD_SendCmd(ACMD22, tmp, ACMD22_R, &resp);  			/* ¶ÁÈ¡ÕıÈ·Ğ´ÈëµÄ¿éÊıÃüÁî */
+   	ret = SD_SendCmd(ACMD22, tmp, ACMD22_R, &resp);  			/* è¯»å–æ­£ç¡®å†™å…¥çš„å—æ•°å‘½ä»¤ */
    	if (ret != SD_NO_ERR)										/* command that read the numbers of block written correctly */
    		return ret;
 
 	if (resp != 0)
-    	return SD_ERR_CMD_RESP;									/* ÏìÓ¦´íÎó response is error */
+    	return SD_ERR_CMD_RESP;									/* å“åº”é”™è¯¯ response is error */
 
-    ret = SD_ReadBlockData(4, tmp);								/* ¶Á¿éÊı read the numbvers of block */
+    ret = SD_ReadBlockData(4, tmp);								/* è¯»å—æ•° read the numbvers of block */
     if (ret != SD_NO_ERR)
     	return ret;
 
     *blocknum = (tmp[0] << 24) + (tmp[1] << 16) + (tmp[2] << 8) + tmp[3];
-    															/* ×ª»»Îª32Î» change to 32 bits */
+    															/* è½¬æ¢ä¸º32ä½ change to 32 bits */
 
-	return SD_NO_ERR;    										/* ·µ»ØÖ´ĞĞ³É¹¦ return perform sucessfully */
+	return SD_NO_ERR;    										/* è¿”å›æ‰§è¡ŒæˆåŠŸ return perform sucessfully */
 }
 #endif
 
 		/*********************************************************
 
-		    			ÏÂÃæÎªÒ»Ğ©Êı¾İ´«Êäº¯Êı
+		    			ä¸‹é¢ä¸ºä¸€äº›æ•°æ®ä¼ è¾“å‡½æ•°
 
 		**********************************************************/
 
 /********************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_ReadRegister()				Name:	  INT8U SD_ReadRegister()
-** ¹¦ÄÜÃèÊö: ´ÓSD¿¨¶ÁÈ¡Êı¾İ							Function: read data from SD card
-** Êä¡¡  Èë: INT32U len	  : ³¤¶È					Input:	  INT32U len   : length
-			 INT8U *recbuf: ½ÓÊÕ»º³åÇø					 	  INT8U *recbuf: receive buffer
-** Êä ¡¡ ³ö: 0:   ÕıÈ·    >0:   ´íÎóÂë		  		Output:	  0:  right		>0:  error code
+** å‡½æ•°åç§°: INT8U SD_ReadRegister()				Name:	  INT8U SD_ReadRegister()
+** åŠŸèƒ½æè¿°: ä»SDå¡è¯»å–æ•°æ®							Function: read data from SD card
+** è¾“ã€€  å…¥: INT32U len	  : é•¿åº¦					Input:	  INT32U len   : length
+			 INT8U *recbuf: æ¥æ”¶ç¼“å†²åŒº					 	  INT8U *recbuf: receive buffer
+** è¾“ ã€€ å‡º: 0:   æ­£ç¡®    >0:   é”™è¯¯ç 		  		Output:	  0:  right		>0:  error code
 *********************************************************************************************************************/
 INT8U SD_ReadRegister(INT32U len, INT8U *recbuf)
 {
@@ -551,7 +551,7 @@ INT8U SD_ReadRegister(INT32U len, INT8U *recbuf)
 	INT8U resp;
 
     SPI_CS_Assert();
-    do{    											/* µÈ´ıÊı¾İÆğÊ¼ÁîÅÆ wait for data start token */
+    do{    											/* ç­‰å¾…æ•°æ®èµ·å§‹ä»¤ç‰Œ wait for data start token */
         resp = SPI_RecByte();
     	i++;
     }while((resp == 0xFF) && (i < SD_READREG_TIMEOUT));
@@ -559,44 +559,44 @@ INT8U SD_ReadRegister(INT32U len, INT8U *recbuf)
 //    if (i >= SD_READREG_TIMEOUT)
 //    {
 //    	SPI_CS_Deassert();
-//    	return SD_ERR_TIMEOUT_READ;					/* ³¬Ê±, ·µ»Ø´íÎó timeout, return error */
+//    	return SD_ERR_TIMEOUT_READ;					/* è¶…æ—¶, è¿”å›é”™è¯¯ timeout, return error */
 //  	}
 //
    	if (resp != SD_TOK_READ_STARTBLOCK)
-   	{												/* ²»ÊÇÊÕµ½Êı¾İÆğÊ¼ÁîÅÆ not receive data start token */
+   	{												/* ä¸æ˜¯æ”¶åˆ°æ•°æ®èµ·å§‹ä»¤ç‰Œ not receive data start token */
 		recbuf[0] = resp;
-		i = 1;										/* »¹ÓĞlen - 1¸ö×Ö½ÚÒª½ÓÊÕ still len - 1 bytes will be received */
+		i = 1;										/* è¿˜æœ‰len - 1ä¸ªå­—èŠ‚è¦æ¥æ”¶ still len - 1 bytes will be received */
    	}
    	else
-   		i = 0;										/* ÊÕµ½Êı¾İÆğÊ¼ÁîÅÆ,»¹ÓĞlen¸ö×Ö½ÚÒª½ÓÊÕ received data start token,still len bytes will be received */
+   		i = 0;										/* æ”¶åˆ°æ•°æ®èµ·å§‹ä»¤ç‰Œ,è¿˜æœ‰lenä¸ªå­—èŠ‚è¦æ¥æ”¶ received data start token,still len bytes will be received */
 
     for (; i < len; i++)
-   		recbuf[i] = SPI_RecByte();					/* ½ÓÊÕÊı¾İ receive data */
+   		recbuf[i] = SPI_RecByte();					/* æ¥æ”¶æ•°æ® receive data */
 
     i = SPI_RecByte();
-    i = (i << 8) + SPI_RecByte();    				/* ¶ÁÈ¡16Î»CRC get 16-bit CRC */
+    i = (i << 8) + SPI_RecByte();    				/* è¯»å–16ä½CRC get 16-bit CRC */
 
 	#if SD_CRC_EN
 	   	if (i != SD_GetCRC16(recbuf, len))
-	   	{												/* CRCĞ£Ñé´íÎó CRC check is error */
+	   	{												/* CRCæ ¡éªŒé”™è¯¯ CRC check is error */
 	   		SPI_CS_Deassert();
 	   		SPI_SendByte(0xFF);
-	  		return SD_ERR_DATA_CRC16;					/* ·µ»ØRCR16´íÎó  return error of CRC16 */
+	  		return SD_ERR_DATA_CRC16;					/* è¿”å›RCR16é”™è¯¯  return error of CRC16 */
 	  	}
 	#endif
 
-    SPI_SendByte(0xFF);								/* ·µ»ØÖ®Ç°·¢ËÍ8¸öclock  clock out 8 clk before return */
+    SPI_SendByte(0xFF);								/* è¿”å›ä¹‹å‰å‘é€8ä¸ªclock  clock out 8 clk before return */
     SPI_CS_Deassert();
 
 	return SD_NO_ERR;
 }
 
 /*******************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_ReadBlockData()			Name:	  INT8U SD_ReadBlockData()
-** ¹¦ÄÜÃèÊö: ´ÓSD¿¨ÖĞ¶ÁÈ¡Êı¾İ¿é					Function: read block data from sd card
-** Êä¡¡  Èë: INT32U len    : ³¤¶È				Input:	  INT32U len    : length
-			 INT8U *recbuf : ½ÓÊÕ»º³åÇø					  INT8U *recbuf : the buffer of receive
-** Êä ¡¡ ³ö: 0:   ÕıÈ·    >0:   ´íÎóÂë		  	Output:	  0:  right		>0:  error code
+** å‡½æ•°åç§°: INT8U SD_ReadBlockData()			Name:	  INT8U SD_ReadBlockData()
+** åŠŸèƒ½æè¿°: ä»SDå¡ä¸­è¯»å–æ•°æ®å—					Function: read block data from sd card
+** è¾“ã€€  å…¥: INT32U len    : é•¿åº¦				Input:	  INT32U len    : length
+			 INT8U *recbuf : æ¥æ”¶ç¼“å†²åŒº					  INT8U *recbuf : the buffer of receive
+** è¾“ ã€€ å‡º: 0:   æ­£ç¡®    >0:   é”™è¯¯ç 		  	Output:	  0:  right		>0:  error code
 *******************************************************************************************************************/
 INT8U SD_ReadBlockData(INT32U len, INT8U *recbuf)
 {
@@ -605,7 +605,7 @@ INT8U SD_ReadBlockData(INT32U len, INT8U *recbuf)
 	
 	SPI_CS_Assert();
 	do
-	{ 											    /* µÈ´ı½ÓÊÕÊı¾İ¿ªÊ¼ÁîÅÆ0xFE  wait for receiving data start token 0xFE */
+	{ 											    /* ç­‰å¾…æ¥æ”¶æ•°æ®å¼€å§‹ä»¤ç‰Œ0xFE  wait for receiving data start token 0xFE */
 		tmp = SPI_RecByte();
 //		printf("tmp=0x%x\n",tmp);
 		i++;
@@ -619,10 +619,10 @@ INT8U SD_ReadBlockData(INT32U len, INT8U *recbuf)
 //		SPI_CS_Deassert();
 //		printf("i=%d sds.timeout_read=%d\n",i,sds.timeout_read);
 //		printf("return error timeout error code of reading\n");
-//       	return SD_ERR_TIMEOUT_READ;				/* ·µ»Ø¶Á³¬Ê±´íÎóÂë  return error timeout error code of reading */
+//       	return SD_ERR_TIMEOUT_READ;				/* è¿”å›è¯»è¶…æ—¶é”™è¯¯ç   return error timeout error code of reading */
 //	}
 
-	if (tmp != SD_TOK_READ_STARTBLOCK)				/* ¿é¶Á¿ªÊ¼ÁîÅÆ´íÎó read start block token is error */
+	if (tmp != SD_TOK_READ_STARTBLOCK)				/* å—è¯»å¼€å§‹ä»¤ç‰Œé”™è¯¯ read start block token is error */
 	{
 		SPI_SendByte(0xFF);
 		SPI_CS_Deassert();
@@ -634,7 +634,7 @@ INT8U SD_ReadBlockData(INT32U len, INT8U *recbuf)
 	{
 		for (i = 0; i < len; i++)
 		{
-	   		recbuf[i] = SPI_RecByte();				/* ½ÓÊÕÊı¾İ receive data */
+	   		recbuf[i] = SPI_RecByte();				/* æ¥æ”¶æ•°æ® receive data */
 			printf("%3x",recbuf[i]);
 			if((i+1)%8==0)
 				printf(" ");
@@ -646,35 +646,35 @@ INT8U SD_ReadBlockData(INT32U len, INT8U *recbuf)
    	else
    	{
 		for (i = 0; i < len; i++)
-	   		recbuf[i] = SPI_RecByte();				/* ½ÓÊÕÊı¾İ receive data */
+	   		recbuf[i] = SPI_RecByte();				/* æ¥æ”¶æ•°æ® receive data */
    	}
 
     i = SPI_RecByte();
-    i = (i << 8) + SPI_RecByte();    				/* ¶ÁÈ¡16Î»CRC get 16-bit CRC */
+    i = (i << 8) + SPI_RecByte();    				/* è¯»å–16ä½CRC get 16-bit CRC */
 
 	#if SD_CRC_EN
 	   	if (i != SD_GetCRC16(recbuf, len))
-	   	{											/* CRCĞ£Ñé´íÎó CRC check is error */
+	   	{											/* CRCæ ¡éªŒé”™è¯¯ CRC check is error */
 	   		SPI_SendByte(0xFF);
 	   		SPI_CS_Deassert();
 	   		printf("return error of CRC16\n");
-	  		return SD_ERR_DATA_CRC16;				/* ·µ»ØCRC16´íÎó  return error of CRC16 */
+	  		return SD_ERR_DATA_CRC16;				/* è¿”å›CRC16é”™è¯¯  return error of CRC16 */
 	  	}
 	#endif
 
 	SPI_SendByte(0xFF);
 	SPI_CS_Deassert();
 
-  	return SD_NO_ERR;								/* ·µ»Øº¯ÊıÖ´ĞĞ³É¹¦ return function perform sucessfully */
+  	return SD_NO_ERR;								/* è¿”å›å‡½æ•°æ‰§è¡ŒæˆåŠŸ return function perform sucessfully */
 }
 
 /*******************************************************************************************************************
-** º¯ÊıÃû³Æ: INT8U SD_WriteBlockData()				Name:	  INT8U SD_WriteBlockData()
-** ¹¦ÄÜÃèÊö: Ïòsd¿¨Ğ´Êı¾İ¿é							Function: write block data to sd card
-** Êä¡¡  Èë: INT8U bmulti  : ÊÇ·ñÎª¶à¿é²Ù×÷1:ÊÇ0:·ñ Input:	  INT8U bmulti   : multi blocks operate 1:Y 0:N
-			 INT32U len    : ³¤¶È						  	  INT32U len     : length
-			 INT8U *sendbuf: ·¢ËÍ»º³åÇø					 	  INT8U *sendbuf : the buffer of send
-** Êä ¡¡ ³ö: 0:   ÕıÈ·    >0:   ´íÎóÂë		  		Output:	  0:  right		>0:  error code
+** å‡½æ•°åç§°: INT8U SD_WriteBlockData()				Name:	  INT8U SD_WriteBlockData()
+** åŠŸèƒ½æè¿°: å‘sdå¡å†™æ•°æ®å—							Function: write block data to sd card
+** è¾“ã€€  å…¥: INT8U bmulti  : æ˜¯å¦ä¸ºå¤šå—æ“ä½œ1:æ˜¯0:å¦ Input:	  INT8U bmulti   : multi blocks operate 1:Y 0:N
+			 INT32U len    : é•¿åº¦						  	  INT32U len     : length
+			 INT8U *sendbuf: å‘é€ç¼“å†²åŒº					 	  INT8U *sendbuf : the buffer of send
+** è¾“ ã€€ å‡º: 0:   æ­£ç¡®    >0:   é”™è¯¯ç 		  		Output:	  0:  right		>0:  error code
 ********************************************************************************************************************/
 INT8U SD_WriteBlockData(INT8U bmulti, INT32U len, INT8U *sendbuf)
 {
@@ -683,18 +683,18 @@ INT8U SD_WriteBlockData(INT8U bmulti, INT32U len, INT8U *sendbuf)
 
 	SPI_CS_Assert();
 
-    SPI_SendByte(0xFF);								/* ¿ªÊ¼·¢ËÍÊı¾İÖ®Ç°·¢ËÍ8¸öclock clock out 8 clk before start */
+    SPI_SendByte(0xFF);								/* å¼€å§‹å‘é€æ•°æ®ä¹‹å‰å‘é€8ä¸ªclock clock out 8 clk before start */
 
     if (bmulti == 1)
-        SPI_SendByte(SD_TOK_WRITE_STARTBLOCK_M);	/* Ğ´¶à¿é¿ªÊ¼ÁîÅÆ start token of write multi blocks */
+        SPI_SendByte(SD_TOK_WRITE_STARTBLOCK_M);	/* å†™å¤šå—å¼€å§‹ä»¤ç‰Œ start token of write multi blocks */
 	else
-		SPI_SendByte(SD_TOK_WRITE_STARTBLOCK);		/* Ğ´µ¥¿é¿ªÊ¼ÁîÅÆ start token of write single block */
+		SPI_SendByte(SD_TOK_WRITE_STARTBLOCK);		/* å†™å•å—å¼€å§‹ä»¤ç‰Œ start token of write single block */
 
 	if(WrtRedBLKPrt)
 	{
 		for (i = 0; i < len; i++)
 		{
-			SPI_SendByte(sendbuf[i]);				/* ·¢ËÍÊı¾İ send data */
+			SPI_SendByte(sendbuf[i]);				/* å‘é€æ•°æ® send data */
 			printf("%3x",sendbuf[i]);
 			if((i+1)%8==0)
 				printf(" ");
@@ -706,15 +706,15 @@ INT8U SD_WriteBlockData(INT8U bmulti, INT32U len, INT8U *sendbuf)
 	else
 	{
 		for (i = 0; i < len; i++)
-	        SPI_SendByte(sendbuf[i]);				/* ·¢ËÍÊı¾İ send data */
+	        SPI_SendByte(sendbuf[i]);				/* å‘é€æ•°æ® send data */
 	}
 
 	#if SD_CRC_EN
-		i = SD_GetCRC16(sendbuf,len);				/* ¼ÆËãCRC16 calculate CRC16 */
+		i = SD_GetCRC16(sendbuf,len);				/* è®¡ç®—CRC16 calculate CRC16 */
 	#endif
 
 	SPI_SendByte((i >> 8) & 0xFF);
-	SPI_SendByte(i & 0xFF); 						/* ·¢ËÍCRC16Ğ£ÑéÂë send CRC16 check code */
+	SPI_SendByte(i & 0xFF); 						/* å‘é€CRC16æ ¡éªŒç  send CRC16 check code */
 
 	tmp = SPI_RecByte();
 
@@ -722,10 +722,10 @@ INT8U SD_WriteBlockData(INT8U bmulti, INT32U len, INT8U *sendbuf)
 
 //	if ((tmp & SD_RESP_DATA_MSK) != SD_RESP_DATA_ACCETPTED)
 //	{
-//		SPI_SendByte(0xFF);							/* ·µ»ØÖ®Ç°·¢ËÍ8¸öclock  clock out 8 clk before return */
+//		SPI_SendByte(0xFF);							/* è¿”å›ä¹‹å‰å‘é€8ä¸ªclock  clock out 8 clk before return */
 //		SPI_CS_Deassert();
 //		printf("data response error\n");
-//		return SD_ERR_DATA_RESP;					/* Êı¾İÏìÓ¦´íÎó data response error */
+//		return SD_ERR_DATA_RESP;					/* æ•°æ®å“åº”é”™è¯¯ data response error */
 //	}
 
   SPI_CS_Deassert();
@@ -733,24 +733,24 @@ INT8U SD_WriteBlockData(INT8U bmulti, INT32U len, INT8U *sendbuf)
     if (SD_WaitBusy(SD_WAIT_WRITE) != SD_NO_ERR)
     {
     	printf("write time out\n");
-    	return SD_ERR_TIMEOUT_WRITE;				/* Ğ´Èë³¬Ê± write time out */
+    	return SD_ERR_TIMEOUT_WRITE;				/* å†™å…¥è¶…æ—¶ write time out */
     }
     else
-    	return SD_NO_ERR; 							/* Ğ´ÈëÕıÈ· write right */
+    	return SD_NO_ERR; 							/* å†™å…¥æ­£ç¡® write right */
  }
 
 /*******************************************************************************************************************
-** º¯ÊıÃû³Æ: void SD_StopMultiToken()				Name:	  void SD_StopMultiToken(void)
-** ¹¦ÄÜÃèÊö: ·¢ËÍ¶à¿éĞ´Í£Ö¹ÁîÅÆ						Function: send the token that stop multiple block write
-** Êä¡¡  Èë: ÎŞ									    Input:	  NULL
-** Êä ¡¡ ³ö: ÎŞ										Output:	  NULL
+** å‡½æ•°åç§°: void SD_StopMultiToken()				Name:	  void SD_StopMultiToken(void)
+** åŠŸèƒ½æè¿°: å‘é€å¤šå—å†™åœæ­¢ä»¤ç‰Œ						Function: send the token that stop multiple block write
+** è¾“ã€€  å…¥: æ— 									    Input:	  NULL
+** è¾“ ã€€ å‡º: æ— 										Output:	  NULL
 ********************************************************************************************************************/
 void SD_StopMultiToken(void)
 {
 	SPI_CS_Assert();
 
-	SPI_SendByte(0xFF);								/* ÏÈ·¢ËÍ8¸öclock send 8 clock first */
-	SPI_SendByte(SD_TOK_STOP_MULTI);				/* ·¢ËÍÍ£Ö¹Êı¾İ´«ÊäÁîÅÆ send stop transmission token */
+	SPI_SendByte(0xFF);								/* å…ˆå‘é€8ä¸ªclock send 8 clock first */
+	SPI_SendByte(SD_TOK_STOP_MULTI);				/* å‘é€åœæ­¢æ•°æ®ä¼ è¾“ä»¤ç‰Œ send stop transmission token */
 	SPI_RecByte();
 
     SPI_CS_Deassert();
@@ -758,10 +758,10 @@ void SD_StopMultiToken(void)
 
 
 /********************************************************************************************************************
-** º¯ÊıÃû³Æ: void SD_WaitBusy()						Name:	  void SD_WaitBusy()
-** ¹¦ÄÜÃèÊö: ²éÑ¯SD¿¨ÊÇ·ñ´¦ÓÚÃ¦×´Ì¬					Function: poll SD Card wheather it is busy
-** Êä¡¡  Èë: INT32U waittype: ³¬Ê±ÀàĞÍ				Input:	  INT32U timeout: time out type
-** Êä ¡¡ ³ö: 0: Î´³¬Ê±  >0: ´íÎóÂë					Output:	  0: not time out   > 0: error code
+** å‡½æ•°åç§°: void SD_WaitBusy()						Name:	  void SD_WaitBusy()
+** åŠŸèƒ½æè¿°: æŸ¥è¯¢SDå¡æ˜¯å¦å¤„äºå¿™çŠ¶æ€					Function: poll SD Card wheather it is busy
+** è¾“ã€€  å…¥: INT32U waittype: è¶…æ—¶ç±»å‹				Input:	  INT32U timeout: time out type
+** è¾“ ã€€ å‡º: 0: æœªè¶…æ—¶  >0: é”™è¯¯ç 					Output:	  0: not time out   > 0: error code
 *********************************************************************************************************************/
 INT8U SD_WaitBusy(INT8U waittype)
 {
@@ -775,30 +775,30 @@ INT8U SD_WaitBusy(INT8U waittype)
 
 	SPI_CS_Assert();
    	do
-   	{ 												/* µÈ´ıÃ¦½áÊø wait for being busy end */
+   	{ 												/* ç­‰å¾…å¿™ç»“æŸ wait for being busy end */
         tmp = SPI_RecByte();
         i++;
     }
     while (tmp != 0xFF);
-//    while ((tmp != 0xFF) && (i < timeout));		/* Ã¦Ê±ÊÕµ½µÄÖµÎª0xFF always receive 0xFF when card is busy */
-	SPI_CS_Deassert();								/* ÓĞ´í */
+//    while ((tmp != 0xFF) && (i < timeout));		/* å¿™æ—¶æ”¶åˆ°çš„å€¼ä¸º0xFF always receive 0xFF when card is busy */
+	SPI_CS_Deassert();								/* æœ‰é”™ */
 
 //	if(i < timeout)
-		return SD_NO_ERR;							/* ·µ»Ø0,±íÊ¾Ã»³¬Ê± return 0 indicate that operation is not time out */
+		return SD_NO_ERR;							/* è¿”å›0,è¡¨ç¤ºæ²¡è¶…æ—¶ return 0 indicate that operation is not time out */
 //	else
-//		return SD_ERR_TIMEOUT_WAIT;					/* ·µ»Ø´íÎóÂë,±íÊ¾³¬Ê± return error code indicate that operation is time out */
+//		return SD_ERR_TIMEOUT_WAIT;					/* è¿”å›é”™è¯¯ç ,è¡¨ç¤ºè¶…æ—¶ return error code indicate that operation is time out */
 }
 
 /********************************************************************************************************************
-** º¯ÊıÃû³Æ: void SD_SPIDelay()						Name:	  void SD_SPIDelay()
-** ¹¦ÄÜÃèÊö: SPI×ÜÏßÑÓÊ±							Function: SPI Bus delay
-** Êä¡¡  Èë: INT8U value: ÑÓÊ±Öµ,²»³¬¹ı255		    Input:	  INT8U value : delay value,do not beyond 255
-** Êä ¡¡ ³ö: ÎŞ										Output:	  NULL
+** å‡½æ•°åç§°: void SD_SPIDelay()						Name:	  void SD_SPIDelay()
+** åŠŸèƒ½æè¿°: SPIæ€»çº¿å»¶æ—¶							Function: SPI Bus delay
+** è¾“ã€€  å…¥: INT8U value: å»¶æ—¶å€¼,ä¸è¶…è¿‡255		    Input:	  INT8U value : delay value,do not beyond 255
+** è¾“ ã€€ å‡º: æ— 										Output:	  NULL
 *********************************************************************************************************************/
 void SD_SPIDelay(INT8U value)
 {
     INT8U i;
 
     for (i = 0; i < value; i++)
-        SPI_SendByte(0xFF);						 	/* ·¢ËÍ0xFF clock out 0xFF */
+        SPI_SendByte(0xFF);						 	/* å‘é€0xFF clock out 0xFF */
 }

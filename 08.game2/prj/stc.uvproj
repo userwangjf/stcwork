@@ -544,16 +544,6 @@
               <FileType>1</FileType>
               <FilePath>..\music\music.c</FilePath>
             </File>
-            <File>
-              <FileName>music_dat1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\music\music_dat1.c</FilePath>
-            </File>
-            <File>
-              <FileName>music_dat2.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\music\music_dat2.c</FilePath>
-            </File>
           </Files>
         </Group>
       </Groups>

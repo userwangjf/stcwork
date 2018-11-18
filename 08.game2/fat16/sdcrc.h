@@ -1,5 +1,5 @@
 /******************************************************************************************************
-** Descriptions:		sd ¿¨Çı¶¯Èí¼ş°ü: SD¿¨Ïà¹Ø¹¤¾ßº¯Êı ---- CRCĞ£ÑéÍ·ÎÄ¼ş
+** Descriptions:		sd å¡é©±åŠ¨è½¯ä»¶åŒ…: SDå¡ç›¸å…³å·¥å…·å‡½æ•° ---- CRCæ ¡éªŒå¤´æ–‡ä»¶
 ********************************************************************************************************/
 
 #ifndef 	__sdcrc_h
@@ -10,10 +10,10 @@
 #include "sdhal.h"
 #include "sdcmd.h"
 
-extern INT16U SD_GetCRC16(INT8U *pSource,INT16U len);	//µÃµ½len¸ö×Ö½ÚµÄCRC16
+extern INT16U SD_GetCRC16(INT8U *pSource,INT16U len);	//å¾—åˆ°lenä¸ªå­—èŠ‚çš„CRC16
 
-extern INT8U SD_GetCmdByte6(INT8U cmd,INT8U *param);	//µÃµ½SDÃüÁîµÄµÚ6¸ö×Ö½Ú: CRC7 + Í£Ö¹Î»1
+extern INT8U SD_GetCmdByte6(INT8U cmd,INT8U *param);	//å¾—åˆ°SDå‘½ä»¤çš„ç¬¬6ä¸ªå­—èŠ‚: CRC7 + åœæ­¢ä½1
 
-extern INT8U SD_GetCRC7(INT8U *pSource,INT16U len);		//µÃµ½len¸ö×Ö½ÚµÄCRC7
+extern INT8U SD_GetCRC7(INT8U *pSource,INT16U len);		//å¾—åˆ°lenä¸ªå­—èŠ‚çš„CRC7
 
 #endif

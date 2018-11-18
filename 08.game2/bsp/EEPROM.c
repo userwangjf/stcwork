@@ -1,102 +1,102 @@
 
-//	±¾³ÌÐòÊÇSTCÏµÁÐµÄÄÚÖÃEEPROM¶ÁÐ´³ÌÐò¡£
+//	æœ¬ç¨‹åºæ˜¯STCç³»åˆ—çš„å†…ç½®EEPROMè¯»å†™ç¨‹åºã€‚
 
 #include "config.h"
 #include "eeprom.h"
 
 
 //========================================================================
-// º¯Êý: void	ISP_Disable(void)
-// ÃèÊö: ½ûÖ¹·ÃÎÊISP/IAP.
-// ²ÎÊý: non.
-// ·µ»Ø: non.
-// °æ±¾: V1.0, 2012-10-22
+// å‡½æ•°: void	ISP_Disable(void)
+// æè¿°: ç¦æ­¢è®¿é—®ISP/IAP.
+// å‚æ•°: non.
+// è¿”å›ž: non.
+// ç‰ˆæœ¬: V1.0, 2012-10-22
 //========================================================================
 void	DisableEEPROM(void)
 {
-	ISP_CONTR = 0;			//½ûÖ¹ISP/IAP²Ù×÷
-	ISP_CMD   = 0;			//È¥³ýISP/IAPÃüÁî
-	ISP_TRIG  = 0;			//·ÀÖ¹ISP/IAPÃüÁîÎó´¥·¢
-	ISP_ADDRH = 0xff;		//Çå0µØÖ·¸ß×Ö½Ú
-	ISP_ADDRL = 0xff;		//Çå0µØÖ·µÍ×Ö½Ú£¬Ö¸Ïò·ÇEEPROMÇø£¬·ÀÖ¹Îó²Ù×÷
+	ISP_CONTR = 0;			//ç¦æ­¢ISP/IAPæ“ä½œ
+	ISP_CMD   = 0;			//åŽ»é™¤ISP/IAPå‘½ä»¤
+	ISP_TRIG  = 0;			//é˜²æ­¢ISP/IAPå‘½ä»¤è¯¯è§¦å‘
+	ISP_ADDRH = 0xff;		//æ¸…0åœ°å€é«˜å­—èŠ‚
+	ISP_ADDRL = 0xff;		//æ¸…0åœ°å€ä½Žå­—èŠ‚ï¼ŒæŒ‡å‘éžEEPROMåŒºï¼Œé˜²æ­¢è¯¯æ“ä½œ
 }
 
 //========================================================================
-// º¯Êý: void EEPROM_read_n(u16 EE_address,u8 *DataAddress,u16 number)
-// ÃèÊö: ´ÓÖ¸¶¨EEPROMÊ×µØÖ·¶Á³ön¸ö×Ö½Ú·ÅÖ¸¶¨µÄ»º³å.
-// ²ÎÊý: EE_address:  ¶Á³öEEPROMµÄÊ×µØÖ·.
-//       DataAddress: ¶Á³öÊý¾Ý·Å»º³åµÄÊ×µØÖ·.
-//       number:      ¶Á³öµÄ×Ö½Ú³¤¶È.
-// ·µ»Ø: non.
-// °æ±¾: V1.0, 2012-10-22
+// å‡½æ•°: void EEPROM_read_n(u16 EE_address,u8 *DataAddress,u16 number)
+// æè¿°: ä»ŽæŒ‡å®šEEPROMé¦–åœ°å€è¯»å‡ºnä¸ªå­—èŠ‚æ”¾æŒ‡å®šçš„ç¼“å†².
+// å‚æ•°: EE_address:  è¯»å‡ºEEPROMçš„é¦–åœ°å€.
+//       DataAddress: è¯»å‡ºæ•°æ®æ”¾ç¼“å†²çš„é¦–åœ°å€.
+//       number:      è¯»å‡ºçš„å­—èŠ‚é•¿åº¦.
+// è¿”å›ž: non.
+// ç‰ˆæœ¬: V1.0, 2012-10-22
 //========================================================================
 
 void EEPROM_read_n(u16 EE_address,u8 *DataAddress,u16 number)
 {
-	EA = 0;		//½ûÖ¹ÖÐ¶Ï
-	ISP_CONTR = (ISP_EN + ISP_WAIT_FREQUENCY);	//ÉèÖÃµÈ´ýÊ±¼ä£¬ÔÊÐíISP/IAP²Ù×÷£¬ËÍÒ»´Î¾Í¹»
-	ISP_READ();									//ËÍ×Ö½Ú¶ÁÃüÁî£¬ÃüÁî²»Ðè¸Ä±äÊ±£¬²»ÐèÖØÐÂËÍÃüÁî
+	EA = 0;		//ç¦æ­¢ä¸­æ–­
+	ISP_CONTR = (ISP_EN + ISP_WAIT_FREQUENCY);	//è®¾ç½®ç­‰å¾…æ—¶é—´ï¼Œå…è®¸ISP/IAPæ“ä½œï¼Œé€ä¸€æ¬¡å°±å¤Ÿ
+	ISP_READ();									//é€å­—èŠ‚è¯»å‘½ä»¤ï¼Œå‘½ä»¤ä¸éœ€æ”¹å˜æ—¶ï¼Œä¸éœ€é‡æ–°é€å‘½ä»¤
 	do
 	{
-		ISP_ADDRH = EE_address / 256;		//ËÍµØÖ·¸ß×Ö½Ú£¨µØÖ·ÐèÒª¸Ä±äÊ±²ÅÐèÖØÐÂËÍµØÖ·£©
-		ISP_ADDRL = EE_address % 256;		//ËÍµØÖ·µÍ×Ö½Ú
-		ISP_TRIG();							//ÏÈËÍ5AH£¬ÔÙËÍA5Hµ½ISP/IAP´¥·¢¼Ä´æÆ÷£¬Ã¿´Î¶¼ÐèÒªÈç´Ë
-											//ËÍÍêA5Hºó£¬ISP/IAPÃüÁîÁ¢¼´±»´¥·¢Æô¶¯
-											//CPUµÈ´ýIAPÍê³Éºó£¬²Å»á¼ÌÐøÖ´ÐÐ³ÌÐò¡£
+		ISP_ADDRH = EE_address / 256;		//é€åœ°å€é«˜å­—èŠ‚ï¼ˆåœ°å€éœ€è¦æ”¹å˜æ—¶æ‰éœ€é‡æ–°é€åœ°å€ï¼‰
+		ISP_ADDRL = EE_address % 256;		//é€åœ°å€ä½Žå­—èŠ‚
+		ISP_TRIG();							//å…ˆé€5AHï¼Œå†é€A5Håˆ°ISP/IAPè§¦å‘å¯„å­˜å™¨ï¼Œæ¯æ¬¡éƒ½éœ€è¦å¦‚æ­¤
+											//é€å®ŒA5HåŽï¼ŒISP/IAPå‘½ä»¤ç«‹å³è¢«è§¦å‘å¯åŠ¨
+											//CPUç­‰å¾…IAPå®ŒæˆåŽï¼Œæ‰ä¼šç»§ç»­æ‰§è¡Œç¨‹åºã€‚
 		_nop_();
-		*DataAddress = ISP_DATA;			//¶Á³öµÄÊý¾ÝËÍÍù
+		*DataAddress = ISP_DATA;			//è¯»å‡ºçš„æ•°æ®é€å¾€
 		EE_address++;
 		DataAddress++;
 	}while(--number);
 
 	DisableEEPROM();
-	EA = 1;		//ÖØÐÂÔÊÐíÖÐ¶Ï
+	EA = 1;		//é‡æ–°å…è®¸ä¸­æ–­
 }
 
 
-/******************** ÉÈÇø²Á³ýº¯Êý *****************/
+/******************** æ‰‡åŒºæ“¦é™¤å‡½æ•° *****************/
 //========================================================================
-// º¯Êý: void EEPROM_SectorErase(u16 EE_address)
-// ÃèÊö: °ÑÖ¸¶¨µØÖ·µÄEEPROMÉÈÇø²Á³ý.
-// ²ÎÊý: EE_address:  Òª²Á³ýµÄÉÈÇøEEPROMµÄµØÖ·.
-// ·µ»Ø: non.
-// °æ±¾: V1.0, 2013-5-10
+// å‡½æ•°: void EEPROM_SectorErase(u16 EE_address)
+// æè¿°: æŠŠæŒ‡å®šåœ°å€çš„EEPROMæ‰‡åŒºæ“¦é™¤.
+// å‚æ•°: EE_address:  è¦æ“¦é™¤çš„æ‰‡åŒºEEPROMçš„åœ°å€.
+// è¿”å›ž: non.
+// ç‰ˆæœ¬: V1.0, 2013-5-10
 //========================================================================
 void EEPROM_SectorErase(u16 EE_address)
 {
-	EA = 0;		//½ûÖ¹ÖÐ¶Ï
-											//Ö»ÓÐÉÈÇø²Á³ý£¬Ã»ÓÐ×Ö½Ú²Á³ý£¬512×Ö½Ú/ÉÈÇø¡£
-											//ÉÈÇøÖÐÈÎÒâÒ»¸ö×Ö½ÚµØÖ·¶¼ÊÇÉÈÇøµØÖ·¡£
-	ISP_ADDRH = EE_address / 256;			//ËÍÉÈÇøµØÖ·¸ß×Ö½Ú£¨µØÖ·ÐèÒª¸Ä±äÊ±²ÅÐèÖØÐÂËÍµØÖ·£©
-	ISP_ADDRL = EE_address % 256;			//ËÍÉÈÇøµØÖ·µÍ×Ö½Ú
-	ISP_CONTR = (ISP_EN + ISP_WAIT_FREQUENCY);	//ÉèÖÃµÈ´ýÊ±¼ä£¬ÔÊÐíISP/IAP²Ù×÷£¬ËÍÒ»´Î¾Í¹»
-	ISP_ERASE();							//ËÍÉÈÇø²Á³ýÃüÁî£¬ÃüÁî²»Ðè¸Ä±äÊ±£¬²»ÐèÖØÐÂËÍÃüÁî
+	EA = 0;		//ç¦æ­¢ä¸­æ–­
+											//åªæœ‰æ‰‡åŒºæ“¦é™¤ï¼Œæ²¡æœ‰å­—èŠ‚æ“¦é™¤ï¼Œ512å­—èŠ‚/æ‰‡åŒºã€‚
+											//æ‰‡åŒºä¸­ä»»æ„ä¸€ä¸ªå­—èŠ‚åœ°å€éƒ½æ˜¯æ‰‡åŒºåœ°å€ã€‚
+	ISP_ADDRH = EE_address / 256;			//é€æ‰‡åŒºåœ°å€é«˜å­—èŠ‚ï¼ˆåœ°å€éœ€è¦æ”¹å˜æ—¶æ‰éœ€é‡æ–°é€åœ°å€ï¼‰
+	ISP_ADDRL = EE_address % 256;			//é€æ‰‡åŒºåœ°å€ä½Žå­—èŠ‚
+	ISP_CONTR = (ISP_EN + ISP_WAIT_FREQUENCY);	//è®¾ç½®ç­‰å¾…æ—¶é—´ï¼Œå…è®¸ISP/IAPæ“ä½œï¼Œé€ä¸€æ¬¡å°±å¤Ÿ
+	ISP_ERASE();							//é€æ‰‡åŒºæ“¦é™¤å‘½ä»¤ï¼Œå‘½ä»¤ä¸éœ€æ”¹å˜æ—¶ï¼Œä¸éœ€é‡æ–°é€å‘½ä»¤
 	ISP_TRIG();
 	_nop_();
 	DisableEEPROM();
-	EA = 1;		//ÖØÐÂÔÊÐíÖÐ¶Ï
+	EA = 1;		//é‡æ–°å…è®¸ä¸­æ–­
 }
 
 //========================================================================
-// º¯Êý: void EEPROM_write_n(u16 EE_address,u8 *DataAddress,u16 number)
-// ÃèÊö: °Ñ»º³åµÄn¸ö×Ö½ÚÐ´ÈëÖ¸¶¨Ê×µØÖ·µÄEEPROM.
-// ²ÎÊý: EE_address:  Ð´ÈëEEPROMµÄÊ×µØÖ·.
-//       DataAddress: Ð´ÈëÔ´Êý¾ÝµÄ»º³åµÄÊ×µØÖ·.
-//       number:      Ð´ÈëµÄ×Ö½Ú³¤¶È.
-// ·µ»Ø: non.
-// °æ±¾: V1.0, 2012-10-22
+// å‡½æ•°: void EEPROM_write_n(u16 EE_address,u8 *DataAddress,u16 number)
+// æè¿°: æŠŠç¼“å†²çš„nä¸ªå­—èŠ‚å†™å…¥æŒ‡å®šé¦–åœ°å€çš„EEPROM.
+// å‚æ•°: EE_address:  å†™å…¥EEPROMçš„é¦–åœ°å€.
+//       DataAddress: å†™å…¥æºæ•°æ®çš„ç¼“å†²çš„é¦–åœ°å€.
+//       number:      å†™å…¥çš„å­—èŠ‚é•¿åº¦.
+// è¿”å›ž: non.
+// ç‰ˆæœ¬: V1.0, 2012-10-22
 //========================================================================
 void EEPROM_write_n(u16 EE_address,u8 *DataAddress,u16 number)
 {
-	EA = 0;		//½ûÖ¹ÖÐ¶Ï
+	EA = 0;		//ç¦æ­¢ä¸­æ–­
 
-	ISP_CONTR = (ISP_EN + ISP_WAIT_FREQUENCY);	//ÉèÖÃµÈ´ýÊ±¼ä£¬ÔÊÐíISP/IAP²Ù×÷£¬ËÍÒ»´Î¾Í¹»
-	ISP_WRITE();							//ËÍ×Ö½ÚÐ´ÃüÁî£¬ÃüÁî²»Ðè¸Ä±äÊ±£¬²»ÐèÖØÐÂËÍÃüÁî
+	ISP_CONTR = (ISP_EN + ISP_WAIT_FREQUENCY);	//è®¾ç½®ç­‰å¾…æ—¶é—´ï¼Œå…è®¸ISP/IAPæ“ä½œï¼Œé€ä¸€æ¬¡å°±å¤Ÿ
+	ISP_WRITE();							//é€å­—èŠ‚å†™å‘½ä»¤ï¼Œå‘½ä»¤ä¸éœ€æ”¹å˜æ—¶ï¼Œä¸éœ€é‡æ–°é€å‘½ä»¤
 	do
 	{
-		ISP_ADDRH = EE_address / 256;		//ËÍµØÖ·¸ß×Ö½Ú£¨µØÖ·ÐèÒª¸Ä±äÊ±²ÅÐèÖØÐÂËÍµØÖ·£©
-		ISP_ADDRL = EE_address % 256;		//ËÍµØÖ·µÍ×Ö½Ú
-		ISP_DATA  = *DataAddress;			//ËÍÊý¾Ýµ½ISP_DATA£¬Ö»ÓÐÊý¾Ý¸Ä±äÊ±²ÅÐèÖØÐÂËÍ
+		ISP_ADDRH = EE_address / 256;		//é€åœ°å€é«˜å­—èŠ‚ï¼ˆåœ°å€éœ€è¦æ”¹å˜æ—¶æ‰éœ€é‡æ–°é€åœ°å€ï¼‰
+		ISP_ADDRL = EE_address % 256;		//é€åœ°å€ä½Žå­—èŠ‚
+		ISP_DATA  = *DataAddress;			//é€æ•°æ®åˆ°ISP_DATAï¼Œåªæœ‰æ•°æ®æ”¹å˜æ—¶æ‰éœ€é‡æ–°é€
 		ISP_TRIG();
 		_nop_();
 		EE_address++;
@@ -104,6 +104,6 @@ void EEPROM_write_n(u16 EE_address,u8 *DataAddress,u16 number)
 	}while(--number);
 
 	DisableEEPROM();
-	EA = 1;		//ÖØÐÂÔÊÐíÖÐ¶Ï
+	EA = 1;		//é‡æ–°å…è®¸ä¸­æ–­
 }
 

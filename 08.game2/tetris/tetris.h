@@ -2,22 +2,22 @@
 #ifndef _TETRIS_H_
 #define _TETRIS_H_
 
-#define MAP_WIDTH                   10  // µØÍ¼¿í,ĞèÒªĞ¡ÓÚ16
-#define MAP_HEIGHT                  21  // µØÍ¼¸ß
+#define MAP_WIDTH                   10  // åœ°å›¾å®½,éœ€è¦å°äº16
+#define MAP_HEIGHT                  21  // åœ°å›¾é«˜
 
 
 typedef struct
 {
-    s8 x;               //!< brickÔÚµØÍ¼ÖĞµÄx×ø±ê
-    s8 y;               //!< brickÔÚµØÍ¼ÖĞµÄy×ø±ê
-    s8 index;           //!< ·½¿éË÷Òı, ¸ß4Î»¼ÇÂ¼ÀàĞÍ, µÍ4Î»¼ÇÂ¼±äĞÎ
-    u16 brick;         		//!< ·½¿éÊı¾İ,16¸öbit×é³É4*4µÄbitmap
+    s8 x;               //!< brickåœ¨åœ°å›¾ä¸­çš„xåæ ‡
+    s8 y;               //!< brickåœ¨åœ°å›¾ä¸­çš„yåæ ‡
+    s8 index;           //!< æ–¹å—ç´¢å¼•, é«˜4ä½è®°å½•ç±»å‹, ä½4ä½è®°å½•å˜å½¢
+    u16 brick;         		//!< æ–¹å—æ•°æ®,16ä¸ªbitç»„æˆ4*4çš„bitmap
 } brick_t;
 
-#define BRICK_TYPE                  7   // Ò»¹²7ÖÖÀàĞÍµÄ·½¿é
-#define BRICK_NUM_OF_TYPE           4   // Ã¿Ò»ÖÖÀàĞÍÓĞ4ÖÖ±äĞÎ
+#define BRICK_TYPE                  7   // ä¸€å…±7ç§ç±»å‹çš„æ–¹å—
+#define BRICK_NUM_OF_TYPE           4   // æ¯ä¸€ç§ç±»å‹æœ‰4ç§å˜å½¢
 
-#define BRICK_HEIGHT                4   // Ò»¸öbrickÓÉ4*4µÄbox×é³É
+#define BRICK_HEIGHT                4   // ä¸€ä¸ªbrickç”±4*4çš„boxç»„æˆ
 #define BRICK_WIDTH                 4
 
 #define BRICK_START_X               ((MAP_WIDTH / 2) - (BRICK_WIDTH / 2))
@@ -27,17 +27,17 @@ typedef struct
 #endif
 
 /* Private macro -------------------------------------------------------------*/
-// ¶ÔµØÍ¼Êı×é½øĞĞÎ»²Ù×÷µÄÖ§³Öºê
+// å¯¹åœ°å›¾æ•°ç»„è¿›è¡Œä½æ“ä½œçš„æ”¯æŒå®
 #define     SET_BIT(dat, bit)      ((dat) |= (0x0001 << (bit)))
 #define     CLR_BIT(dat, bit)      ((dat) &= ~(0x0001 << (bit)))
 #define     GET_BIT(dat, bit)      (((dat) & (0x0001 << (bit))) >> (bit))
 
 /* Private variables ---------------------------------------------------------*/
-// »Øµ÷º¯ÊıÖ¸Õë, ÓÃÀ´ÔÚ×ø±ê(x, y)»­Ò»¸öbrick
+// å›è°ƒå‡½æ•°æŒ‡é’ˆ, ç”¨æ¥åœ¨åæ ‡(x, y)ç”»ä¸€ä¸ªbrick
 static void (*draw_box)(u8 x, u8 y, u8 color) = NULL;
-// »Øµ÷º¯ÊıÖ¸Õë, »ñÈ¡Ò»¸öËæ»úÊı
+// å›è°ƒå‡½æ•°æŒ‡é’ˆ, è·å–ä¸€ä¸ªéšæœºæ•°
 static u8 (*get_random_num)(void) = NULL;
-// »Øµ÷º¯ÊıÖ¸Õë, µ±ÓĞÏûĞĞÊ±µ÷ÓÃ
+// å›è°ƒå‡½æ•°æŒ‡é’ˆ, å½“æœ‰æ¶ˆè¡Œæ—¶è°ƒç”¨
 static void (*return_remove_line_num)(u8 line) = NULL;
 
 extern u16 map[MAP_HEIGHT];
@@ -45,10 +45,10 @@ extern u16 map[MAP_HEIGHT];
 // direction
 typedef enum
 {
-    dire_left,      //!< ×óÒÆ
-    dire_right,     //!< ÓÒÒÆ
-    dire_down,      //!< ÏÂÒÆ
-    dire_rotate,    //!< Ğı×ª
+    dire_left,      //!< å·¦ç§»
+    dire_right,     //!< å³ç§»
+    dire_down,      //!< ä¸‹ç§»
+    dire_rotate,    //!< æ—‹è½¬
 } dire_t;
 
 void tetris_run(u8 key);
@@ -62,18 +62,18 @@ void create_new_brick(brick_t* brick);
 void draw_brick(const brick_t* brick);
 void clear_brick ( const brick_t* brick );
 
-// ³õÊ¼»¯, ĞèÒªµÄ»Øµ÷º¯ÊıËµÃ÷:
-// ÔÚ(x, y)»­Ò»¸öbox, colorÎªÑÕÉ«, ×¢Òâ0±íÊ¾Çå³ı, ²»±íÊ¾ÈÎºÎÑÕÉ«
+// åˆå§‹åŒ–, éœ€è¦çš„å›è°ƒå‡½æ•°è¯´æ˜:
+// åœ¨(x, y)ç”»ä¸€ä¸ªbox, colorä¸ºé¢œè‰², æ³¨æ„0è¡¨ç¤ºæ¸…é™¤, ä¸è¡¨ç¤ºä»»ä½•é¢œè‰²
 // draw_box_to_map(u8 x, u8 y, u8 color)
 
-// º¯ÊıĞë·µ»ØÒ»¸öËæ»úÊı, ²úÉúĞÂ·½¿éÊ¹ÓÃ
+// å‡½æ•°é¡»è¿”å›ä¸€ä¸ªéšæœºæ•°, äº§ç”Ÿæ–°æ–¹å—ä½¿ç”¨
 // get_random(void)
 
-// µ±²úÉúĞÂ·½¿éºó»Øµ÷´Ëº¯Êı, ²ÎÊıÎªĞÂ·½¿éµÄÊı¾İ
-// µ±Ç°°æ±¾ *info Îªuint16_tĞÍÊı¾İ, ´ú±íĞÂ·½¿éµÄµãÕóÊı¾İ
+// å½“äº§ç”Ÿæ–°æ–¹å—åå›è°ƒæ­¤å‡½æ•°, å‚æ•°ä¸ºæ–°æ–¹å—çš„æ•°æ®
+// å½“å‰ç‰ˆæœ¬ *info ä¸ºuint16_tå‹æ•°æ®, ä»£è¡¨æ–°æ–¹å—çš„ç‚¹é˜µæ•°æ®
 // next_brick_info(const void *info)
 
-// µ±·¢ÉúÏûĞĞÊ±»Øµ÷´Ëº¯Êı, ²ÎÊıÎªÏû³ıµÄĞĞÊı
+// å½“å‘ç”Ÿæ¶ˆè¡Œæ—¶å›è°ƒæ­¤å‡½æ•°, å‚æ•°ä¸ºæ¶ˆé™¤çš„è¡Œæ•°
 // remove_line_num(u8 line)
 extern void tetris_start(
     void (*draw_box_to_map)(u8 x, u8 y, u8 color),

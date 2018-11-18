@@ -52,7 +52,8 @@ void main()
 	bit uart1_ren = 0;
 	u8 key = 0xff;
 	u8 xon = 0;
-
+	u8 i;
+	u8 rdata[8];
 
 	P0 = 0xff;
 	P1 = 0xff;
@@ -75,6 +76,28 @@ void main()
 		Uart1_Tx("\r\nlittle endian");
 	else
 		Uart1_Tx("\r\nbig endian");
+
+	/*
+	W25qxx_Init();
+
+	W25qxx_ReadBytes(0, &rdata, 8);
+	Uart1_Tx("\r\n");
+	for(i=0;i<8;i++)
+	{
+		Uart1_Tx(byte2str(rdata[i]));
+		Uart1_Tx(",");
+	}
+
+	W25qxx_EraseSector(0);
+
+	W25qxx_ReadBytes(0, &rdata, 8);
+	Uart1_Tx("\r\n");
+	for(i=0;i<8;i++)
+	{
+		Uart1_Tx(byte2str(rdata[i]));
+		Uart1_Tx(",");
+	}
+	*/
 
 	//snake_init();
 	//tetris_init();
@@ -194,6 +217,17 @@ void GPIO_Config(void)
 	GPIO_Init.Pin = 0x9f;
 	GPIO_Init.Mode = GPIO_OUT_PP;
 	GPIO_Inilize(GPIO_P4,&GPIO_Init);
+	#endif
+
+	#if 1
+	//W25Q64
+	GPIO_Init.Pin = GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3;
+	GPIO_Init.Mode = GPIO_OUT_PP;
+	GPIO_Inilize(GPIO_P5, &GPIO_Init);
+
+	GPIO_Init.Pin = GPIO_Pin_4;
+	GPIO_Init.Mode = GPIO_OUT_OD;
+	GPIO_Inilize(GPIO_P5, &GPIO_Init);
 	#endif
 
 }

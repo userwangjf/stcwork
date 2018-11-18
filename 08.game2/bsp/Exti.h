@@ -4,20 +4,20 @@
 
 #include	"config.h"
 
-#define	EXT_INT0			0	//³õÊ¼»¯ÍâÖĞ¶Ï0
-#define	EXT_INT1			1	//³õÊ¼»¯ÍâÖĞ¶Ï1
-#define	EXT_INT2			2	//³õÊ¼»¯ÍâÖĞ¶Ï2
-#define	EXT_INT3			3	//³õÊ¼»¯ÍâÖĞ¶Ï3
-#define	EXT_INT4			4	//³õÊ¼»¯ÍâÖĞ¶Ï4
+#define	EXT_INT0			0	//åˆå§‹åŒ–å¤–ä¸­æ–­0
+#define	EXT_INT1			1	//åˆå§‹åŒ–å¤–ä¸­æ–­1
+#define	EXT_INT2			2	//åˆå§‹åŒ–å¤–ä¸­æ–­2
+#define	EXT_INT3			3	//åˆå§‹åŒ–å¤–ä¸­æ–­3
+#define	EXT_INT4			4	//åˆå§‹åŒ–å¤–ä¸­æ–­4
 
-#define	EXT_MODE_RiseFall	0	//ÉÏÉıÑØ/ÏÂ½µÑØÖĞ¶Ï
-#define	EXT_MODE_Fall		1	//ÏÂ½µÑØÖĞ¶Ï
+#define	EXT_MODE_RiseFall	0	//ä¸Šå‡æ²¿/ä¸‹é™æ²¿ä¸­æ–­
+#define	EXT_MODE_Fall		1	//ä¸‹é™æ²¿ä¸­æ–­
 
 typedef struct
 {
-	u8	EXTI_Mode;			//ÖĞ¶ÏÄ£Ê½,  	EXT_MODE_RiseFall, EXT_MODE_Fall
-	u8	EXTI_Polity;		//ÓÅÏÈ¼¶ÉèÖÃ	PolityHigh,PolityLow
-	u8	EXTI_Interrupt;		//ÖĞ¶ÏÔÊĞí		ENABLE,DISABLE
+	u8	EXTI_Mode;			//ä¸­æ–­æ¨¡å¼,  	EXT_MODE_RiseFall, EXT_MODE_Fall
+	u8	EXTI_Polity;		//ä¼˜å…ˆçº§è®¾ç½®	PolityHigh,PolityLow
+	u8	EXTI_Interrupt;		//ä¸­æ–­å…è®¸		ENABLE,DISABLE
 } EXTI_InitTypeDef;
 
 u8	Ext_Inilize(u8 EXT, EXTI_InitTypeDef *INTx);

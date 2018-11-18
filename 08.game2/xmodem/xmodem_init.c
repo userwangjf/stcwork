@@ -2,33 +2,33 @@
 #include "bsp/config.h"
 
 
-//´ø³¬Ê±´®¿Ú½ÓÊÕ£¬ÔÚ12MÊ±£¬´óÔ¼3Ãë£¬ĞèÒª¹Ø±ÕÖĞ¶Ï¡£
-//³¬Ê±·µ»Ø-1
+//å¸¦è¶…æ—¶ä¸²å£æ¥æ”¶ï¼Œåœ¨12Mæ—¶ï¼Œå¤§çº¦3ç§’ï¼Œéœ€è¦å…³é—­ä¸­æ–­ã€‚
+//è¶…æ—¶è¿”å›-1
 s16 xmodem_getchar()
 {
 	u32 delay = 0x50000;
 	u8 tmp;
-	for(;delay>0;delay--)
+	for (; delay > 0; delay--)
 	{
-		if(RI)break;
+		if (RI)break;
 	}
-	if(delay == 0)return -1;
+	if (delay == 0)return -1;
 	tmp = SBUF;
 	RI = 0;
-	return tmp;	
+	return tmp;
 }
 
 void xmodem_putchar(u8 ch)
 {
 	SBUF = ch;
-	while(!TI);
+	while (!TI);
 	TI = 0;
 }
 
 u8 xmodem_get_first()
 {
-	if(RI){
-		RI = 0;//Çå³ıµÚÒ»¸ö×Ö·û
+	if (RI) {
+		RI = 0;//æ¸…é™¤ç¬¬ä¸€ä¸ªå­—ç¬¦
 		return 1;
 	}
 	else
@@ -44,9 +44,12 @@ void xmodem_delay1s()
 	delay_ms(200);
 }
 
+//ä¿å­˜ä»xmodemè·å–çš„ä¿¡æ¯ï¼Œ
+//size <= 128
 u8 xmodem_save(u8* buff, u8 size)
 {
-
+	buff = buff;
+	size = size;
 	return 0;
 }
 
@@ -62,11 +65,11 @@ void xmodem_init(u8* rx_buf)
 	xm_rx.rx_buf = rx_buf;
 	xm_rx.rx_ok_cnt = 0;
 
-	//¹Ø±ÕÖĞ¶Ï£¬±ÜÃâÓ°Ïì³¬Ê±µÄ¾«¶È
+	//å…³é—­ä¸­æ–­ï¼Œé¿å…å½±å“è¶…æ—¶çš„ç²¾åº¦
 	EA = 0;
-	if(0 == xmodem_rx(&xm_rx))
+	if (0 == xmodem_rx(&xm_rx))
 	{
-		xm_rx.delay_1s(); //ÑÓÊ±µÈ´ıÍË³ö¡£
+		xm_rx.delay_1s(); //å»¶æ—¶ç­‰å¾…é€€å‡ºã€‚
 		EA = 1;
 		Uart1_Tx("\r\nXMODEM OK CNT: ");
 		Uart1_Tx(hex2str(xm_rx.rx_ok_cnt));
@@ -74,9 +77,9 @@ void xmodem_init(u8* rx_buf)
 	}
 	else
 	{
-		xm_rx.delay_1s(); //ÑÓÊ±µÈ´ıÍË³ö¡£
+		xm_rx.delay_1s(); //å»¶æ—¶ç­‰å¾…é€€å‡ºã€‚
 		EA = 1;
-		Uart1_Tx("\r\nXMODEM RX ERROR\r\n");	
+		Uart1_Tx("\r\nXMODEM RX ERROR\r\n");
 	}
 }
 

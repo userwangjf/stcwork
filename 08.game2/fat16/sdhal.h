@@ -1,5 +1,5 @@
 /******************************************************************************
-** Descriptions:		sd ¿¨Çı¶¯Èí¼ş°ü: Ó²¼ş³éÏó²ã ---- SPI²Ù×÷º¯ÊıÍ·ÎÄ¼ş
+** Descriptions:		sd å¡é©±åŠ¨è½¯ä»¶åŒ…: ç¡¬ä»¶æŠ½è±¡å±‚ ---- SPIæ“ä½œå‡½æ•°å¤´æ–‡ä»¶
 ******************************************************************************/
 
 #ifndef __SDHAL_H__
@@ -10,34 +10,34 @@
 #include "sdcmd.h"
 #include "sdcrc.h"
 
-/*³õÊ¼»¯SPI×ÜÏß	init SPI BUS*/
+/*åˆå§‹åŒ–SPIæ€»çº¿	init SPI BUS*/
 void SPI_INIT(void);
 
-/* ¼ì²â¿¨ÊÇ·ñÍêÈ«²åÈë  check weather card is insert entirely */
+/* æ£€æµ‹å¡æ˜¯å¦å®Œå…¨æ’å…¥  check weather card is insert entirely */
 extern INT8U SD_ChkCard(void);
 
-/* ¼ì²â¿¨ÊÇ·ñĞ´±£»¤  check weather card is write protect */
+/* æ£€æµ‹å¡æ˜¯å¦å†™ä¿æŠ¤  check weather card is write protect */
 extern INT8U SD_ChkCardWP(void);
 
-/* ³õÊ¼»¯·ÃÎÊSD¿¨µÄÓ²¼ş³õÊ¼»¯ initialize the hardware that access sd card */
+/* åˆå§‹åŒ–è®¿é—®SDå¡çš„ç¡¬ä»¶åˆå§‹åŒ– initialize the hardware that access sd card */
 extern void SD_HardWareInit(void);
 
-/* ÉèÖÃSPIµÄÊ±ÖÓĞ¡ÓÚ400kHZ set the clock of SPI less than 400kHZ */
+/* è®¾ç½®SPIçš„æ—¶é’Ÿå°äº400kHZ set the clock of SPI less than 400kHZ */
 extern void SPI_Clk400k(void);
 
-/* ÉèÖÃSPIµÄclockµ½×î´óÖµ set the clock of SPI to maximum */
+/* è®¾ç½®SPIçš„clockåˆ°æœ€å¤§å€¼ set the clock of SPI to maximum */
 extern void SPI_ClkToMax(void);
 
-/* Í¨¹ıSPI½Ó¿Ú·¢ËÍÒ»¸ö×Ö½Ú send a byte by SPI interface */
+/* é€šè¿‡SPIæ¥å£å‘é€ä¸€ä¸ªå­—èŠ‚ send a byte by SPI interface */
 extern void SPI_SendByte(INT8U byte);
 
-/* ´ÓSPI½Ó¿Ú½ÓÊÕÒ»¸ö×Ö½Ú receive a byte from SPI interface */
+/* ä»SPIæ¥å£æ¥æ”¶ä¸€ä¸ªå­—èŠ‚ receive a byte from SPI interface */
 extern INT8U SPI_RecByte(void);
 
-/* Æ¬Ñ¡SPI´Ó»ú select the SPI slave */
+/* ç‰‡é€‰SPIä»æœº select the SPI slave */
 extern void SPI_CS_Assert(void);
 
-/* ²»Æ¬Ñ¡SPI´Ó»ú not select the SPI slave */
+/* ä¸ç‰‡é€‰SPIä»æœº not select the SPI slave */
 extern void SPI_CS_Deassert(void);
 
 #endif

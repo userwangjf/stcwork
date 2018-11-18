@@ -4,26 +4,26 @@
 
 #include	"config.h"
 
-//	Ñ¡ÔñMCUÐÍºÅ
+//	é€‰æ‹©MCUåž‹å·
 #define	MCU_Type	STC15F_L2K08S2	//STC15F_L2K08S2, STC15F_L2K16S2, STC15F_L2K24S2, STC15F_L2K32S2, STC15F_L2K40S2, STC15F_L2K48S2, STC15F_L2K56S2, STC15F_L2K60S2, IAP15F_L2K61S2
 
 
 /************************** ISP/IAP *****************************
- IAPÏµÁÐ ¿ÉÒÔÔÚÓ¦ÓÃ³ÌÐòÐÞ¸ÄÓ¦ÓÃ³ÌÐò¡£
+ IAPç³»åˆ— å¯ä»¥åœ¨åº”ç”¨ç¨‹åºä¿®æ”¹åº”ç”¨ç¨‹åºã€‚
 
-STC15F/L2KxxS2	ÉÈÇø·ÖÅä£¬512×Ö½Ú/ÉÈÇø£¬´Ó0x0000¿ªÊ¼¡£
+STC15F/L2KxxS2	æ‰‡åŒºåˆ†é…ï¼Œ512å­—èŠ‚/æ‰‡åŒºï¼Œä»Ž0x0000å¼€å§‹ã€‚
 
-     ÐÍºÅ        ´óÐ¡   ÉÈÇøÊý  ¿ªÊ¼µØÖ·  ½áÊøµØÖ·   MOVC¶ÁÆ«ÒÆµØÖ·
-STC15F/L2K08S2   53K   106ÉÈÇø  0x0000  ~  0xD3FF        0x2000
-STC15F/L2K16S2   45K    90ÉÈÇø  0x0000  ~  0xB3FF        0x4000
-STC15F/L2K24S2   37K    74ÉÈÇø  0x0000  ~  0x93FF        0x6000
-STC15F/L2K32S2   29K    58ÉÈÇø  0x0000  ~  0x73FF        0x8000
-STC15F/L2K40S2   21K    42ÉÈÇø  0x0000  ~  0x53FF        0xA000
-STC15F/L2K48S2   13K    26ÉÈÇø  0x0000  ~  0x33FF        0xC000
-STC15F/L2K56S2   5K     10ÉÈÇø  0x0000  ~  0x13FF        0xE000
-STC15F/L2K60S2   1K      2ÉÈÇø  0x0000  ~  0x03FF        0xF000
+     åž‹å·        å¤§å°   æ‰‡åŒºæ•°  å¼€å§‹åœ°å€  ç»“æŸåœ°å€   MOVCè¯»åç§»åœ°å€
+STC15F/L2K08S2   53K   106æ‰‡åŒº  0x0000  ~  0xD3FF        0x2000
+STC15F/L2K16S2   45K    90æ‰‡åŒº  0x0000  ~  0xB3FF        0x4000
+STC15F/L2K24S2   37K    74æ‰‡åŒº  0x0000  ~  0x93FF        0x6000
+STC15F/L2K32S2   29K    58æ‰‡åŒº  0x0000  ~  0x73FF        0x8000
+STC15F/L2K40S2   21K    42æ‰‡åŒº  0x0000  ~  0x53FF        0xA000
+STC15F/L2K48S2   13K    26æ‰‡åŒº  0x0000  ~  0x33FF        0xC000
+STC15F/L2K56S2   5K     10æ‰‡åŒº  0x0000  ~  0x13FF        0xE000
+STC15F/L2K60S2   1K      2æ‰‡åŒº  0x0000  ~  0x03FF        0xF000
 
-STC15F/L2K61S2   ÎÞEPROM, Õû¸ö122ÉÈÇøµÄFLASH¶¼¿ÉÒÔ²ÁÐ´ µØÖ· 0x0000~0xF3ff.
+STC15F/L2K61S2   æ— EPROM, æ•´ä¸ª122æ‰‡åŒºçš„FLASHéƒ½å¯ä»¥æ“¦å†™ åœ°å€ 0x0000~0xF3ff.
 
 */
 

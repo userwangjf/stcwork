@@ -1,47 +1,47 @@
 
 /*
-²Ù×÷ÏµÍ³ÌØµã£º
-1¡¢Ê¹ÓÃÁ´±íÀ´¶ÔÈÎÎñÅÅÐò£¬È·±£×îÐÂÐèÒªÖ´ÐÐµÄÈÎÎñÎ»ÓÚÁ´±íÍ·¡£
-2¡¢×î´ó¿ÉÓÃÈÎÎñÊýÎªOS_TSK_MAX-1¡£
-3¡¢ÈÎÎñÐèÒªÖ÷¶¯·ÅÆú¡£
-4¡¢tick·­×ªÊ±£¬²»»áÂ©µô²Ù×÷¡£
+æ“ä½œç³»ç»Ÿç‰¹ç‚¹ï¼š
+1ã€ä½¿ç”¨é“¾è¡¨æ¥å¯¹ä»»åŠ¡æŽ’åºï¼Œç¡®ä¿æœ€æ–°éœ€è¦æ‰§è¡Œçš„ä»»åŠ¡ä½äºŽé“¾è¡¨å¤´ã€‚
+2ã€æœ€å¤§å¯ç”¨ä»»åŠ¡æ•°ä¸ºOS_TSK_MAX-1ã€‚
+3ã€ä»»åŠ¡éœ€è¦ä¸»åŠ¨æ”¾å¼ƒã€‚
+4ã€tickç¿»è½¬æ—¶ï¼Œä¸ä¼šæ¼æŽ‰æ“ä½œã€‚
 
-5¡¢tick
-	a¡¢Ö§³Öus¼¶±ðµÄtick
-	b¡¢Ê¹ÓÃ16bitµÄtimer×÷ÎªtickµÄµÍ16bit
-	c¡¢32bitµÄtick£¬Ê¹ÓÃµÍ24bitµÄtick£¬12M¾§ÕñÊ±£¬Ö§³Öµ½Ãë¼¶ÑÓÊ±
-	d¡¢¸ß8bitµÄtick£¬ÓÃ×÷ÆäËü±ê¼Ç¡£
+5ã€tick
+	aã€æ”¯æŒusçº§åˆ«çš„tick
+	bã€ä½¿ç”¨16bitçš„timerä½œä¸ºtickçš„ä½Ž16bit
+	cã€32bitçš„tickï¼Œä½¿ç”¨ä½Ž24bitçš„tickï¼Œ12Mæ™¶æŒ¯æ—¶ï¼Œæ”¯æŒåˆ°ç§’çº§å»¶æ—¶
+	dã€é«˜8bitçš„tickï¼Œç”¨ä½œå…¶å®ƒæ ‡è®°ã€‚
 
-6¡¢ÈçºÎÖ§³ÖÈÎÎñÓÅÏÈ¼¶£¿
+6ã€å¦‚ä½•æ”¯æŒä»»åŠ¡ä¼˜å…ˆçº§ï¼Ÿ
 
 
 */
 
 #include "bsp/config.h"
 
-//ÈÎÎñÐÅÏ¢list,Ã¿ÏîÕ¼ÓÃ9B
+//ä»»åŠ¡ä¿¡æ¯list,æ¯é¡¹å ç”¨9B
 os_task OS_DATA 	os_taskInfo[OS_TSK_MAX];
 
-//°´taskÑÓÊ±ÅÅÐòµÄtaskid
-//±¾Êý×éµÄos_taskIdÖ¸ÏòµÄos_taskÊÇË³ÐòµÄ
+//æŒ‰taskå»¶æ—¶æŽ’åºçš„taskid
+//æœ¬æ•°ç»„çš„os_taskIdæŒ‡å‘çš„os_taskæ˜¯é¡ºåºçš„
 u8		OS_DATA		os_taskSort[OS_TSK_MAX];
-//task½øÈëÒç³ö¡¢µÈ´ý×´Ì¬µÄÍ³¼Æ¡£
+//taskè¿›å…¥æº¢å‡ºã€ç­‰å¾…çŠ¶æ€çš„ç»Ÿè®¡ã€‚
 u8		OS_DATA		os_taskWaitNum = 0;
 
-//¶¨Ê±tick·­×ª±ê¼Ç
+//å®šæ—¶tickç¿»è½¬æ ‡è®°
 u8 		OS_DATA 	os_tickFlip = 0x00;
-//32bitµÄÏµÍ³tick£¬ÓÃÓÚ¶¨Ê±¡£
-//Ö»Ê¹ÓÃ¸ß16bit£¬ÆäÖÐbit[31:24]ÓÃÓÚÅÐ¶ÏÒç³ö
-//bit[23:16]ºÏ²¢µ½os_curTickµÄ[23:16]
+//32bitçš„ç³»ç»Ÿtickï¼Œç”¨äºŽå®šæ—¶ã€‚
+//åªä½¿ç”¨é«˜16bitï¼Œå…¶ä¸­bit[31:24]ç”¨äºŽåˆ¤æ–­æº¢å‡º
+//bit[23:16]åˆå¹¶åˆ°os_curTickçš„[23:16]
 os_u32 	OS_DATA 	os_sysTick = {0};
-//24bitµÄµ±Ç°tick£¬ÓÃÓÚµ÷¶È¡£
+//24bitçš„å½“å‰tickï¼Œç”¨äºŽè°ƒåº¦ã€‚
 os_u32 	OS_DATA 	os_curTick = {0};
 
-#define OS_WAIT			0xff		//ÈÎÎñµÈ´ý×´Ì¬
-#define OS_OVERTIME		0x01		//ÈÎÎñÒç³ö×´Ì¬
+#define OS_WAIT			0xff		//ä»»åŠ¡ç­‰å¾…çŠ¶æ€
+#define OS_OVERTIME		0x01		//ä»»åŠ¡æº¢å‡ºçŠ¶æ€
 
 
-//¶þ·Ö·¨²éÕÒ´óÓÚµ±Ç°delayµÄÎ»ÖÃ
+//äºŒåˆ†æ³•æŸ¥æ‰¾å¤§äºŽå½“å‰delayçš„ä½ç½®
 s8 os_seekGt(u32 delay)
 {
 	s8 low = 0;
@@ -64,7 +64,7 @@ void os_init()
 {
 	int i;
 
-	//³õÊ¼»¯ÈÎÎñµÄº¯ÊýÖ¸Õë
+	//åˆå§‹åŒ–ä»»åŠ¡çš„å‡½æ•°æŒ‡é’ˆ
 	for(i=0;i<OS_TSK_MAX;i++)
 	{
 	    os_taskInfo[i].os_timer.dword = 0xffffffff;
@@ -79,16 +79,16 @@ void os_init()
 
 
 /*
-¸ù¾ÝdelayÖµµÄ±ä»¯£¬ÖØÐÂÅÅÐò¡£
+æ ¹æ®delayå€¼çš„å˜åŒ–ï¼Œé‡æ–°æŽ’åºã€‚
 */
 void os_taskUpdate(u8 task_id, u32 delay)
 {
 	s8 pos;
 	s8 i;
 
-	//¸ù¾Ýdelay£¬ËÑË÷ÐèÒª²åÈëµÄÎ»ÖÃ
+	//æ ¹æ®delayï¼Œæœç´¢éœ€è¦æ’å…¥çš„ä½ç½®
 	pos = os_seekGt(delay);
-	if(pos == task_id)//Ö±½Ó¸üÐÂ
+	if(pos == task_id)//ç›´æŽ¥æ›´æ–°
 	{
 		os_taskInfo[task_id].os_timer.dword = delay;	
 	}
@@ -117,8 +117,8 @@ void os_taskUpdate2(u8 task_id, u32 delay)
 	s8 pos;
 	s8 i;
 
-	//¸ù¾Ýdelay£¬ËÑË÷ÐèÒª²åÈëµÄÎ»ÖÃ
-	//µ±Ç°Ö´ÐÐµÄÈÎÎñ£¬Ä¬ÈÏÔÚ0
+	//æ ¹æ®delayï¼Œæœç´¢éœ€è¦æ’å…¥çš„ä½ç½®
+	//å½“å‰æ‰§è¡Œçš„ä»»åŠ¡ï¼Œé»˜è®¤åœ¨0
 	pos = os_seekGt(delay);
 	for(i=1;i<pos;i++)
 	{
@@ -130,26 +130,26 @@ void os_taskUpdate2(u8 task_id, u32 delay)
 
 
 /*
-´´½¨ÐÂµÄÈÎÎñ
-²ÎÊý
-task_id		:	ÐÂµÄÈÎÎñid
-task_func	:   ÈÎÎñµÄº¯Êý
-delay		:	ÑÓÊ±Æô¶¯£¬±ØÐë´óÓÚ0.
+åˆ›å»ºæ–°çš„ä»»åŠ¡
+å‚æ•°
+task_id		:	æ–°çš„ä»»åŠ¡id
+task_func	:   ä»»åŠ¡çš„å‡½æ•°
+delay		:	å»¶æ—¶å¯åŠ¨ï¼Œå¿…é¡»å¤§äºŽ0.
 */
 void os_taskCreate(u8 task_id, void (code *task_func)(void), u32 delay)
 {
 	u32 new_delay;
 
-	//ÈÎÎñº¯Êý
+	//ä»»åŠ¡å‡½æ•°
 	os_taskInfo[task_id].os_func = task_func;
 	
-	//´´½¨ÐÂµÄÈÎÎñ£¬ÐèÒª´Óµ±Ç°tick¿ªÊ¼ÑÓÊ±¡£
+	//åˆ›å»ºæ–°çš„ä»»åŠ¡ï¼Œéœ€è¦ä»Žå½“å‰tickå¼€å§‹å»¶æ—¶ã€‚
 	os_updateTick();
 	new_delay = os_curTick.dword + delay;
 	
 	os_taskUpdate(task_id,new_delay);
 
-	//ÈÎÎñÒç³ö£¬Ôò¼ÇÂ¼
+	//ä»»åŠ¡æº¢å‡ºï¼Œåˆ™è®°å½•
 	if(os_taskInfo[task_id].os_timer.byte[0] != 0)os_taskWaitNum++;
 
 	
@@ -158,7 +158,7 @@ void os_taskCreate(u8 task_id, void (code *task_func)(void), u32 delay)
 
 
 /*
-½«ÈÎÎñ¹ÒÆð£¬Ò»°ãÈÎÎñ×Ô¼º¹ÒÆð¡£
+å°†ä»»åŠ¡æŒ‚èµ·ï¼Œä¸€èˆ¬ä»»åŠ¡è‡ªå·±æŒ‚èµ·ã€‚
 */
 void os_taskSuspend(u8 task_id)
 {
@@ -168,7 +168,7 @@ void os_taskSuspend(u8 task_id)
 }
 
 /*
-»½ÐÑÈÎÎñ£¬Ò»°ãÔÚÖÐ¶ÏÖÐ»½ÐÑ¡£
+å”¤é†’ä»»åŠ¡ï¼Œä¸€èˆ¬åœ¨ä¸­æ–­ä¸­å”¤é†’ã€‚
 */
 void os_taskResume(u8 task_id)
 {
@@ -176,7 +176,7 @@ void os_taskResume(u8 task_id)
 	os_taskUpdate(task_id,os_curTick.dword);	
 }
 
-//Ïà¶ÔµÄÈÎÎñÑÓÊ±
+//ç›¸å¯¹çš„ä»»åŠ¡å»¶æ—¶
 void os_addDelay(u8 task_id, u32 delay)
 {
 	u8 tmp;
@@ -187,13 +187,13 @@ void os_addDelay(u8 task_id, u32 delay)
 	new_delay = os_curTick.dword + delay;
 	os_taskUpdate2(task_id,new_delay);
 
-	//ÈÎÎñµÄos_timerÒç³ö
+	//ä»»åŠ¡çš„os_timeræº¢å‡º
 	if((os_taskInfo[task_id].os_timer.byte[0] == 0x01) && (tmp == 0x0))
 		os_taskWaitNum++;
 
 }
 
-//ÖÜÆÚÐÔµÄÈÎÎñ¶¨Ê±
+//å‘¨æœŸæ€§çš„ä»»åŠ¡å®šæ—¶
 void os_addPeriod(u8 task_id, u32 delay)
 {
 	u8 tmp;
@@ -203,7 +203,7 @@ void os_addPeriod(u8 task_id, u32 delay)
 	new_delay = os_taskInfo[task_id].os_timer.dword + delay;
 	os_taskUpdate2(task_id,new_delay);
 
-	//ÈÎÎñµÄos_timerÒç³ö
+	//ä»»åŠ¡çš„os_timeræº¢å‡º
 	if((os_taskInfo[task_id].os_timer.byte[0] == 0x01) && (tmp == 0x0))
 		os_taskWaitNum++;
 }
@@ -212,7 +212,7 @@ void os_runing()
 {
 	os_start();
 	
-	//os_taskSort[0]±£´æµ±Ç°×îÐ¡tickµÄÈÎÎñid¡£
+	//os_taskSort[0]ä¿å­˜å½“å‰æœ€å°tickçš„ä»»åŠ¡idã€‚
 	if(os_curTick.dword >= os_taskInfo[os_taskSort[0]].os_timer.dword)
 	{
 	   	os_taskInfo[os_taskSort[0]].os_func(os_taskSort[0]);
@@ -225,26 +225,26 @@ void os_runing()
 }
 
 /*
-ÔÚÖÜÆÚÐÔ¶¨Ê±Ê±£¬Èç¹ûtickÒÑ¾­Òç³ö£¬µ«Î´Ö´ÐÐÍê±Ï£¬Ôò·ÅÆú¡£
+åœ¨å‘¨æœŸæ€§å®šæ—¶æ—¶ï¼Œå¦‚æžœtickå·²ç»æº¢å‡ºï¼Œä½†æœªæ‰§è¡Œå®Œæ¯•ï¼Œåˆ™æ”¾å¼ƒã€‚
 
-Ä³ÈÎÎñÃ»ÓÐÖ´ÐÐµÄÔ­Òò£º
-ÆäËüÈÎÎñµÄ´óÑÓÊ±£¬´óÓÚÄ³ÈÎÎñµÄÖÜÆÚ¡£
+æŸä»»åŠ¡æ²¡æœ‰æ‰§è¡Œçš„åŽŸå› ï¼š
+å…¶å®ƒä»»åŠ¡çš„å¤§å»¶æ—¶ï¼Œå¤§äºŽæŸä»»åŠ¡çš„å‘¨æœŸã€‚
 */
 void os_start(void)
 {
 	u8 i;
 
-	//±¾ÂÖtickÒÑ¾­Òç³ö
+	//æœ¬è½®tickå·²ç»æº¢å‡º
 	if(os_tickFlip != os_sysTick.byte[0])
 	{
-		//ÏÈ»ñÈ¡os_curTickµÄµÍ24bit
+		//å…ˆèŽ·å–os_curTickçš„ä½Ž24bit
 		os_updateTick();
-		//ÉèÖÃos_curTickÎªÒç³öÖµ£¬¿ÉÒÔÈ·±£ËùÓÐÈÎÎñÄÜÖ´ÐÐÍê±Ï
+		//è®¾ç½®os_curTickä¸ºæº¢å‡ºå€¼ï¼Œå¯ä»¥ç¡®ä¿æ‰€æœ‰ä»»åŠ¡èƒ½æ‰§è¡Œå®Œæ¯•
 		os_curTick.byte[0] = OS_OVERTIME;
-		//ËùÓÐµÄÈÎÎñÔÚ±¾ÂÖ¶¼Ö´ÐÐÍê±ÏÁË
+		//æ‰€æœ‰çš„ä»»åŠ¡åœ¨æœ¬è½®éƒ½æ‰§è¡Œå®Œæ¯•äº†
 		if(os_taskWaitNum >= OS_TSK_MAX)
 		{
-			//Çå³ýÒç³ö×´Ì¬µÄÈÎÎñµÄ¸ßÎ»×Ö½Ú
+			//æ¸…é™¤æº¢å‡ºçŠ¶æ€çš„ä»»åŠ¡çš„é«˜ä½å­—èŠ‚
 			for(i=0;i<OS_TSK_MAX;i++)
 			{
 				if(os_taskInfo[i].os_timer.byte[0] == OS_OVERTIME)
@@ -254,16 +254,16 @@ void os_start(void)
 				}
 			}
 			
-			//Çå³ýos_curTickµÄ¸ß8bit£¬os_curTick»Ö¸´Îª24bit
+			//æ¸…é™¤os_curTickçš„é«˜8bitï¼Œos_curTickæ¢å¤ä¸º24bit
 			os_curTick.byte[0] = 0x0;
 			
-			//±£´æµ±Ç°¸ß8bit£¬ÓÃÓÚÏÂÒ»´ÎÒç³öÅÐ¶Ï
+			//ä¿å­˜å½“å‰é«˜8bitï¼Œç”¨äºŽä¸‹ä¸€æ¬¡æº¢å‡ºåˆ¤æ–­
 			os_tickFlip = os_sysTick.byte[0];	
 		}
 	}
 	else
 	{
-		//»ñÈ¡24bitµÄos_curTick
+		//èŽ·å–24bitçš„os_curTick
 		os_updateTick();
 	}
 
@@ -272,15 +272,15 @@ void os_start(void)
 
 
 	/*
-	//Òç³ö
+	//æº¢å‡º
 	if(os_tickFlip != os_sysTick.byte[0])
 	{
 		for(i=0;i<OS_TSK_MAX;i++)
 		{
-			//Èç¹ûÓÐÈÎÎñÎ´Òç³ö£¬ÔòµÈ´ýÍê³É
+			//å¦‚æžœæœ‰ä»»åŠ¡æœªæº¢å‡ºï¼Œåˆ™ç­‰å¾…å®Œæˆ
 			if(os_taskInfo[i].os_timer.byte[0] == 0)
 			{
-				//ÉèÖÃtickÎª×î´óÖµ
+				//è®¾ç½®tickä¸ºæœ€å¤§å€¼
 				os_curTick.byte[3] = 0xff;
 				os_curTick.byte[2] = 0xff;
 				os_curTick.byte[1] = 0xff;
@@ -294,15 +294,15 @@ void os_start(void)
 
 		os_tickFlip = os_sysTick.byte[0];
 
-		//´¦ÀíÈÎÎñµÄtickÒç³ö¡£
+		//å¤„ç†ä»»åŠ¡çš„tickæº¢å‡ºã€‚
 		for(i=0;i<OS_TSK_MAX;i++)
 		{
-			if(os_taskInfo[i].os_timer.byte[0] == 0xff)//¿ÕµÄÈÎÎñ
+			if(os_taskInfo[i].os_timer.byte[0] == 0xff)//ç©ºçš„ä»»åŠ¡
 				continue;
-			else if(os_taskInfo[i].os_timer.byte[0] != 0)//Òç³ö£¬É¾³ý¸ß×Ö½Ú
+			else if(os_taskInfo[i].os_timer.byte[0] != 0)//æº¢å‡ºï¼Œåˆ é™¤é«˜å­—èŠ‚
 				os_taskInfo[i].os_timer.byte[0] = 0;
 
-			//tick¸Ä±ä£¬ÐèÒªÖØÐÂÅÅÐò¡£
+			//tickæ”¹å˜ï¼Œéœ€è¦é‡æ–°æŽ’åºã€‚
 			os_updateDelay(i,os_taskInfo[i].os_timer.dword);
 		}
 
@@ -340,27 +340,27 @@ void os_debug()
 }
 #endif
 
-//´Ëº¯Êý·ÅÔÚ¶¨Ê±Æ÷Òç³öÖÐ¶ÏÀï¡£
-//¶¨Ê±Æ÷µÄ¼ÆÊ±·¶Î§£º0~65535
-//²Ù×÷ÏµÍ³¶¨Ê±£¬µÍ2BÀ´×Ôtimer.
-//Ö»ÓÃµÍ24bit¡£×î´ó¿ÉÒÔÖ§³Ö16ÃëµÄ¶¨Ê±¡£
+//æ­¤å‡½æ•°æ”¾åœ¨å®šæ—¶å™¨æº¢å‡ºä¸­æ–­é‡Œã€‚
+//å®šæ—¶å™¨çš„è®¡æ—¶èŒƒå›´ï¼š0~65535
+//æ“ä½œç³»ç»Ÿå®šæ—¶ï¼Œä½Ž2Bæ¥è‡ªtimer.
+//åªç”¨ä½Ž24bitã€‚æœ€å¤§å¯ä»¥æ”¯æŒ16ç§’çš„å®šæ—¶ã€‚
 void os_incTick(void)
 {
 	os_sysTick.dword += 0x10000;
 }
 
 /*
-ÔÚÐèÒªµÄÊ±ºò£¬¸üÐÂÏµÍ³µÄtickµ½os_curTick£¬ÓÃÓÚµ÷¶È¡£
-Ä¬ÈÏÖ»Ê¹ÓÃos_sysTickµÄµÍ24bit¡£
-»ñÈ¡us¼¶±ðµÄÊ±¼ä´Á£¬ÓÃÓÚ·ÇÖÐ¶ÏÖÐ¡£
+åœ¨éœ€è¦çš„æ—¶å€™ï¼Œæ›´æ–°ç³»ç»Ÿçš„tickåˆ°os_curTickï¼Œç”¨äºŽè°ƒåº¦ã€‚
+é»˜è®¤åªä½¿ç”¨os_sysTickçš„ä½Ž24bitã€‚
+èŽ·å–usçº§åˆ«çš„æ—¶é—´æˆ³ï¼Œç”¨äºŽéžä¸­æ–­ä¸­ã€‚
 */
 void os_updateTick(void)
 {
 	os_curTick.byte[3] = TL0;
 	os_curTick.byte[2] = TH0;
-	os_curTick.byte[1] = os_sysTick.byte[1];//Ö»¶Á1¸öbyte£¬²»ÓÃ¹Ø±ÕÖÐ¶Ï¡£
+	os_curTick.byte[1] = os_sysTick.byte[1];//åªè¯»1ä¸ªbyteï¼Œä¸ç”¨å…³é—­ä¸­æ–­ã€‚
 	//os_curTick.byte[0] = os_sysTick.byte[0];
-	//¶¨Ê±Æ÷·¢Éú·´×ª£¬ÖØÐÂ»ñÈ¡
+	//å®šæ—¶å™¨å‘ç”Ÿåè½¬ï¼Œé‡æ–°èŽ·å–
 	if(os_curTick.byte[3] > TL0)
 	{
 		os_curTick.byte[3] = TL0;
@@ -371,9 +371,9 @@ void os_updateTick(void)
 }
 
 /*
-»ñÈ¡us¼¶±ðµÄÊ±¼ä´Á£¬ÓÃÓÚÖÐ¶ÏÖÐ¡£
-ÔÚÖÐ¶ÏÖÐ£¬ÐèÒªÈ·±£os_incTickÊÇ×î¸ßÓÅÏÈ¼¶£¬²ÅÄÜ±£Ö¤
-os_tickCurrÕý³£µÝÔö
+èŽ·å–usçº§åˆ«çš„æ—¶é—´æˆ³ï¼Œç”¨äºŽä¸­æ–­ä¸­ã€‚
+åœ¨ä¸­æ–­ä¸­ï¼Œéœ€è¦ç¡®ä¿os_incTickæ˜¯æœ€é«˜ä¼˜å…ˆçº§ï¼Œæ‰èƒ½ä¿è¯
+os_tickCurræ­£å¸¸é€’å¢ž
 */
 u32 os_getTick(void)
 {
@@ -384,7 +384,7 @@ u32 os_getTick(void)
 	tick.byte[1] = os_sysTick.byte[1];
 	tick.byte[0] = 0x00;
 
-	//TL0·­×ª£¬ÔòÖØ¶Á
+	//TL0ç¿»è½¬ï¼Œåˆ™é‡è¯»
 	if(tick.byte[3] > TL0)
 	{
 		tick.byte[3] = TL0;

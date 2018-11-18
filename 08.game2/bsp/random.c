@@ -2,7 +2,7 @@
 #include "bsp/config.h"
 #include "bsp/bsp.h"
 
-//Ê¹ÓÃ¼ÆÊıÆ÷0¡¢1À´²úÉúËæ»úÊı
+//ä½¿ç”¨è®¡æ•°å™¨0ã€1æ¥äº§ç”Ÿéšæœºæ•°
 u8 random()
 {
 	u8 temp[2];

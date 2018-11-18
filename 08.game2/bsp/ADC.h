@@ -4,22 +4,22 @@
 
 #include	"config.h"
 
-#define	ADC_P10		0x01	//IOÒý½Å Px.0
-#define	ADC_P11		0x02	//IOÒý½Å Px.1
-#define	ADC_P12		0x04	//IOÒý½Å Px.2
-#define	ADC_P13		0x08	//IOÒý½Å Px.3
-#define	ADC_P14		0x10	//IOÒý½Å Px.4
-#define	ADC_P15		0x20	//IOÒý½Å Px.5
-#define	ADC_P16		0x40	//IOÒý½Å Px.6
-#define	ADC_P17		0x80	//IOÒý½Å Px.7
-#define	ADC_P1_All	0xFF	//IOËùÓÐÒý½Å
+#define	ADC_P10		0x01	//IOå¼•è„š Px.0
+#define	ADC_P11		0x02	//IOå¼•è„š Px.1
+#define	ADC_P12		0x04	//IOå¼•è„š Px.2
+#define	ADC_P13		0x08	//IOå¼•è„š Px.3
+#define	ADC_P14		0x10	//IOå¼•è„š Px.4
+#define	ADC_P15		0x20	//IOå¼•è„š Px.5
+#define	ADC_P16		0x40	//IOå¼•è„š Px.6
+#define	ADC_P17		0x80	//IOå¼•è„š Px.7
+#define	ADC_P1_All	0xFF	//IOæ‰€æœ‰å¼•è„š
 
 #define ADC_90T		(3<<5)
 #define ADC_180T	(2<<5)
 #define ADC_360T	(1<<5)
 #define ADC_540T	0
-#define ADC_FLAG	(1<<4)	//Èí¼þÇå0
-#define ADC_START	(1<<3)	//×Ô¶¯Çå0
+#define ADC_FLAG	(1<<4)	//è½¯ä»¶æ¸…0
+#define ADC_START	(1<<3)	//è‡ªåŠ¨æ¸…0
 #define ADC_CH0		0
 #define ADC_CH1		1
 #define ADC_CH2		2
@@ -35,12 +35,12 @@
 
 typedef struct
 {
-	u8	ADC_Px;			//ÉèÖÃÒª×öADCµÄIO,	ADC_P10 ~ ADC_P17,ADC_P1_All
-	u8	ADC_Speed;		//ADCËÙ¶È			ADC_90T,ADC_180T,ADC_360T,ADC_540T
-	u8	ADC_Power;		//ADC¹¦ÂÊÔÊÐí/¹Ø±Õ	ENABLE,DISABLE
-	u8	ADC_AdjResult;	//ADC½á¹ûµ÷Õû,	ADC_RES_H2L8,ADC_RES_H8L2
-	u8	ADC_Polity;		//ÓÅÏÈ¼¶ÉèÖÃ	PolityHigh,PolityLow
-	u8	ADC_Interrupt;	//ÖÐ¶ÏÔÊÐí		ENABLE,DISABLE
+	u8	ADC_Px;			//è®¾ç½®è¦åšADCçš„IO,	ADC_P10 ~ ADC_P17,ADC_P1_All
+	u8	ADC_Speed;		//ADCé€Ÿåº¦			ADC_90T,ADC_180T,ADC_360T,ADC_540T
+	u8	ADC_Power;		//ADCåŠŸçŽ‡å…è®¸/å…³é—­	ENABLE,DISABLE
+	u8	ADC_AdjResult;	//ADCç»“æžœè°ƒæ•´,	ADC_RES_H2L8,ADC_RES_H8L2
+	u8	ADC_Polity;		//ä¼˜å…ˆçº§è®¾ç½®	PolityHigh,PolityLow
+	u8	ADC_Interrupt;	//ä¸­æ–­å…è®¸		ENABLE,DISABLE
 } ADC_InitTypeDef;
 
 void	ADC_Inilize(ADC_InitTypeDef *ADCx);

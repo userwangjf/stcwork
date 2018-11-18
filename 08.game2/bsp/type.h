@@ -15,7 +15,6 @@ typedef     bit				bool;
 
 #define NULL ((void *)0)
 
-
 #else
 
 typedef 	unsigned char	u8;

@@ -1,5 +1,5 @@
 /******************************************************************************************************
-** Descriptions:		sd ¿¨Çı¶¯Èí¼ş°ü: SD¿¨ÎïÀí²ã ---- SD¿¨SPIÄ£Ê½Ö§³ÖµÄÃüÁî(Í·ÎÄ¼ş)
+** Descriptions:		sd å¡é©±åŠ¨è½¯ä»¶åŒ…: SDå¡ç‰©ç†å±‚ ---- SDå¡SPIæ¨¡å¼æ”¯æŒçš„å‘½ä»¤(å¤´æ–‡ä»¶)
 ********************************************************************************************************/
 #ifndef 	__sdcmd_h
 #define 	__sdcmd_h
@@ -12,18 +12,18 @@
 /*
  *******************************************************
 
-		SD ¿¨µÄÏà¹ØÃüÁîÓëÏìÓ¦ºê¶¨Òå
+		SD å¡çš„ç›¸å…³å‘½ä»¤ä¸å“åº”å®å®šä¹‰
 
  *******************************************************
 */
 
-/* ÃüÁîÏìÓ¦¶¨Òå define command's response */
+/* å‘½ä»¤å“åº”å®šä¹‰ define command's response */
 #define R1 		1
 #define R1B 	2
 #define R2 		3
 #define R3 		4
 
-/* R1ºÍR2¸ß×Ö½Ú´íÎóÂë R1 and upper byte of R2 error code */
+/* R1å’ŒR2é«˜å­—èŠ‚é”™è¯¯ç  R1 and upper byte of R2 error code */
 #define MSK_IDLE          		  0x01
 #define MSK_ERASE_RST     		  0x02
 #define MSK_ILL_CMD       		  0x04
@@ -32,91 +32,91 @@
 #define MSK_ADDR_ERR      		  0x20
 #define MSK_PARAM_ERR     		  0x40
 
-/* R2µÍ×Ö½Ú´íÎóÂë lower byte of R2 error code */
+/* R2ä½å­—èŠ‚é”™è¯¯ç  lower byte of R2 error code */
 #define MSK_TOK_ERROR             0x01
 #define MSK_TOK_CC_ERROR          0x02
 #define MSK_TOK_ECC_FAILED        0x04
 #define MSK_TOK_CC_OUTOFRANGE     0x08
 #define MSK_TOK_CC_LOCKED         0x10
 
-/* Êı¾İÁîÅÆ Data Tokens */
+/* æ•°æ®ä»¤ç‰Œ Data Tokens */
 #define SD_TOK_READ_STARTBLOCK    0xFE
 #define SD_TOK_WRITE_STARTBLOCK   0xFE
 #define SD_TOK_READ_STARTBLOCK_M  0xFE
 #define SD_TOK_WRITE_STARTBLOCK_M 0xFC
 #define SD_TOK_STOP_MULTI         0xFD
 
-/* Êı¾İÏìÓ¦ÁîÅÆ Data Response Tokens */
-#define SD_RESP_DATA_MSK		  0x0F		//Êı¾İÏìÓ¦ÑÚÂë
-#define SD_RESP_DATA_ACCETPTED	  0x05		//Êı¾İ±»½ÓÊÜ
-#define SD_RESP_DATA_REJECT_CRC	  0x0B      //ÓÉÓÚCRC´íÎó¶ø±»¾Ü¾ø
-#define SD_RESP_DATA_REJECT_WRITE 0x0D		//ÓÉÓÚĞ´´íÎó¶ø±»¾Ü¾ø
+/* æ•°æ®å“åº”ä»¤ç‰Œ Data Response Tokens */
+#define SD_RESP_DATA_MSK		  0x0F		//æ•°æ®å“åº”æ©ç 
+#define SD_RESP_DATA_ACCETPTED	  0x05		//æ•°æ®è¢«æ¥å—
+#define SD_RESP_DATA_REJECT_CRC	  0x0B      //ç”±äºCRCé”™è¯¯è€Œè¢«æ‹’ç»
+#define SD_RESP_DATA_REJECT_WRITE 0x0D		//ç”±äºå†™é”™è¯¯è€Œè¢«æ‹’ç»
 
-/* µÈ´ıÀàĞÍ Wait Type */
-#define SD_WAIT_READ			  0x00		//¶ÁµÈ´ı
-#define SD_WAIT_WRITE			  0x01		//Ğ´µÈ´ı
-#define SD_WAIT_ERASE		 	  0x02		//²Á³ıµÈ´ı
+/* ç­‰å¾…ç±»å‹ Wait Type */
+#define SD_WAIT_READ			  0x00		//è¯»ç­‰å¾…
+#define SD_WAIT_WRITE			  0x01		//å†™ç­‰å¾…
+#define SD_WAIT_ERASE		 	  0x02		//æ“¦é™¤ç­‰å¾…
 
 
 /**********************************************
 
-     SD¿¨SPIÄ£Ê½ÏÂÃüÁî¼¯
+     SDå¡SPIæ¨¡å¼ä¸‹å‘½ä»¤é›†
 
 **********************************************/
 
-/******************************** »ù±¾ÃüÁî¼¯ Basic command set **************************/
-/* ¸´Î»SD ¿¨ Reset cards to idle state */
+/******************************** åŸºæœ¬å‘½ä»¤é›† Basic command set **************************/
+/* å¤ä½SD å¡ Reset cards to idle state */
 #define CMD0 0
 #define CMD0_R R1
 
-/* ¶ÁOCR¼Ä´æÆ÷ Read the OCR (MMC mode, do not use for SD cards) */
+/* è¯»OCRå¯„å­˜å™¨ Read the OCR (MMC mode, do not use for SD cards) */
 #define CMD1 1
 #define CMD1_R R1
 
-/* ¶ÁCSD¼Ä´æÆ÷ Card sends the CSD */
+/* è¯»CSDå¯„å­˜å™¨ Card sends the CSD */
 #define CMD9 9
 #define CMD9_R R1
 
-/* ¶ÁCID¼Ä´æÆ÷ Card sends CID */
+/* è¯»CIDå¯„å­˜å™¨ Card sends CID */
 #define CMD10 10
 #define CMD10_R R1
 
-/* Í£Ö¹¶Á¶à¿éÊ±µÄÊı¾İ´«Êä Stop a multiple block (stream) read/write operation */
+/* åœæ­¢è¯»å¤šå—æ—¶çš„æ•°æ®ä¼ è¾“ Stop a multiple block (stream) read/write operation */
 #define CMD12 12
 #define CMD12_R R1B
 
-/* ¶Á Card_Status ¼Ä´æÆ÷ Get the addressed card's status register */
+/* è¯» Card_Status å¯„å­˜å™¨ Get the addressed card's status register */
 #define CMD13 13
 #define CMD13_R R2
 
-/***************************** ¿é¶ÁÃüÁî¼¯ Block read commands **************************/
+/***************************** å—è¯»å‘½ä»¤é›† Block read commands **************************/
 
-/* ÉèÖÃ¿éµÄ³¤¶È Set the block length */
+/* è®¾ç½®å—çš„é•¿åº¦ Set the block length */
 #define CMD16 16
 #define CMD16_R R1
 
-/* ¶Áµ¥¿é Read a single block */
+/* è¯»å•å— Read a single block */
 #define CMD17 17
 #define CMD17_R R1
 
-/* ¶Á¶à¿é,Ö±ÖÁÖ÷»ú·¢ËÍCMD12ÎªÖ¹ Read multiple blocks until a CMD12 */
+/* è¯»å¤šå—,ç›´è‡³ä¸»æœºå‘é€CMD12ä¸ºæ­¢ Read multiple blocks until a CMD12 */
 #define CMD18 18
 #define CMD18_R R1
 
-/***************************** ¿éĞ´ÃüÁî¼¯ Block write commands *************************/
-/* Ğ´µ¥¿é Write a block of the size selected with CMD16 */
+/***************************** å—å†™å‘½ä»¤é›† Block write commands *************************/
+/* å†™å•å— Write a block of the size selected with CMD16 */
 #define CMD24 24
 #define CMD24_R R1
 
-/* Ğ´¶à¿é Multiple block write until a CMD12 */
+/* å†™å¤šå— Multiple block write until a CMD12 */
 #define CMD25 25
 #define CMD25_R R1
 
-/* Ğ´CSD¼Ä´æÆ÷ Program the programmable bits of the CSD */
+/* å†™CSDå¯„å­˜å™¨ Program the programmable bits of the CSD */
 #define CMD27 27
 #define CMD27_R R1
 
-/***************************** Ğ´±£»¤ Write protection *****************************/
+/***************************** å†™ä¿æŠ¤ Write protection *****************************/
 /* Set the write protection bit of the addressed group */
 #define CMD28 28
 #define CMD28_R R1B
@@ -129,122 +129,122 @@
 #define CMD30 30
 #define CMD30_R R1
 
-/***************************** ²Á³ıÃüÁî Erase commands *******************************/
-/* ÉèÖÃ²Á³ı¿éµÄÆğÊ¼µØÖ·(Ö»ÓÃÓÚSD¿¨) Set the address of the first write block to be erased(only for SD) */
+/***************************** æ“¦é™¤å‘½ä»¤ Erase commands *******************************/
+/* è®¾ç½®æ“¦é™¤å—çš„èµ·å§‹åœ°å€(åªç”¨äºSDå¡) Set the address of the first write block to be erased(only for SD) */
 #define CMD32 32
 #define CMD32_R R1
 
-/* ÉèÖÃ²Á³ı¿éµÄÖÕÖ¹µØÖ·(Ö»ÓÃÓÚSD¿¨) Set the address of the last write block to be erased(only for SD) */
+/* è®¾ç½®æ“¦é™¤å—çš„ç»ˆæ­¢åœ°å€(åªç”¨äºSDå¡) Set the address of the last write block to be erased(only for SD) */
 #define CMD33 33
 #define CMD33_R R1
 
-/* ÉèÖÃ²Á³ı¿éµÄÆğÊ¼µØÖ·(Ö»ÓÃÓÚMMC¿¨) Set the address of the first write block to be erased(only for MMC) */
+/* è®¾ç½®æ“¦é™¤å—çš„èµ·å§‹åœ°å€(åªç”¨äºMMCå¡) Set the address of the first write block to be erased(only for MMC) */
 #define CMD35 35
 #define CMD35_R R1
 
-/* ÉèÖÃ²Á³ı¿éµÄÖÕÖ¹µØÖ·(Ö»ÓÃÓÚMMC¿¨) Set the address of the last write block to be erased(only for MMC) */
+/* è®¾ç½®æ“¦é™¤å—çš„ç»ˆæ­¢åœ°å€(åªç”¨äºMMCå¡) Set the address of the last write block to be erased(only for MMC) */
 #define CMD36 36
 #define CMD36_R R1
 
-/* ²Á³ıËùÑ¡ÔñµÄ¿é Erase the selected write blocks */
+/* æ“¦é™¤æ‰€é€‰æ‹©çš„å— Erase the selected write blocks */
 #define CMD38 38
 #define CMD38_R R1B
 
-/***************************** Ëø¿¨ÃüÁî Lock Card commands ***************************/
-/* ÉèÖÃ/¸´Î»ÃÜÂë»òÉÏËø/½âËø¿¨ Set/reset the password or lock/unlock the card */
+/***************************** é”å¡å‘½ä»¤ Lock Card commands ***************************/
+/* è®¾ç½®/å¤ä½å¯†ç æˆ–ä¸Šé”/è§£é”å¡ Set/reset the password or lock/unlock the card */
 #define CMD42 42
 #define CMD42_R	R1B
 /* Commands from 42 to 54, not defined here */
 
-/***************************** Ó¦ÓÃÃüÁî Application-specific commands ****************/
-/* ½ûÖ¹ÏÂÒ»¸öÃüÁîÎªÓ¦ÓÃÃüÁî  Flag that the next command is application-specific */
+/***************************** åº”ç”¨å‘½ä»¤ Application-specific commands ****************/
+/* ç¦æ­¢ä¸‹ä¸€ä¸ªå‘½ä»¤ä¸ºåº”ç”¨å‘½ä»¤  Flag that the next command is application-specific */
 #define CMD55 55
 #define CMD55_R R1
 
-/* Ó¦ÓÃÃüÁîµÄÍ¨ÓÃI/O  General purpose I/O for application-specific commands */
+/* åº”ç”¨å‘½ä»¤çš„é€šç”¨I/O  General purpose I/O for application-specific commands */
 #define CMD56 56
 #define CMD56_R R1
 
-/* ¶ÁOCR¼Ä´æÆ÷  Read the OCR (SPI mode only) */
+/* è¯»OCRå¯„å­˜å™¨  Read the OCR (SPI mode only) */
 #define CMD58 58
 #define CMD58_R R3
 
-/* Ê¹ÄÜ»ò½ûÖ¹ CRC Turn CRC on or off */
+/* ä½¿èƒ½æˆ–ç¦æ­¢ CRC Turn CRC on or off */
 #define CMD59 59
 #define CMD59_R R1
 
-/***************************** Ó¦ÓÃÃüÁî Application-specific commands ***************/
-/* »ñÈ¡ SD Status¼Ä´æÆ÷ Get the SD card's status */
+/***************************** åº”ç”¨å‘½ä»¤ Application-specific commands ***************/
+/* è·å– SD Statuså¯„å­˜å™¨ Get the SD card's status */
 #define ACMD13 13
 #define ACMD13_R R2
 
-/* µÃµ½ÒÑĞ´Èë¿¨ÖĞµÄ¿éµÄ¸öÊı Get the number of written write blocks (Minus errors ) */
+/* å¾—åˆ°å·²å†™å…¥å¡ä¸­çš„å—çš„ä¸ªæ•° Get the number of written write blocks (Minus errors ) */
 #define ACMD22 22
 #define ACMD22_R R1
 
-/* ÔÚĞ´Ö®Ç°,ÉèÖÃÔ¤ÏÈ²Á³ıµÄ¿éµÄ¸öÊı Set the number of write blocks to be pre-erased before writing */
+/* åœ¨å†™ä¹‹å‰,è®¾ç½®é¢„å…ˆæ“¦é™¤çš„å—çš„ä¸ªæ•° Set the number of write blocks to be pre-erased before writing */
 #define ACMD23 23
 #define ACMD23_R R1
 
-/* ¶ÁÈ¡OCR¼Ä´æÆ÷ Get the card's OCR (SD mode) */
+/* è¯»å–OCRå¯„å­˜å™¨ Get the card's OCR (SD mode) */
 #define ACMD41 41
 #define ACMD41_R R1
 
-/* Á¬½Ó/¶Ï¿ªCD/DATA[3]Òı½ÅÉÏµÄÉÏÀ­µç×è Connect or disconnect the 50kOhm internal pull-up on CD/DAT[3] */
+/* è¿æ¥/æ–­å¼€CD/DATA[3]å¼•è„šä¸Šçš„ä¸Šæ‹‰ç”µé˜» Connect or disconnect the 50kOhm internal pull-up on CD/DAT[3] */
 #define ACMD42 42
 #define ACMD42_R R1
 
-/* ¶ÁÈ¡SCR¼Ä´æÆ÷ Get the SD configuration register */
+/* è¯»å–SCRå¯„å­˜å™¨ Get the SD configuration register */
 #define ACMD51 51
 #define ACMD51_R R1
 
 
 
-INT8U SD_SendCmd(INT8U cmd, INT8U *param, INT8U resptype, INT8U *resp);  // Ò»¸öSPIÃüÁî
-void SD_PackParam(INT8U *parameter, INT32U value);						 // ·â×°²ÎÊı
-INT8U SD_BlockCommand(INT8U cmd, INT8U resptype, INT32U parameter);		 // ¿éÃüÁî
+INT8U SD_SendCmd(INT8U cmd, INT8U *param, INT8U resptype, INT8U *resp);  // ä¸€ä¸ªSPIå‘½ä»¤
+void SD_PackParam(INT8U *parameter, INT32U value);						 // å°è£…å‚æ•°
+INT8U SD_BlockCommand(INT8U cmd, INT8U resptype, INT32U parameter);		 // å—å‘½ä»¤
 
-extern INT8U SD_ResetSD(void);											// ¸´Î»SD¿¨			reset SD Card
+extern INT8U SD_ResetSD(void);											// å¤ä½SDå¡			reset SD Card
 
-INT8U SD_ReadCSD(INT8U csdlen, INT8U *recbuf);					// ¶ÁCSD 			read CSD register
-INT8U SD_ReadCID(INT8U cidlen, INT8U *recbuf);					// ¶ÁCID			read CID register
-INT8U SD_StopTransmission(void);								// Í£Ö¹´«Êä
+INT8U SD_ReadCSD(INT8U csdlen, INT8U *recbuf);					// è¯»CSD 			read CSD register
+INT8U SD_ReadCID(INT8U cidlen, INT8U *recbuf);					// è¯»CID			read CID register
+INT8U SD_StopTransmission(void);								// åœæ­¢ä¼ è¾“
 
-INT8U SD_ReadCard_Status(INT8U len, INT8U *buffer);				// ¶ÁCard Status	read Card Status register
-INT8U SD_SetBlockLen(INT32U length);							// ÉèÖÃ¿é³¤¶È
+INT8U SD_ReadCard_Status(INT8U len, INT8U *buffer);				// è¯»Card Status	read Card Status register
+INT8U SD_SetBlockLen(INT32U length);							// è®¾ç½®å—é•¿åº¦
 
-INT8U SD_ReadSingleBlock(INT32U blockaddr);						// ¶Áµ¥¿é
-INT8U SD_ReadMultipleBlock(INT32U blockaddr);					// ¶Á¶à¿é
+INT8U SD_ReadSingleBlock(INT32U blockaddr);						// è¯»å•å—
+INT8U SD_ReadMultipleBlock(INT32U blockaddr);					// è¯»å¤šå—
 
-INT8U SD_WriteSingleBlock(INT32U blockaddr);					// Ğ´µ¥¿é
-INT8U SD_WriteMultipleBlock(INT32U blockaddr);					// Ğ´¶à¿é
-
-
-INT8U SD_ProgramCSD(INT8U len, INT8U *buff);					// Ğ´CSD¼Ä´æÆ÷  	write CSD register
-
-INT8U SD_EraseStartBlock(INT32U startblock);					// ²Á¿éÆğÊ¼µØÖ·
-INT8U SD_EraseEndBlock(INT32U endblock);						// ²Á¿éÖÕÖ¹µØÖ·
-INT8U SD_EraseSelectedBlock(void);								// ²Á³ıËùÑ¡µÄ¿é
+INT8U SD_WriteSingleBlock(INT32U blockaddr);					// å†™å•å—
+INT8U SD_WriteMultipleBlock(INT32U blockaddr);					// å†™å¤šå—
 
 
-INT8U SD_ReadOCR(INT8U ocrlen,INT8U *recbuf);					// ¶ÁOCR			read OCR register
-INT8U SD_EnableCRC(INT8U bEnable);								// Ê¹ÄÜCRCĞ£Ñé		enable CRC
+INT8U SD_ProgramCSD(INT8U len, INT8U *buff);					// å†™CSDå¯„å­˜å™¨  	write CSD register
+
+INT8U SD_EraseStartBlock(INT32U startblock);					// æ“¦å—èµ·å§‹åœ°å€
+INT8U SD_EraseEndBlock(INT32U endblock);						// æ“¦å—ç»ˆæ­¢åœ°å€
+INT8U SD_EraseSelectedBlock(void);								// æ“¦é™¤æ‰€é€‰çš„å—
 
 
-// ÌØÊâÓ¦ÓÃÃüÁî
-INT8U SD_ReadSD_Status(INT8U sdslen, INT8U *recbuf);			// ¶ÁSD_Status  read SD_Status
-INT8U SD_GetNumWRBlcoks(INT32U *blocknum);						// µÃµ½ÕıÈ·Ğ´Èë¿éÊı
-INT8U SD_ReadSCR(INT8U scrlen, INT8U *recbuf);					// ¶ÁSCR 		read SCR register
+INT8U SD_ReadOCR(INT8U ocrlen,INT8U *recbuf);					// è¯»OCR			read OCR register
+INT8U SD_EnableCRC(INT8U bEnable);								// ä½¿èƒ½CRCæ ¡éªŒ		enable CRC
 
 
-// Êı¾İÁ÷º¯Êı
-INT8U SD_ReadRegister(INT32U len, INT8U *recbuf);						// ¶ÁÊı¾İ
-INT8U SD_ReadBlockData(INT32U len, INT8U *recbuf);						// ¶Á¿éÊı¾İ
-INT8U SD_WriteBlockData(INT8U bmulti, INT32U len, INT8U *sendbuf);		// Ğ´¿éÊı¾İ
+// ç‰¹æ®Šåº”ç”¨å‘½ä»¤
+INT8U SD_ReadSD_Status(INT8U sdslen, INT8U *recbuf);			// è¯»SD_Status  read SD_Status
+INT8U SD_GetNumWRBlcoks(INT32U *blocknum);						// å¾—åˆ°æ­£ç¡®å†™å…¥å—æ•°
+INT8U SD_ReadSCR(INT8U scrlen, INT8U *recbuf);					// è¯»SCR 		read SCR register
 
-// ÆäËüº¯Êı
-void SD_StopMultiToken(void);									// Í£Ö¹¶à¿éĞ´ÁîÅÆ
-INT8U SD_WaitBusy(INT8U waittype);								// Ã¦
-void SD_SPIDelay(INT8U value);									// ·¢ÉúSPIÊ±ÖÓ
+
+// æ•°æ®æµå‡½æ•°
+INT8U SD_ReadRegister(INT32U len, INT8U *recbuf);						// è¯»æ•°æ®
+INT8U SD_ReadBlockData(INT32U len, INT8U *recbuf);						// è¯»å—æ•°æ®
+INT8U SD_WriteBlockData(INT8U bmulti, INT32U len, INT8U *sendbuf);		// å†™å—æ•°æ®
+
+// å…¶å®ƒå‡½æ•°
+void SD_StopMultiToken(void);									// åœæ­¢å¤šå—å†™ä»¤ç‰Œ
+INT8U SD_WaitBusy(INT8U waittype);								// å¿™
+void SD_SPIDelay(INT8U value);									// å‘ç”ŸSPIæ—¶é’Ÿ
 
 #endif

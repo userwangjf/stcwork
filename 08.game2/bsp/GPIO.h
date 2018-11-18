@@ -4,20 +4,20 @@
 
 #include	"config.h"
 
-#define	GPIO_PullUp		0	//ÉÏÀ­×¼Ë«Ïò¿Ú
-#define	GPIO_HighZ		1	//¸¡¿ÕÊäÈë
-#define	GPIO_OUT_OD		2	//¿ªÂ©Êä³ö
-#define	GPIO_OUT_PP		3	//ÍÆÍìÊä³ö
+#define	GPIO_PullUp		0	//ä¸Šæ‹‰å‡†åŒå‘å£
+#define	GPIO_HighZ		1	//æµ®ç©ºè¾“å…¥
+#define	GPIO_OUT_OD		2	//å¼€æ¼è¾“å‡º
+#define	GPIO_OUT_PP		3	//æ¨æŒ½è¾“å‡º
 
-#define	GPIO_Pin_0		0x01	//IOÒı½Å Px.0
-#define	GPIO_Pin_1		0x02	//IOÒı½Å Px.1
-#define	GPIO_Pin_2		0x04	//IOÒı½Å Px.2
-#define	GPIO_Pin_3		0x08	//IOÒı½Å Px.3
-#define	GPIO_Pin_4		0x10	//IOÒı½Å Px.4
-#define	GPIO_Pin_5		0x20	//IOÒı½Å Px.5
-#define	GPIO_Pin_6		0x40	//IOÒı½Å Px.6
-#define	GPIO_Pin_7		0x80	//IOÒı½Å Px.7
-#define	GPIO_Pin_All	0xFF	//IOËùÓĞÒı½Å
+#define	GPIO_Pin_0		0x01	//IOå¼•è„š Px.0
+#define	GPIO_Pin_1		0x02	//IOå¼•è„š Px.1
+#define	GPIO_Pin_2		0x04	//IOå¼•è„š Px.2
+#define	GPIO_Pin_3		0x08	//IOå¼•è„š Px.3
+#define	GPIO_Pin_4		0x10	//IOå¼•è„š Px.4
+#define	GPIO_Pin_5		0x20	//IOå¼•è„š Px.5
+#define	GPIO_Pin_6		0x40	//IOå¼•è„š Px.6
+#define	GPIO_Pin_7		0x80	//IOå¼•è„š Px.7
+#define	GPIO_Pin_All	0xFF	//IOæ‰€æœ‰å¼•è„š
 	
 #define	GPIO_P0			0		//
 #define	GPIO_P1			1
@@ -29,8 +29,8 @@
 
 typedef struct
 {
-	u8	Mode;		//IOÄ£Ê½,  		GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
-	u8	Pin;		//ÒªÉèÖÃµÄ¶Ë¿Ú	
+	u8	Mode;		//IOæ¨¡å¼,  		GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
+	u8	Pin;		//è¦è®¾ç½®çš„ç«¯å£	
 } GPIO_InitTypeDef;
 
 u8	GPIO_Inilize(u8 GPIO, GPIO_InitTypeDef *GPIOx);

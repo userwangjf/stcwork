@@ -4,10 +4,10 @@
 
 u16 xdata disp_buf[21] = {0xff,0xff,0};
 
-//4*6µãÕó
-//ÏÈ×óÔÙÓÒ
-//ÏÈÉÏÔÙÏÂ
-//ÏÈ¸ß4bit£¬È»ºóµÍ4bit¡£
+//4*6ç‚¹é˜µ
+//å…ˆå·¦å†å³
+//å…ˆä¸Šå†ä¸‹
+//å…ˆé«˜4bitï¼Œç„¶åä½4bitã€‚
 //0
 
 u8 led_dot_hex[16*3] = 
@@ -69,7 +69,7 @@ void disp_off(u8 x, u8 y)
 		disp_buf[y] &= ((0x01 << x) ^ 0x07ff);	
 }
 
-//Çå³ıÆÁÄ»
+//æ¸…é™¤å±å¹•
 void disp_clear()
 {
 	u8 y;
@@ -79,14 +79,14 @@ void disp_clear()
 	}
 }
 
-//°´ĞĞ»­
+//æŒ‰è¡Œç”»
 void disp_row(u8 y,u16 row)
 {
 	if(y<LED_WY)
 		disp_buf[y] = row;
 }
 
-//°´ĞĞÇå³ıÆÁÄ»
+//æŒ‰è¡Œæ¸…é™¤å±å¹•
 void disp_clear_row(u8 start,u8 end)
 {
 	u8 y;
@@ -97,7 +97,7 @@ void disp_clear_row(u8 start,u8 end)
 	}
 }
 
-//ÏÈĞ´ÂúÆÁÄ»£¬È»ºóÇå³ı
+//å…ˆå†™æ»¡å±å¹•ï¼Œç„¶åæ¸…é™¤
 void disp_clear2(u8 delay)
 {
 	u8 y;
@@ -114,7 +114,7 @@ void disp_clear2(u8 delay)
 	}
 }
 
-//ÍÆÀ­ÃÅ¿ªÃÅµÄÇåÆÁ¶¯×÷
+//æ¨æ‹‰é—¨å¼€é—¨çš„æ¸…å±åŠ¨ä½œ
 void disp_open(u8 delay)
 {
 	u8 y;
@@ -236,12 +236,12 @@ u8 row_prev = 20;
 void led_scan(void) 
 {
 	u8 byte1;
-	//¹Ø±ÕÏÔÊ¾
+	//å…³é—­æ˜¾ç¤º
 	pio_set[row_prev].func_ptr(1);
 	
 	byte1 = disp_buf[row_curr];
 
-	//ÏÔÊ¾ÏÂÒ»¸ö×Ö·û£¬°å×Ó×ö·´ÁË¡£
+	//æ˜¾ç¤ºä¸‹ä¸€ä¸ªå­—ç¬¦ï¼Œæ¿å­åšåäº†ã€‚
 	P2 = 0;
 	P45 = 0;
 	P46 = 0;
@@ -258,7 +258,7 @@ void led_scan(void)
     if(byte1 & 0x2)P25 = 1;
 
 
-	//¿ªÆôÏÔÊ¾
+	//å¼€å¯æ˜¾ç¤º
 	pio_set[row_curr].func_ptr(0);
 
 	row_prev = row_curr;

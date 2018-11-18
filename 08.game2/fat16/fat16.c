@@ -59,28 +59,28 @@ void fat16_mkfs(u32 sector_num, u16 block_size, u16 sector_size)
 	fat16_strncpy(fat16_bs.preamble.jump_instruction,"FAT",3);
 	fat16_strncpy(fat16_bs.preamble.oem_name,"MSDOS5.0",8);
 
-	//ÉÈÇø´óĞ¡
+	//æ‰‡åŒºå¤§å°
 	fat16_bs.bios_params.bytes_per_sector = 64;
-	//Ã¿¸ö´Ø(block)°üº¬µÄÉÈÇøÊı
+	//æ¯ä¸ªç°‡(block)åŒ…å«çš„æ‰‡åŒºæ•°
 	fat16_bs.bios_params.sectors_per_cluster = block_size/sector_size;
 	fat16_bs.bios_params.reserved_sector_count = 64;
-	//FAT±í¸öÊı
+	//FATè¡¨ä¸ªæ•°
 	fat16_bs.bios_params.fat_count = 2;
-	//¸ùÄ¿Â¼ÏîÊı
+	//æ ¹ç›®å½•é¡¹æ•°
 	fat16_bs.bios_params.max_root_entries = ;
-	//´ÅÅÌµÄÉÈÇø×ÜÊı
+	//ç£ç›˜çš„æ‰‡åŒºæ€»æ•°
 	fat16_bs.bios_params.total_sectors = sector_num;
 
 	fat16_bs.bios_params.media_descriptor = 0xF8;
 	fat16_bs.bios_params.sectors_per_fat = sector_num/4/sector_size;
-	//Ã¿¸ö´ÅµÀ°üº¬µÄÉÈÇøÊı£¬²»Ê¹ÓÃ
+	//æ¯ä¸ªç£é“åŒ…å«çš„æ‰‡åŒºæ•°ï¼Œä¸ä½¿ç”¨
 	fat16_bs.bios_params.sectors_per_track = 0x00;
-	//´ÅÍ·Êı£¬²»Ê¹ÓÃ
+	//ç£å¤´æ•°ï¼Œä¸ä½¿ç”¨
 	fat16_bs.bios_params.head_count = 0x00;
 
-	//¶à¸ö·ÖÇøÊ¹ÓÃ
+	//å¤šä¸ªåˆ†åŒºä½¿ç”¨
 	fat16_bs.bios_params.sectors_before_partition = 0x00;
-	//ÔÚtotal_sectorsÎª0Ê±£¬Ê¹ÓÃ¸ÃÎ»ÖÃ£¬ÓÃÓÚ´ó´ÅÅÌ
+	//åœ¨total_sectorsä¸º0æ—¶ï¼Œä½¿ç”¨è¯¥ä½ç½®ï¼Œç”¨äºå¤§ç£ç›˜
 	fat16_bs.bios_params.total_sectors_large = 0x00;
 	
 	fat16_bs.ext_bios_params.physical_drive_number = 0x80;
@@ -275,7 +275,7 @@ u8 fnFAT16_init(FS_t *fs,DWORD offset_sector)
 //				BYTE String - filename string
 //return		: void
 *******************************************************************/
-void StringToUpper(BYTE *String)									//´óĞ¡Ğ´×ª»»£¬ºó×ºÃûÇ°µÄµã
+void StringToUpper(BYTE *String)									//å¤§å°å†™è½¬æ¢ï¼Œåç¼€åå‰çš„ç‚¹
 {
 	BYTE	i,j;
 
@@ -317,7 +317,7 @@ DWORD SearchMaxImgNum(DWORD TotalNum)
 		return ASCII2DEC[0];
 
 
-	for (j=0;j<TotalNum-1;j++)			//Ã°Åİ·¨±È½Ï´óĞ¡
+	for (j=0;j<TotalNum-1;j++)			//å†’æ³¡æ³•æ¯”è¾ƒå¤§å°
 		for (i=0;i<TotalNum-1-j;i++)
 			if(ASCII2DEC[i]>ASCII2DEC[i+1])
 			{
@@ -348,18 +348,18 @@ DWORD FindFName()
 
 	for(;(*(RootDIR+i*32)!=0x00 );)
 	{
-/*		if( *(RootDIR+i*32+0x0B)==0x0F )									//³¤ÎÄ¼şÃû
+/*		if( *(RootDIR+i*32+0x0B)==0x0F )									//é•¿æ–‡ä»¶å
 		{
 			LongOrd=*(RootDIR+i*32)-0x40;
 			i+=LongOrd+1;
 //			printf("Long file name\n");
 		}
-		else if((*(RootDIR+i*32)==0xE5))									//É¾³ıµÄÎÄ¼şÃû
+		else if((*(RootDIR+i*32)==0xE5))									//åˆ é™¤çš„æ–‡ä»¶å
 		{
 			i++;
 //			printf("DIR had been deleted\n");
 		}
-//		else if( (*(RootDIR+i*32)==0x00 ) )									//Ä¿Â¼Îª¿Õ
+//		else if( (*(RootDIR+i*32)==0x00 ) )									//ç›®å½•ä¸ºç©º
 //		{
 //			break;
 //		}
@@ -554,12 +554,12 @@ bool fnWriteFile(BYTE *buffer, DWORD size, DWORD count, FILE_t *fp)
 
 	while(1)
 	{
-		if(fwClusterNum!=1)									//ÍêÕûµÄÒ»´ØÊı¾İ
+		if(fwClusterNum!=1)									//å®Œæ•´çš„ä¸€ç°‡æ•°æ®
 		{
 //			WriteMultipleBlocks(CurrentSector,SectorPerCluster,fpwBMP);
 			ret=SD_WriteMultiBlock(CurrentSector,SectorPerCluster,fpwBMP);
 
-			if(ret==0x01)		/* ¿¨Ã»ÍêÈ«²åÈë¿¨ÖĞ card is not inserted entirely */
+			if(ret==0x01)		/* å¡æ²¡å®Œå…¨æ’å…¥å¡ä¸­ card is not inserted entirely */
 			{
 //				printf("card is not inserted entirely,can't write image file,please insert SD Card!\n");
 				return false;
@@ -576,7 +576,7 @@ bool fnWriteFile(BYTE *buffer, DWORD size, DWORD count, FILE_t *fp)
 			}
 //			printf("fwClusterNum=%d CurrentSector=0x%x\n",fwClusterNum,CurrentSector);
 		}
-		else												//Ê£ÏÂ²»µ½Ò»´ØµÄÊı¾İ
+		else												//å‰©ä¸‹ä¸åˆ°ä¸€ç°‡çš„æ•°æ®
 		{
 //			WriteMultipleBlocks(CurrentSector,fwSectorNum,fpwBMP);
 			ret=SD_WriteMultiBlock(CurrentSector,fwSectorNum,fpwBMP);
@@ -598,7 +598,7 @@ bool fnWriteFile(BYTE *buffer, DWORD size, DWORD count, FILE_t *fp)
 		{
 			NextEmptyCluNum	=fnFAT16_NextEmptyCluster(CurrentCluster);
 
-			if(NextEmptyCluNum==0xFFFF)				//ÎŞ¿ÉÓÃµÄ´Ø
+			if(NextEmptyCluNum==0xFFFF)				//æ— å¯ç”¨çš„ç°‡
 			{
 				printf("no availble cluster\n");
 				return false;

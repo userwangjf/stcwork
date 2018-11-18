@@ -4,18 +4,18 @@
 
 #include	"config.h"
 
-/***************************ÓÃ»§ºê¶¨Òå*******************************************************/
-#define		PWM0_DUTY		4000		//¶¨ÒåPWMµÄÖÜÆÚ£¬ÊýÖµÎªPCAËùÑ¡ÔñµÄÊ±ÖÓÂö³å¸öÊý¡£
-#define		PWM0_HIGH_MIN	80			//ÏÞÖÆPWMÊä³öµÄ×îÐ¡Õ¼¿Õ±È¡£
-#define		PWM0_HIGH_MAX	(PWM0_DUTY - PWM0_HIGH_MIN)		//ÏÞÖÆPWMÊä³öµÄ×î´óÕ¼¿Õ±È¡£
+/***************************ç”¨æˆ·å®å®šä¹‰*******************************************************/
+#define		PWM0_DUTY		4000		//å®šä¹‰PWMçš„å‘¨æœŸï¼Œæ•°å€¼ä¸ºPCAæ‰€é€‰æ‹©çš„æ—¶é’Ÿè„‰å†²ä¸ªæ•°ã€‚
+#define		PWM0_HIGH_MIN	80			//é™åˆ¶PWMè¾“å‡ºçš„æœ€å°å ç©ºæ¯”ã€‚
+#define		PWM0_HIGH_MAX	(PWM0_DUTY - PWM0_HIGH_MIN)		//é™åˆ¶PWMè¾“å‡ºçš„æœ€å¤§å ç©ºæ¯”ã€‚
 
-#define		PWM1_DUTY		3000		//¶¨ÒåPWMµÄÖÜÆÚ£¬ÊýÖµÎªPCAËùÑ¡ÔñµÄÊ±ÖÓÂö³å¸öÊý¡£
-#define		PWM1_HIGH_MIN	80			//ÏÞÖÆPWMÊä³öµÄ×îÐ¡Õ¼¿Õ±È¡£
-#define		PWM1_HIGH_MAX	(PWM1_DUTY - PWM1_HIGH_MIN)		//ÏÞÖÆPWMÊä³öµÄ×î´óÕ¼¿Õ±È¡£
+#define		PWM1_DUTY		3000		//å®šä¹‰PWMçš„å‘¨æœŸï¼Œæ•°å€¼ä¸ºPCAæ‰€é€‰æ‹©çš„æ—¶é’Ÿè„‰å†²ä¸ªæ•°ã€‚
+#define		PWM1_HIGH_MIN	80			//é™åˆ¶PWMè¾“å‡ºçš„æœ€å°å ç©ºæ¯”ã€‚
+#define		PWM1_HIGH_MAX	(PWM1_DUTY - PWM1_HIGH_MIN)		//é™åˆ¶PWMè¾“å‡ºçš„æœ€å¤§å ç©ºæ¯”ã€‚
 
-#define		PWM2_DUTY		2000		//¶¨ÒåPWMµÄÖÜÆÚ£¬ÊýÖµÎªPCAËùÑ¡ÔñµÄÊ±ÖÓÂö³å¸öÊý¡£
-#define		PWM2_HIGH_MIN	80			//ÏÞÖÆPWMÊä³öµÄ×îÐ¡Õ¼¿Õ±È¡£
-#define		PWM2_HIGH_MAX	(PWM2_DUTY - PWM2_HIGH_MIN)		//ÏÞÖÆPWMÊä³öµÄ×î´óÕ¼¿Õ±È¡£
+#define		PWM2_DUTY		2000		//å®šä¹‰PWMçš„å‘¨æœŸï¼Œæ•°å€¼ä¸ºPCAæ‰€é€‰æ‹©çš„æ—¶é’Ÿè„‰å†²ä¸ªæ•°ã€‚
+#define		PWM2_HIGH_MIN	80			//é™åˆ¶PWMè¾“å‡ºçš„æœ€å°å ç©ºæ¯”ã€‚
+#define		PWM2_HIGH_MAX	(PWM2_DUTY - PWM2_HIGH_MIN)		//é™åˆ¶PWMè¾“å‡ºçš„æœ€å¤§å ç©ºæ¯”ã€‚
 
 /********************************************************************************************/
 
@@ -52,7 +52,7 @@ typedef struct
 	u8	PCA_Mode;	//PCA_Mode_PWM, PCA_Mode_Capture, PCA_Mode_SoftTimer, PCA_Mode_HighPulseOutput
 	u8	PCA_PWM_Wide;	//PCA_PWM_8bit, PCA_PWM_7bit, PCA_PWM_6bit
 	u8	PCA_Interrupt_Mode;	//PCA_Rise_Active, PCA_Fall_Active, ENABLE, DISABLE
-	u8	PCA_Polity;	//ÓÅÏÈ¼¶ÉèÖÃ	PolityHigh,PolityLow
+	u8	PCA_Polity;	//ä¼˜å…ˆçº§è®¾ç½®	PolityHigh,PolityLow
 	u16	PCA_Value;
 } PCA_InitTypeDef;
 

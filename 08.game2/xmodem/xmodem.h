@@ -3,7 +3,7 @@
 #define __XMODEM_H__
 
 #define XMODEM_MAX_RETRY 	60
-#define XMODEM_BUF_LEN 		132		//Ê¹ÓÃĞ£ÑéºÍ·½Ê½
+#define XMODEM_BUF_LEN 		132		//ä½¿ç”¨æ ¡éªŒå’Œæ–¹å¼
 
 #define SOH  0x01
 #define STX  0x02
@@ -14,13 +14,13 @@
 #define CTRLZ 0x1A
 
 struct xmodem_receiver {
-	s16 (*get_char)(void); 	 	//½ÓÊÕ×Ö·ûº¯Êı£¬´ø³¬Ê±
-	void (*put_char)(u8 c);		//·¢ËÍ×Ö·û
-	u8 (*get_first)(void);		//½ÓÊÕµÚÒ»¸ö×Ö·û¡£
-	void (*delay_1s)(void); 	//ÑÓÊ±1Ãë¡£
-	u8 (*writer)(u8* buff, u8 size);	//½ÓÊÕÒ»Ö¡Êı¾İºó±£´æ
-	u8* rx_buf;							//ÁÙÊ±½ÓÊÕ»º´æ£¬ĞèÒª´óÓÚ132.
-	u32 rx_ok_cnt;						//½ÓÊÕ³É¹¦µÄÖ¡¼ÆÊı
+	s16 (*get_char)(void); 	 	//æ¥æ”¶å­—ç¬¦å‡½æ•°ï¼Œå¸¦è¶…æ—¶
+	void (*put_char)(u8 c);		//å‘é€å­—ç¬¦
+	u8 (*get_first)(void);		//æ¥æ”¶ç¬¬ä¸€ä¸ªå­—ç¬¦ã€‚
+	void (*delay_1s)(void); 	//å»¶æ—¶1ç§’ã€‚
+	u8 (*writer)(u8* buff, u8 size);	//æ¥æ”¶ä¸€å¸§æ•°æ®åä¿å­˜
+	u8* rx_buf;							//ä¸´æ—¶æ¥æ”¶ç¼“å­˜ï¼Œéœ€è¦å¤§äº132.
+	u32 rx_ok_cnt;						//æ¥æ”¶æˆåŠŸçš„å¸§è®¡æ•°
 };
 
 s8 xmodem_rx(struct xmodem_receiver *rx);

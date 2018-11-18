@@ -3,9 +3,9 @@
 #ifndef __ROMFS_H__
 #define __ROMFS_H__
 
-#define ROMFH_MAX_FN 16//inodeµÄÃû×Ö³¤¶È£¬°üÀ¨½áÎ²µÄ0¡£
-#define ROMFH_ROOT_FILE 0x60//¸ùÄ¿Â¼µÄµÚÒ»¸öÎÄ¼şÎ»ÖÃ
-#define ROMFH_INODE_LEN	0x20//Ò»¸öinode£¬Õ¼ÓÃ32B£¬ĞèÒªÃû×ÖÉÙÓÚ16B¡£
+#define ROMFH_MAX_FN 16//inodeçš„åå­—é•¿åº¦ï¼ŒåŒ…æ‹¬ç»“å°¾çš„0ã€‚
+#define ROMFH_ROOT_FILE 0x60//æ ¹ç›®å½•çš„ç¬¬ä¸€ä¸ªæ–‡ä»¶ä½ç½®
+#define ROMFH_INODE_LEN	0x20//ä¸€ä¸ªinodeï¼Œå ç”¨32Bï¼Œéœ€è¦åå­—å°‘äº16Bã€‚
 
 
 #define ROMFH_HRD 0
@@ -36,8 +36,8 @@ struct romfs_super_block {
 	u8  name[0];
 };
 
-//ÔÚ±ê×¼Àï£¬regular fileµÄspec¶ÎÃ»ÓĞÊ¹ÓÃ£¬´Ë½á¹¹½«´ËÓò¶Î×÷ÎªÎÄ¼şÊı¾İµÄÎ»ÖÃreg_data
-//Ä¿Â¼µÄµÚÒ»¸öÎÄ¼şÎ»ÖÃ£¬×÷Îªdir_data
+//åœ¨æ ‡å‡†é‡Œï¼Œregular fileçš„specæ®µæ²¡æœ‰ä½¿ç”¨ï¼Œæ­¤ç»“æ„å°†æ­¤åŸŸæ®µä½œä¸ºæ–‡ä»¶æ•°æ®çš„ä½ç½®reg_data
+//ç›®å½•çš„ç¬¬ä¸€ä¸ªæ–‡ä»¶ä½ç½®ï¼Œä½œä¸ºdir_data
 union romfs_spec {
 	u32 hrd_dest;//hard link	link destination [file header]
 	u32 dir_data;//directory	first file's header
@@ -59,7 +59,7 @@ struct romfs_inode {
 
 struct romfs_init
 {
-	//´ÓblockÉè±¸µØÖ·ÎªaddrµÄÎ»ÖÃ¶ÈlenµÄÊı¾İ£¬´æÈëbuf¡£
+	//ä»blockè®¾å¤‡åœ°å€ä¸ºaddrçš„ä½ç½®åº¦lençš„æ•°æ®ï¼Œå­˜å…¥bufã€‚
 	u8 (*romfs_rd_block)(u8* buf, u32 addr, u8 len);
 };
 

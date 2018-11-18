@@ -1,5 +1,5 @@
 /******************************************************************************************************
-** Descriptions:		sd ¿¨Çı¶¯Èí¼ş°ü: ÓÃ»§APIº¯Êı(Í·ÎÄ¼ş)
+** Descriptions:		sd å¡é©±åŠ¨è½¯ä»¶åŒ…: ç”¨æˆ·APIå‡½æ•°(å¤´æ–‡ä»¶)
 ********************************************************************************************************/
 
 #ifndef 	__sddriver_h
@@ -10,104 +10,104 @@
 #include "sdcmd.h"
 #include "sdcrc.h"
 
-/* SD¿¨ĞÅÏ¢½á¹¹Ìå¶¨Òå */ 
+/* SDå¡ä¿¡æ¯ç»“æ„ä½“å®šä¹‰ */ 
 /* the information structure variable of SD Card*/
 typedef struct SD_STRUCT
 {	
 	INT8U card_type;
-	INT32U block_num;				/* ¿¨ÖĞ¿éµÄÊıÁ¿ */
-	INT32U block_len;				/* ¿¨µÄ¿é³¤¶È(µ¥Î»:×Ö½Ú) */
-	INT32U erase_unit;				/* Ò»´Î¿É²Á³ıµÄ¿é¸öÊı */
+	INT32U block_num;				/* å¡ä¸­å—çš„æ•°é‡ */
+	INT32U block_len;				/* å¡çš„å—é•¿åº¦(å•ä½:å­—èŠ‚) */
+	INT32U erase_unit;				/* ä¸€æ¬¡å¯æ“¦é™¤çš„å—ä¸ªæ•° */
 	
-	INT32U timeout_read;			/* ¶Á¿é³¬Ê±Ê±¼ä(µ¥Î»: 8 SPI clock) */
-	INT32U timeout_write;			/* Ğ´¿é³¬Ê±Ê±¼ä(µ¥Î»: 8 SPI clock) */
-	INT32U timeout_erase;			/* ²Á¿é³¬Ê±Ê±¼ä(µ¥Î»: 8 SPI clock) */
+	INT32U timeout_read;			/* è¯»å—è¶…æ—¶æ—¶é—´(å•ä½: 8 SPI clock) */
+	INT32U timeout_write;			/* å†™å—è¶…æ—¶æ—¶é—´(å•ä½: 8 SPI clock) */
+	INT32U timeout_erase;			/* æ“¦å—è¶…æ—¶æ—¶é—´(å•ä½: 8 SPI clock) */
 	
 }sd_struct;
 
-extern sd_struct sds;				/* SD¿¨ĞÅÏ¢½á¹¹Ìå±äÁ¿ */ 
+extern sd_struct sds;				/* SDå¡ä¿¡æ¯ç»“æ„ä½“å˜é‡ */ 
 
 		/*
 		*************************************************************
 
-				ÓÃ»§APIº¯Êı:	¶Á, Ğ´, ²Á SD¿¨  APIº¯Êı¼°´íÎóÂë
+				ç”¨æˆ·APIå‡½æ•°:	è¯», å†™, æ“¦ SDå¡  APIå‡½æ•°åŠé”™è¯¯ç 
 
 		*************************************************************
 		*/
 
-/* ´íÎóÂë error code */
-#define   SD_NO_ERR			     	0x00			// º¯ÊıÖ´ĞĞ³É¹¦
-#define   SD_ERR_NO_CARD		 	0x01			// SD¿¨Ã»ÓĞÍêÈ«²åÈëµ½¿¨×ùÖĞ
-#define   SD_ERR_USER_PARAM      	0x02			// ÓÃ»§Ê¹ÓÃAPIº¯ÊıÊ±£¬Èë¿Ú²ÎÊıÓĞ´íÎó
-#define   SD_ERR_CARD_PARAM		 	0x03			// ¿¨ÖĞ²ÎÊıÓĞ´íÎó£¨Óë±¾Ä£¿é²»¼æÈİ£©
-#define	  SD_ERR_VOL_NOTSUSP        0x04			// ¿¨²»Ö§³Ö3.3V¹©µç
-#define   SD_ERR_OVER_CARDRANGE		0x05			// ²Ù×÷³¬³ö¿¨ÈİÁ¿·¶Î§
-#define   SD_ERR_UNKNOWN_CARD       0x06			// ÎŞ·¨Ê¶±ğ¿¨ĞÍ
+/* é”™è¯¯ç  error code */
+#define   SD_NO_ERR			     	0x00			// å‡½æ•°æ‰§è¡ŒæˆåŠŸ
+#define   SD_ERR_NO_CARD		 	0x01			// SDå¡æ²¡æœ‰å®Œå…¨æ’å…¥åˆ°å¡åº§ä¸­
+#define   SD_ERR_USER_PARAM      	0x02			// ç”¨æˆ·ä½¿ç”¨APIå‡½æ•°æ—¶ï¼Œå…¥å£å‚æ•°æœ‰é”™è¯¯
+#define   SD_ERR_CARD_PARAM		 	0x03			// å¡ä¸­å‚æ•°æœ‰é”™è¯¯ï¼ˆä¸æœ¬æ¨¡å—ä¸å…¼å®¹ï¼‰
+#define	  SD_ERR_VOL_NOTSUSP        0x04			// å¡ä¸æ”¯æŒ3.3Vä¾›ç”µ
+#define   SD_ERR_OVER_CARDRANGE		0x05			// æ“ä½œè¶…å‡ºå¡å®¹é‡èŒƒå›´
+#define   SD_ERR_UNKNOWN_CARD       0x06			// æ— æ³•è¯†åˆ«å¡å‹
 
-/* SDÃüÁî¿ÉÄÜ·µ»ØµÄ´íÎóÂë */
-#define   SD_ERR_CMD_RESPTYPE	 	0x10			// ÃüÁîÀàĞÍ´íÎó
-#define   SD_ERR_CMD_TIMEOUT     	0x11			// SDÃüÁîÏìÓ¦³¬Ê±
-#define   SD_ERR_CMD_RESP		 	0x12			// SDÃüÁîÏìÓ¦´íÎó
+/* SDå‘½ä»¤å¯èƒ½è¿”å›çš„é”™è¯¯ç  */
+#define   SD_ERR_CMD_RESPTYPE	 	0x10			// å‘½ä»¤ç±»å‹é”™è¯¯
+#define   SD_ERR_CMD_TIMEOUT     	0x11			// SDå‘½ä»¤å“åº”è¶…æ—¶
+#define   SD_ERR_CMD_RESP		 	0x12			// SDå‘½ä»¤å“åº”é”™è¯¯
 
-/* Êı¾İÁ÷´íÎóÂë */
-#define   SD_ERR_DATA_CRC16      	0x20			// Êı¾İÁ÷CRC16Ğ£Ñé²»Í¨¹ı
-#define   SD_ERR_DATA_START_TOK		0x21			// ¶Áµ¥¿é»ò¶à¿éÊ±£¬Êı¾İ¿ªÊ¼ÁîÅÆ²»ÕıÈ·
-#define	  SD_ERR_DATA_RESP		 	0x22			// Ğ´µ¥¿é»ò¶à¿éÊ±£¬SD¿¨Êı¾İÏìÓ¦ÁîÅÆ²»ÕıÈ·
+/* æ•°æ®æµé”™è¯¯ç  */
+#define   SD_ERR_DATA_CRC16      	0x20			// æ•°æ®æµCRC16æ ¡éªŒä¸é€šè¿‡
+#define   SD_ERR_DATA_START_TOK		0x21			// è¯»å•å—æˆ–å¤šå—æ—¶ï¼Œæ•°æ®å¼€å§‹ä»¤ç‰Œä¸æ­£ç¡®
+#define	  SD_ERR_DATA_RESP		 	0x22			// å†™å•å—æˆ–å¤šå—æ—¶ï¼ŒSDå¡æ•°æ®å“åº”ä»¤ç‰Œä¸æ­£ç¡®
 
-/* µÈ´ı´íÎóÂë */
-#define   SD_ERR_TIMEOUT_WAIT    	0x30			// Ğ´»ò²Á²Ù×÷Ê±£¬·¢Éú³¬Ê±´íÎó
-#define   SD_ERR_TIMEOUT_READ    	0x31			// ¶Á²Ù×÷³¬Ê±´íÎó
-#define	  SD_ERR_TIMEOUT_WRITE	 	0x32			// Ğ´²Ù×÷³¬Ê±´íÎó
-#define   SD_ERR_TIMEOUT_ERASE   	0x33			// ²Á³ı²Ù×÷³¬Ê±´íÎó
-#define	  SD_ERR_TIMEOUT_WAITIDLE 	0x34			// ³õÊ¼»¯SD¿¨Ê±£¬µÈ´ıSD¿¨½øÈë¿ÕÏĞ×´Ì¬³¬Ê±´íÎó
+/* ç­‰å¾…é”™è¯¯ç  */
+#define   SD_ERR_TIMEOUT_WAIT    	0x30			// å†™æˆ–æ“¦æ“ä½œæ—¶ï¼Œå‘ç”Ÿè¶…æ—¶é”™è¯¯
+#define   SD_ERR_TIMEOUT_READ    	0x31			// è¯»æ“ä½œè¶…æ—¶é”™è¯¯
+#define	  SD_ERR_TIMEOUT_WRITE	 	0x32			// å†™æ“ä½œè¶…æ—¶é”™è¯¯
+#define   SD_ERR_TIMEOUT_ERASE   	0x33			// æ“¦é™¤æ“ä½œè¶…æ—¶é”™è¯¯
+#define	  SD_ERR_TIMEOUT_WAITIDLE 	0x34			// åˆå§‹åŒ–SDå¡æ—¶ï¼Œç­‰å¾…SDå¡è¿›å…¥ç©ºé—²çŠ¶æ€è¶…æ—¶é”™è¯¯
 
-/* Ğ´²Ù×÷¿ÉÄÜ·µ»ØµÄ´íÎóÂë */
-#define	  SD_ERR_WRITE_BLK			0x40			// Ğ´¿éÊı¾İ´íÎó
-#define	  SD_ERR_WRITE_BLKNUMS      0x41			// Ğ´¶à¿éÊ±£¬ÏëÒªĞ´ÈëµÄ¿éÓëÕıÈ·Ğ´ÈëµÄ¿éÊı²»Ò»ÖÂ
-#define   SD_ERR_WRITE_PROTECT		0x42			// ¿¨Íâ¿ÇµÄĞ´±£»¤¿ª¹Ø´òÔÚĞ´±£»¤Î»ÖÃ
+/* å†™æ“ä½œå¯èƒ½è¿”å›çš„é”™è¯¯ç  */
+#define	  SD_ERR_WRITE_BLK			0x40			// å†™å—æ•°æ®é”™è¯¯
+#define	  SD_ERR_WRITE_BLKNUMS      0x41			// å†™å¤šå—æ—¶ï¼Œæƒ³è¦å†™å…¥çš„å—ä¸æ­£ç¡®å†™å…¥çš„å—æ•°ä¸ä¸€è‡´
+#define   SD_ERR_WRITE_PROTECT		0x42			// å¡å¤–å£³çš„å†™ä¿æŠ¤å¼€å…³æ‰“åœ¨å†™ä¿æŠ¤ä½ç½®
 
 /**************************************************
 	
-			ÆäËüºê¶¨Òå
+			å…¶å®ƒå®å®šä¹‰
 
 ***************************************************/
-#define	  CARDTYPE_SD				0x00			// ¿¨ĞÍÎªSD  ¿¨
-#define   CARDTYPE_MMC				0x01			// ¿¨ĞÍÎªMMC ¿¨
+#define	  CARDTYPE_SD				0x00			// å¡å‹ä¸ºSD  å¡
+#define   CARDTYPE_MMC				0x01			// å¡å‹ä¸ºMMC å¡
 
-#define   SD_UCOSII_SMALLWAIT		256				// ÔËĞĞÓÚUCOS-IIÊ±µÄĞ¡µÈ´ıÊ±¼ä
-#define   SD_READREG_TIMEOUT		8				// ¶Á¼Ä´æÆ÷µÄ³¬Ê±Ê±¼ä
+#define   SD_UCOSII_SMALLWAIT		256				// è¿è¡ŒäºUCOS-IIæ—¶çš„å°ç­‰å¾…æ—¶é—´
+#define   SD_READREG_TIMEOUT		8				// è¯»å¯„å­˜å™¨çš„è¶…æ—¶æ—¶é—´
 
-/* ³õÊ¼»¯SD¿¨ initialize sd card */
+/* åˆå§‹åŒ–SDå¡ initialize sd card */
 extern INT8U SD_Initialize(void);
 
-/* ´ÓSD¿¨ÖĞ¶ÁÒ»¸ö¿é read a single block from sd card */
+/* ä»SDå¡ä¸­è¯»ä¸€ä¸ªå— read a single block from sd card */
 extern INT8U SD_ReadBlock(INT32U blockaddr, INT8U *recbuf);
 
-/* ´ÓSD¿¨ÖĞ¶Á¶à¸ö¿é	read multi blocks from sd card */
+/* ä»SDå¡ä¸­è¯»å¤šä¸ªå—	read multi blocks from sd card */
 extern INT8U SD_ReadMultiBlock(INT32U blockaddr, INT32U blocknum, INT8U *recbuf);
 
-/* ÏòSD¿¨ÖĞĞ´ÈëÒ»¸ö¿é write a block to sd card */
+/* å‘SDå¡ä¸­å†™å…¥ä¸€ä¸ªå— write a block to sd card */
 extern INT8U SD_WriteBlock(INT32U blockaddr, INT8U *recbuf);
 
-/* ÏòSD¿¨ÖĞĞ´Èë¶à¸ö¿é write multi blocks to sd card */
+/* å‘SDå¡ä¸­å†™å…¥å¤šä¸ªå— write multi blocks to sd card */
 extern INT8U SD_WriteMultiBlock(INT32U blockaddr, INT32U blocknum, INT8U *recbuf);
 
-/* ²Á³ıSD¿¨ÖĞµÄ¿é Erase the block of sd card */
+/* æ“¦é™¤SDå¡ä¸­çš„å— Erase the block of sd card */
 extern INT8U SD_EraseBlock(INT32U startaddr, INT32U blocknum);
 
-/* µÃµ½SD¿¨ĞÅÏ¢ get information of sd card */
+/* å¾—åˆ°SDå¡ä¿¡æ¯ get information of sd card */
 extern INT8U SD_GetCardInfo(void);
 
-/* ÓÉCSD¼Ä´æÆ÷¼ÆËã³¬Ê±Ê±¼ä calculate timeout from CSD register */
+/* ç”±CSDå¯„å­˜å™¨è®¡ç®—è¶…æ—¶æ—¶é—´ calculate timeout from CSD register */
 extern void SD_CalTimeout(INT8U *csdbuf);
 
-/* ¼¤»îSD¿¨ÄÚ²¿½øĞĞ³õÊ¼»¯´¦Àí active sd to initialize process */
+/* æ¿€æ´»SDå¡å†…éƒ¨è¿›è¡Œåˆå§‹åŒ–å¤„ç† active sd to initialize process */
 INT8U SD_ActiveInit(void);
 
 	    /*
 	    *************************************************************
 
-	     			ÏÂÃæÎªÈí¼ş°üÓÃµ½µÄÓëSD¿¨Ïà¹ØµÄºê¶¨Òå
+	     			ä¸‹é¢ä¸ºè½¯ä»¶åŒ…ç”¨åˆ°çš„ä¸SDå¡ç›¸å…³çš„å®å®šä¹‰
 
 	    *************************************************************
 	    */
@@ -116,27 +116,27 @@ INT8U SD_ActiveInit(void);
  * 3.4V, OCR bits 20 and 21 */
 #define MSK_OCR_33			 	0xC0				//1100 0000B
 
-/* ¶¨ÒåÔÚ³õÊ¼»¯½×¶Î,µÈ´ıSD¿¨ÍË³ö¿ÕÏĞ×´Ì¬µÄÖØÊÔ´ÎÊı */
+/* å®šä¹‰åœ¨åˆå§‹åŒ–é˜¶æ®µ,ç­‰å¾…SDå¡é€€å‡ºç©ºé—²çŠ¶æ€çš„é‡è¯•æ¬¡æ•° */
 /* Number of tries to wait for the card to go idle during initialization */
 //#define SD_IDLE_WAIT_MAX     	1000
 #define SD_IDLE_WAIT_MAX     	500
 
-/* SD¿¨ÃüÁî³¬Ê±Ê±¼ä(µ¥Î» 8clock)*/
+/* SDå¡å‘½ä»¤è¶…æ—¶æ—¶é—´(å•ä½ 8clock)*/
 /* timeout of command */
 #define SD_CMD_TIMEOUT   	 	100
 
-/* 100ms Ïàµ±µÄSPIÊ±ÖÓÊı(µ¥Î» unit: 8 clocks) */
+/* 100ms ç›¸å½“çš„SPIæ—¶é’Ÿæ•°(å•ä½ unit: 8 clocks) */
 /* 100ms correspond to SPI clock(unit: 8 clocks)*/
 //#define READ_TIMEOUT_100MS      5000
 #define READ_TIMEOUT_100MS      (100*SPI_CLOCK/1000/8)
 
-/* 250ms Ïàµ±µÄSPIÊ±ÖÓÊı(µ¥Î» unit: 8 clocks) */
+/* 250ms ç›¸å½“çš„SPIæ—¶é’Ÿæ•°(å•ä½ unit: 8 clocks) */
 /* 250ms correspond to SPI clock(unit: 8 clocks)*/
 //#define WRITE_TIMEOUT_250MS		12500
 #define WRITE_TIMEOUT_250MS      (250*SPI_CLOCK/1000/8)
 
 
-/* CSDÖĞÒ»Ğ©ÓòµÄ×Ö½ÚÎ»ÖÃ(¸ß×Ö½ÚÔÚÇ°) */
+/* CSDä¸­ä¸€äº›åŸŸçš„å­—èŠ‚ä½ç½®(é«˜å­—èŠ‚åœ¨å‰) */
 #define TAAC_POS 			1			//TACC
 #define NSAC_POS			2			//NSAC
 
@@ -154,30 +154,30 @@ INT8U SD_ActiveInit(void);
 
 #define R2WFACTOR_POS 		12			//R2WFACTOR_POS
 
-/*MMC¿¨²Á³ıÎ»ÖÃ*/
-#define ERASE_GRP_SIZE_POS   	10		//MMC¿¨ ERASE_GRP_SIZE 5-bit
-#define ERASE_GRP_MULTI_POS1 	10		//MMC¿¨ ERASE_GRP_MULTI 2-bit
-#define ERASE_GRP_MULTI_POS2 	11		//MMC¿¨ ERASE_GRP_MULTI 3-bit
+/*MMCå¡æ“¦é™¤ä½ç½®*/
+#define ERASE_GRP_SIZE_POS   	10		//MMCå¡ ERASE_GRP_SIZE 5-bit
+#define ERASE_GRP_MULTI_POS1 	10		//MMCå¡ ERASE_GRP_MULTI 2-bit
+#define ERASE_GRP_MULTI_POS2 	11		//MMCå¡ ERASE_GRP_MULTI 3-bit
 
-//CSDÖĞÒ»Ğ©ÓòµÄÑÚÂë
-#define TAAC_MSK			0x07		//TACC ÓòÑÚÂë
-#define NSAC_MSK			0x78		//NSAC ÓòÑÚÂë
+//CSDä¸­ä¸€äº›åŸŸçš„æ©ç 
+#define TAAC_MSK			0x07		//TACC åŸŸæ©ç 
+#define NSAC_MSK			0x78		//NSAC åŸŸæ©ç 
 
-#define READ_BL_LEN_MSK		0x0F		//READ_BL_LEN µÄÑÚÂë
+#define READ_BL_LEN_MSK		0x0F		//READ_BL_LEN çš„æ©ç 
 
-#define C_SIZE_MSK1			0x03		//C_SIZE ¸ß2Î»ÑÚÂë
-#define C_SIZE_MSK3			0xC0		//C_SIZE µÍ2Î»ÑÚÂë
+#define C_SIZE_MSK1			0x03		//C_SIZE é«˜2ä½æ©ç 
+#define C_SIZE_MSK3			0xC0		//C_SIZE ä½2ä½æ©ç 
 
-#define C_SIZE_MULT_MSK1 	0x03		//C_SIZE_MULT µÄ¸ß2Î»ÑÚÂë
-#define C_SIZE_MULT_MSK2 	0x80		//C_SIZE_MULT µÄµÍ2Î»ÑÚÂë
+#define C_SIZE_MULT_MSK1 	0x03		//C_SIZE_MULT çš„é«˜2ä½æ©ç 
+#define C_SIZE_MULT_MSK2 	0x80		//C_SIZE_MULT çš„ä½2ä½æ©ç 
 
-#define R2WFACTOR_MSK		0x1C		//R2WFACTOR ÑÚÂë
+#define R2WFACTOR_MSK		0x1C		//R2WFACTOR æ©ç 
 
-#define SECTOR_SIZE_MSK1	0x3F		//SECTOR_SIZE µÄ¸ß5Î»
-#define SECTOR_SIZE_MSK2	0x80		//SECTOR_SIZE µÄµÍ2Î»
+#define SECTOR_SIZE_MSK1	0x3F		//SECTOR_SIZE çš„é«˜5ä½
+#define SECTOR_SIZE_MSK2	0x80		//SECTOR_SIZE çš„ä½2ä½
 
-#define ERASE_GRP_SIZE_MSK 		0x7C		//MMC¿¨ ERASE_GRP_SIZE ÑÚÂë
-#define ERASE_GRP_MULTI_MSK1 	0x03		//MMC¿¨ ERASE_GRP_MULTI ¸ß2Î»ÑÚÂë
-#define ERASE_GRP_MULTI_MSK2 	0xE0		//MMC¿¨ ERASE_GRP_NULTI µÍ3Î»ÑÚÂë
+#define ERASE_GRP_SIZE_MSK 		0x7C		//MMCå¡ ERASE_GRP_SIZE æ©ç 
+#define ERASE_GRP_MULTI_MSK1 	0x03		//MMCå¡ ERASE_GRP_MULTI é«˜2ä½æ©ç 
+#define ERASE_GRP_MULTI_MSK2 	0xE0		//MMCå¡ ERASE_GRP_NULTI ä½3ä½æ©ç 
 
 #endif

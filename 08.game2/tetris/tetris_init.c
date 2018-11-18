@@ -2,7 +2,8 @@
 #include "bsp/config.h"
 #include "music/music.h"
 
-//¶¨ÒåÊ¹ÓÃµÄ°´¼ü
+//å®šä¹‰ä½¿ç”¨çš„æŒ‰é”®
+
 #define JK_PAUSE	KEY_Y
 #define JK_ROTATE	KEY_A
 #define JK_DOWN		KEY_DOWN
@@ -11,14 +12,14 @@
 #define JK_RESET		KEY_START
 
 
-static u8   pause = 0;  		// ÓÎÏ·ÔİÍ£
-static u8   tetris_level = 1;          // ¼¶±ğ
-static u16  lines = 0;          // Ïû³ıµÄĞĞÊı
-static u16  tetris_score = 0;          // ·ÖÊı
+static u8   pause = 0;  		// æ¸¸æˆæš‚åœ
+static u8   tetris_level = 1;          // çº§åˆ«
+static u16  lines = 0;          // æ¶ˆé™¤çš„è¡Œæ•°
+static u16  tetris_score = 0;          // åˆ†æ•°
 static u16  time_count = 0;
 
 
-//¸üĞÂ´òÓ¡
+//æ›´æ–°æ‰“å°
 void game_info_update()
 {
 	disp_dec(0,0,(tetris_score/100)%10);
@@ -52,17 +53,15 @@ void tetris_pause ( void )
 		game_info_update();
 	else
 	{
-		tetris_sync_all();    // ÒòÎª´òÓ¡ÔİÍ£ÆÆ»µÁËµØÍ¼ÇøÏÔÊ¾
+		tetris_sync_all();    // å› ä¸ºæ‰“å°æš‚åœç ´åäº†åœ°å›¾åŒºæ˜¾ç¤º
 	}
-	// ËùÒÔÍË³öÊ±ÒªË¢ĞÂÕû¸öµØÍ¼Çø
+	// æ‰€ä»¥é€€å‡ºæ—¶è¦åˆ·æ–°æ•´ä¸ªåœ°å›¾åŒº
 	return;
 }
 
-//»Øµ÷º¯Êı£¬¼ÆËã·ÖÊı
+//å›è°ƒå‡½æ•°ï¼Œè®¡ç®—åˆ†æ•°
 void tetris_get_score ( u8 line )
 {
-	u16 i;
-	u16 j;
 	lines += line;
 
 	switch ( line )
@@ -73,15 +72,15 @@ void tetris_get_score ( u8 line )
 			break;
 		case 2:
 			tetris_score += 3;
-			music_on(0,2);
+			music_on(0,1);
 			break;
 		case 3:
 			tetris_score += 5;
-			music_on(0,3);
+			music_on(1,1);
 			break;
 		case 4:
 			tetris_score += 12;
-			music_on(0,2);
+			music_on(1,1);
 			break;
 		default:
 			break;
@@ -89,15 +88,15 @@ void tetris_get_score ( u8 line )
 
 	
 
-	// Ã¿25ĞĞÉıÒ»¼¶
+	// æ¯25è¡Œå‡ä¸€çº§
 	if(tetris_level < 10)
 		tetris_level = lines / 25;
 
 	return;
 }
 
-//»Øµ÷º¯Êı£¬ÓÃÓÚÔÚÆÁÄ»ÉÏ»­³öbox
-//colorÎª0Ê±Çå³ı´Ë×ø±êÉÏµÄbox
+//å›è°ƒå‡½æ•°ï¼Œç”¨äºåœ¨å±å¹•ä¸Šç”»å‡ºbox
+//colorä¸º0æ—¶æ¸…é™¤æ­¤åæ ‡ä¸Šçš„box
 void tetris_draw_box ( u8 x, u8 y, u8 color )
 {
 	if ( color == 0 )
@@ -113,7 +112,7 @@ void tetris_draw_box ( u8 x, u8 y, u8 color )
 }
 
 u8 rand_times = 0;
-//»Øµ÷º¯Êı£¬ÓÃÓÚÉú³ÉËæ»úÊı
+//å›è°ƒå‡½æ•°ï¼Œç”¨äºç”Ÿæˆéšæœºæ•°
 u8 tetris_random()
 {
 	if(rand_times++ > 5)
@@ -124,17 +123,18 @@ u8 tetris_random()
 	return random();
 }
 
-//·µ»ØÏÂÒ»¸ö·½¿é£¬ÓÃÓÚÔ¤ÀÀÏÔÊ¾
+//è¿”å›ä¸‹ä¸€ä¸ªæ–¹å—ï¼Œç”¨äºé¢„è§ˆæ˜¾ç¤º
 void tetris_preview_brick ( const void* info )
 {
 
+	info = info;
 	return;
 }
 
 
 
 brick_t brick;
-//¶¨Ê±µ÷ÓÃ´Ëº¯Êı
+//å®šæ—¶è°ƒç”¨æ­¤å‡½æ•°
 void tetris_run ( u8 key )
 {
 	static u8 refresh = 0;
@@ -145,7 +145,7 @@ void tetris_run ( u8 key )
 		return;
 	}
 	
-	//ÓÎÏ·½áÊø
+	//æ¸¸æˆç»“æŸ
 	if ( tetris_is_game_over() )
 	{
 		game_info_update();
@@ -159,7 +159,7 @@ void tetris_run ( u8 key )
 	else
 		refresh = 0;
 
-	// ×ÔÓÉÏòÏÂÒÆ¶¯£¬¼¶±ğÔ½¸ßËÙ¶ÈÔ½¿ì
+	// è‡ªç”±å‘ä¸‹ç§»åŠ¨ï¼Œçº§åˆ«è¶Šé«˜é€Ÿåº¦è¶Šå¿«
 	if ( time_count >= ( 100 - tetris_level*5 ) )
 	{
 		time_count = 0;
@@ -168,10 +168,10 @@ void tetris_run ( u8 key )
 		tetris_move ( dire_down );
 	}
 
-	//ÓĞ°´¼ü°´ÏÂ
+	//æœ‰æŒ‰é”®æŒ‰ä¸‹
 	if ( KEY_VALID ( key ) )
 	{
-		// ÔİÍ£Ê±Ö»ÏìÓ¦»Ø³µ¼ü
+		// æš‚åœæ—¶åªå“åº”å›è½¦é”®
 		if ( pause && key != JK_PAUSE )
 		{
 			return;
@@ -207,7 +207,7 @@ void tetris_run ( u8 key )
 		refresh = !refresh;
 		//tetris_sync();
 		tetris_sync_all();
-		// ¸üĞÂĞĞÊı, ·ÖÊıµÈĞÅÏ¢
+		// æ›´æ–°è¡Œæ•°, åˆ†æ•°ç­‰ä¿¡æ¯
 		//game_info_update();
 	}
 
@@ -218,7 +218,7 @@ void tetris_run ( u8 key )
 s8 tetris_init ( void )
 {
 
-	// µ±·¢ÉúÏûĞĞÊ±»Øµ÷´Ëº¯Êı, ²ÎÊıÎªÏû³ıµÄĞĞÊı
+	// å½“å‘ç”Ÿæ¶ˆè¡Œæ—¶å›è°ƒæ­¤å‡½æ•°, å‚æ•°ä¸ºæ¶ˆé™¤çš„è¡Œæ•°
 	// remove_line_num(uint8_t line)
 	tetris_start ( tetris_draw_box, tetris_random, tetris_get_score );
 

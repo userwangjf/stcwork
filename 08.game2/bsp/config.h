@@ -8,11 +8,11 @@
 #define CODE    const
 #endif
 
-//#define MAIN_Fosc		22118400L	//¶¨ÒåÖ÷Ê±ÖÓ
-#define MAIN_Fosc		12000000L	//¶¨ÒåÖ÷Ê±ÖÓ
-//#define MAIN_Fosc		11059200L	//¶¨ÒåÖ÷Ê±ÖÓ
-//#define MAIN_Fosc		 5529600L	//¶¨ÒåÖ÷Ê±ÖÓ
-//#define MAIN_Fosc		24000000L	//¶¨ÒåÖ÷Ê±ÖÓ
+//#define MAIN_Fosc		22118400L	//å®šä¹‰ä¸»æ—¶é’Ÿ
+#define MAIN_Fosc		12000000L	//å®šä¹‰ä¸»æ—¶é’Ÿ
+//#define MAIN_Fosc		11059200L	//å®šä¹‰ä¸»æ—¶é’Ÿ
+//#define MAIN_Fosc		 5529600L	//å®šä¹‰ä¸»æ—¶é’Ÿ
+//#define MAIN_Fosc		24000000L	//å®šä¹‰ä¸»æ—¶é’Ÿ
 
 #include "STC15Fxxxx.H"
 
@@ -22,10 +22,10 @@
 
 #define Main_Fosc_KHZ	(MAIN_Fosc / 1000)
 
-//×î´óÖ§³ÖµÄÈÎÎñ¸öÊı,
+//æœ€å¤§æ”¯æŒçš„ä»»åŠ¡ä¸ªæ•°,
 #define OS_TSK_MAX		8
 
-//Çı¶¯Í·ÎÄ¼ş
+//é©±åŠ¨å¤´æ–‡ä»¶
 #include "bsp/gpio.h"
 #include "bsp/delay.h"
 #include "bsp/timer.h"
@@ -35,13 +35,13 @@
 
 #include "bsp/bsp.h"
 
-//²Ù×÷ÏµÍ³Í·ÎÄ¼ş
+//æ“ä½œç³»ç»Ÿå¤´æ–‡ä»¶
 //#include "os/os_sch.h"
 
-//shell½çÃæÍ·ÎÄ¼ş
+//shellç•Œé¢å¤´æ–‡ä»¶
 #include "shell/shell.h"
 
-//ÆäËü¹¦ÄÜÍ·ÎÄ¼ş
+//å…¶å®ƒåŠŸèƒ½å¤´æ–‡ä»¶
 #include "app/app.h"
 
 
