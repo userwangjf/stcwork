@@ -3,6 +3,8 @@
 #ifndef __ROMFS_H__
 #define __ROMFS_H__
 
+#define ROMFH_MAX_FILE  4   //最大打开文件个数
+
 #define ROMFH_MAX_FN 16//inode的名字长度，包括结尾的0。
 #define ROMFH_ROOT_FILE 0x60//根目录的第一个文件位置
 #define ROMFH_INODE_LEN	0x20//一个inode，占用32B，需要名字少于16B。
@@ -61,6 +63,14 @@ struct romfs_init
 {
 	//从block设备地址为addr的位置度len的数据，存入buf。
 	u8 (*romfs_rd_block)(u8* buf, u32 addr, u8 len);
+};
+
+struct romfs_file
+{
+	u32 file_addr;
+	u32 file_size;
+	u32 file_seek;
+	u32 file_flag;
 };
 
 

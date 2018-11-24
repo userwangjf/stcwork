@@ -32,6 +32,7 @@
 #include "bsp/usart.h"
 #include "bsp/pca.h"
 #include "bsp/exti.h"
+#include "bsp/EEPROM.h"
 
 #include "bsp/bsp.h"
 
@@ -54,6 +55,7 @@
 #include "xmodem/xmodem.h"
 
 #include "music/music.h"
+#include "save/save.h"
 
 extern u8 cur_task_id;
 

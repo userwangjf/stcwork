@@ -396,6 +396,11 @@
               <FileType>1</FileType>
               <FilePath>..\bsp\crc.c</FilePath>
             </File>
+            <File>
+              <FileName>EEPROM.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\bsp\EEPROM.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -543,6 +548,21 @@
               <FileName>music.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\music\music.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>save</GroupName>
+          <Files>
+            <File>
+              <FileName>save.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\save\save.c</FilePath>
+            </File>
+            <File>
+              <FileName>save_init.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\save\save_init.c</FilePath>
             </File>
           </Files>
         </Group>

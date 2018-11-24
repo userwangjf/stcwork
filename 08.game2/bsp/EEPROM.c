@@ -1,8 +1,7 @@
 
 //	本程序是STC系列的内置EEPROM读写程序。
 
-#include "config.h"
-#include "eeprom.h"
+#include "bsp/config.h"
 
 
 //========================================================================

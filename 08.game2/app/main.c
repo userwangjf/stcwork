@@ -54,6 +54,8 @@ void main()
 	u8 xon = 0;
 	u8 i;
 	u8 rdata[8];
+	u32 mysave1 = 0;
+	u32 mysave2 = 0;
 
 	P0 = 0xff;
 	P1 = 0xff;
@@ -76,6 +78,18 @@ void main()
 		Uart1_Tx("\r\nlittle endian");
 	else
 		Uart1_Tx("\r\nbig endian");
+
+	save_init();
+	save_read(1,&mysave1,0x5511);
+	save_read(2,&mysave2,0x5522);
+	Uart1_Tx("\r\nmysave1: ");
+	Uart1_Tx(hex2str(mysave1));
+	Uart1_Tx("\r\nmysave2: ");
+	Uart1_Tx(hex2str(mysave2));
+	mysave1 += 2;
+	mysave2 += 3;
+	save_write(1,mysave1);
+	save_write(2,mysave2);
 
 	/*
 	W25qxx_Init();
