@@ -19,6 +19,7 @@ u8 save_read(u16 sav_index, u32* sav_data, u32 def_data);
 void save_write(u16 sav_index,u32 sav_data);
 void save_start();
 
+void save_test();
 
 extern u16 save_wptr;
 //存储参数index的最大值

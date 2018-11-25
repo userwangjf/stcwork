@@ -52,10 +52,7 @@ void main()
 	bit uart1_ren = 0;
 	u8 key = 0xff;
 	u8 xon = 0;
-	u8 i;
-	u8 rdata[8];
-	u32 mysave1 = 0;
-	u32 mysave2 = 0;
+
 
 	P0 = 0xff;
 	P1 = 0xff;
@@ -79,39 +76,10 @@ void main()
 	else
 		Uart1_Tx("\r\nbig endian");
 
-	save_init();
-	save_read(1,&mysave1,0x5511);
-	save_read(2,&mysave2,0x5522);
-	Uart1_Tx("\r\nmysave1: ");
-	Uart1_Tx(hex2str(mysave1));
-	Uart1_Tx("\r\nmysave2: ");
-	Uart1_Tx(hex2str(mysave2));
-	mysave1 += 2;
-	mysave2 += 3;
-	save_write(1,mysave1);
-	save_write(2,mysave2);
+	//测试使用STC的内部EEPROM保存掉电不丢失的数据
+	//save_test();
 
-	/*
-	W25qxx_Init();
 
-	W25qxx_ReadBytes(0, &rdata, 8);
-	Uart1_Tx("\r\n");
-	for(i=0;i<8;i++)
-	{
-		Uart1_Tx(byte2str(rdata[i]));
-		Uart1_Tx(",");
-	}
-
-	W25qxx_EraseSector(0);
-
-	W25qxx_ReadBytes(0, &rdata, 8);
-	Uart1_Tx("\r\n");
-	for(i=0;i<8;i++)
-	{
-		Uart1_Tx(byte2str(rdata[i]));
-		Uart1_Tx(",");
-	}
-	*/
 
 	//snake_init();
 	//tetris_init();

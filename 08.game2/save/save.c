@@ -129,7 +129,7 @@ u8 save_read(u16 sav_index, u32* sav_data, u32 def_data) {
 	*sav_data = def_data;
 
 	if(sav_index < 1 || sav_index > 10000)
-		return;
+		return 0;
 
 	//超过范围
 	if(sav_index > save_max) {
