@@ -11,6 +11,9 @@
 void Uart1_Echo(u8 dat);
 void Uart1_Tx(u8 *string);
 bool Uart1_Busy(void);
+void Uart2_Echo(u8 dat);
+void Uart2_Tx(u8 *string);
+bool Uart2_Busy(void);
 
 #define	USART1	1
 #define	USART2	2

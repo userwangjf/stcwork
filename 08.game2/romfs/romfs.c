@@ -93,10 +93,6 @@ u8* romfs_bmap(u8* top_dir,u8* dir)
 
 
 
-
-
-struct romfs_init romfs_block;
-
 static u8 romfs_block_buf[ROMFH_INODE_LEN];
 
 //按绝对路径方式，获取文件的inode
@@ -140,7 +136,7 @@ struct romfs_inode* romfs_namei(u8* dir)
 #endif
 
         //读入数据
-        romfs_block.romfs_rd_block(romfs_block_buf,next_addr,ROMFH_INODE_LEN);
+        romfs_rd_block(next_addr,romfs_block_buf,ROMFH_INODE_LEN);
 #ifdef UNIT_TEST
         //转换大小端
         pinode->spec.dir_data = be32_le32(pinode->spec.dir_data);
@@ -190,16 +186,19 @@ struct romfs_inode* romfs_namei(u8* dir)
 
 u8 romfs_is_dir(struct romfs_inode* inode)
 {
-
+    inode = inode;
+    return 0;
 }
 
 u8 romfs_is_file(struct romfs_inode* inode)
 {
-
+    inode = inode;
+    return 0;
 }
 
 u8* romfs_name(struct romfs_inode* inode)
 {
+    inode = inode;
     return inode->name;
 }
 

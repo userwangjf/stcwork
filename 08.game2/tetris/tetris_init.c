@@ -68,19 +68,15 @@ void tetris_get_score ( u8 line )
 	{
 		case 1:
 			tetris_score += 1;
-			music_on(0,1);
 			break;
 		case 2:
 			tetris_score += 3;
-			music_on(0,1);
 			break;
 		case 3:
 			tetris_score += 5;
-			music_on(1,1);
 			break;
 		case 4:
 			tetris_score += 12;
-			music_on(1,1);
 			break;
 		default:
 			break;

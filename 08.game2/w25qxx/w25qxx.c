@@ -64,8 +64,8 @@ bool w25qxx_Init(void) {
 			break;
 	}
 
-	Uart1_Tx("\r\n");
-	Uart1_Tx(hex2str(id));
+	SHELL_TX("\r\n");
+	SHELL_TX(hex2str(id));
 
 	if(i >= 10)
 		return 0;
@@ -263,10 +263,11 @@ void w25qxx_ReadBytes(u32 ReadAddr, u8* pBuffer, u16 NumByte) {
 }
 
 void w25qxx_WriteByte(u32 WriteAddr, u8* pBuffer, u16 numByte) {
-    u16 i;
+	u16 i;
 	w25qxx_WaitForWriteEnd();
 	w25qxx_WriteEnable();
 	w25qxx_CS_CLR;
+	#if 1
 	w25qxx_Spi(0x02);
 
 	if(w25qxx.ID >= W25Q256)
@@ -276,40 +277,60 @@ void w25qxx_WriteByte(u32 WriteAddr, u8* pBuffer, u16 numByte) {
 	w25qxx_Spi((WriteAddr & 0xFF00) >> 8);
 	w25qxx_Spi(WriteAddr & 0xFF);
 
-    if(numByte > 0xff) numByte = 0x100;
-    for(i=0;i<numByte;i++)
-    {
-        w25qxx_Spi(pBuffer[i]);
-    }
-	
+	if(numByte > 0xff)
+		numByte = 0x100;
+
+	for(i = 0; i < numByte; i++) {
+		w25qxx_Spi(pBuffer[i]);
+	}
+	#endif
+
 	w25qxx_CS_SET;
 	w25qxx_WaitForWriteEnd();
 }
 
 
 void w25qxx_test() {
-		u8 i;
+	u8 i;
 	u8 rdata[8];
+
 	w25qxx_Init();
 
-	w25qxx_ReadBytes(0, &rdata, 8);
-	Uart1_Tx("\r\n");
+	w25qxx_ReadBytes(0, rdata, 16);
+
+	SHELL_TX("\r\n");
+		for(i = 0; i < 8; i++) {
+		SHELL_TX(byte2str(rdata[i]));
+		SHELL_TX(",");
+	}
+
+	w25qxx_ReadBytes(0x80, rdata, 8);
+
+	SHELL_TX("\r\n");
+		for(i = 0; i < 8; i++) {
+		SHELL_TX(byte2str(rdata[i]));
+		SHELL_TX(",");
+	}
+
+#if 0
 	for(i=0;i<8;i++)
-	{
-		Uart1_Tx(byte2str(rdata[i]));
-		Uart1_Tx(",");
+		rdata[i] = 0x55 +i;
+
+	w25qxx_WriteByte(0,rdata,8);
+	for(i=0;i<8;i++)
+		rdata[i] = 0;
+
+	w25qxx_ReadBytes(0, rdata, 8);
+
+	SHELL_TX("\r\n");
+	for(i = 0; i < 8; i++) {
+		SHELL_TX(byte2str(rdata[i]));
+		SHELL_TX(",");
 	}
 
 	w25qxx_EraseSector(0);
+#endif
 
-	w25qxx_ReadBytes(0, &rdata, 8);
-	Uart1_Tx("\r\n");
-	for(i=0;i<8;i++)
-	{
-		Uart1_Tx(byte2str(rdata[i]));
-		Uart1_Tx(",");
-	}
-	
 }
 
 
@@ -317,21 +338,21 @@ void w25qxx_test() {
 
 //
 void w25qxx_EraseBlock(u32 BlockAddr) {
-    w25qxx_WaitForWriteEnd();
-    BlockAddr = BlockAddr * w25qxx.SectorSize * 16;
-    w25qxx_WriteEnable();
-    w25qxx_CS_CLR;
-    w25qxx_Spi(0xD8);
+	w25qxx_WaitForWriteEnd();
+	BlockAddr = BlockAddr * w25qxx.SectorSize * 16;
+	w25qxx_WriteEnable();
+	w25qxx_CS_CLR;
+	w25qxx_Spi(0xD8);
 
-    if(w25qxx.ID >= W25Q256)
-        w25qxx_Spi((BlockAddr & 0xFF000000) >> 24);
+	if(w25qxx.ID >= W25Q256)
+		w25qxx_Spi((BlockAddr & 0xFF000000) >> 24);
 
-    w25qxx_Spi((BlockAddr & 0xFF0000) >> 16);
-    w25qxx_Spi((BlockAddr & 0xFF00) >> 8);
-    w25qxx_Spi(BlockAddr & 0xFF);
-    w25qxx_CS_SET;
-    w25qxx_WaitForWriteEnd();
-    w25qxx_Delay(1);
+	w25qxx_Spi((BlockAddr & 0xFF0000) >> 16);
+	w25qxx_Spi((BlockAddr & 0xFF00) >> 8);
+	w25qxx_Spi(BlockAddr & 0xFF);
+	w25qxx_CS_SET;
+	w25qxx_WaitForWriteEnd();
+	w25qxx_Delay(1);
 }
 
 //###################################################################################################################

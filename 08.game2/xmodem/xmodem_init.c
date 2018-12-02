@@ -1,11 +1,14 @@
 
 #include "bsp/config.h"
 
+#define XM_UART1	1
+
 
 //带超时串口接收，在12M时，大约3秒，需要关闭中断。
 //超时返回-1
 s16 xmodem_getchar()
 {
+	#if XM_UART1
 	u32 delay = 0x50000;
 	u8 tmp;
 	for (; delay > 0; delay--)
@@ -16,23 +19,50 @@ s16 xmodem_getchar()
 	tmp = SBUF;
 	RI = 0;
 	return tmp;
+	#else
+	u32 delay = 0x50000;
+	u8 tmp;
+	for (; delay > 0; delay--)
+	{
+		if (RI2)break;
+	}
+	if (delay == 0)return -1;
+	tmp = S2BUF;
+	CLR_RI2();
+	return tmp;
+	#endif
 }
 
 void xmodem_putchar(u8 ch)
 {
+	#if XM_UART1
 	SBUF = ch;
 	while (!TI);
 	TI = 0;
+	#else
+	S2BUF = ch;
+	while (!TI2);
+	CLR_TI2();
+	#endif
 }
 
 u8 xmodem_get_first()
 {
+	#if XM_UART1
 	if (RI) {
 		RI = 0;//清除第一个字符
 		return 1;
 	}
 	else
 		return 0;
+	#else
+	if (RI2) {
+		CLR_RI2();//清除第一个字符
+		return 1;
+	}
+	else
+		return 0;
+	#endif
 }
 
 void xmodem_delay1s()
@@ -44,12 +74,17 @@ void xmodem_delay1s()
 	delay_ms(200);
 }
 
+u32 romfs_waddr = 0;
+
 //保存从xmodem获取的信息，
 //size <= 128
 u8 xmodem_save(u8* buff, u8 size)
 {
-	buff = buff;
-	size = size;
+	//SHELL_TX("\r\nrx Pkt ok");
+	//delay_ms(size);
+	//w25qxx_WriteByte(romfs_waddr, buff, size);
+	romfs_waddr += size;
+	snake_init();
 	return 0;
 }
 
@@ -65,21 +100,23 @@ void xmodem_init(u8* rx_buf)
 	xm_rx.rx_buf = rx_buf;
 	xm_rx.rx_ok_cnt = 0;
 
+	romfs_waddr = 0;
+
 	//关闭中断，避免影响超时的精度
 	EA = 0;
 	if (0 == xmodem_rx(&xm_rx))
 	{
 		xm_rx.delay_1s(); //延时等待退出。
 		EA = 1;
-		Uart1_Tx("\r\nXMODEM OK CNT: ");
-		Uart1_Tx(hex2str(xm_rx.rx_ok_cnt));
-		Uart1_Tx("\r\n");
+		SHELL_TX("\r\nXMODEM OK CNT: ");
+		SHELL_TX(hex2str(xm_rx.rx_ok_cnt));
+		SHELL_TX("\r\n");
 	}
 	else
 	{
 		xm_rx.delay_1s(); //延时等待退出。
 		EA = 1;
-		Uart1_Tx("\r\nXMODEM RX ERROR\r\n");
+		SHELL_TX("\r\nXMODEM RX ERROR\r\n");
 	}
 }
 

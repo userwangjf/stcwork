@@ -31,6 +31,8 @@ u8 led_dot_hex[16*3] =
 };
 
 
+
+
 void disp_dec(u8 x, u8 y, u8 dec)
 {
 	u8 i;
@@ -229,6 +231,61 @@ struct {
 } pio_set[21] = {{row0_set},{row1_set},{row2_set},{row3_set},{row4_set},{row5_set},{row6_set},
 			{row7_set},{row8_set},{row9_set},{row10_set},{row11_set},{row12_set},{row13_set},
 			{row14_set},{row15_set},{row16_set},{row17_set},{row18_set},{row19_set},{row20_set}};
+
+
+void led_col_dis()
+{
+	u8 i;
+	for(i=0;i<10;i++)
+		led_col_clr(i);
+}
+
+void led_row_dis()
+{
+	u8 i;
+	for(i=0;i<21;i++)
+		led_row_set(i);
+}
+
+//关闭中断时,用一列显示进度
+//bitmap方式
+void led_col_set(u8 set) {
+	if(set == 0x0)P24 = 1;
+	if(set == 0x1)P23 = 1;
+	if(set == 0x2)P22 = 1;
+	if(set == 0x3)P21 = 1;
+	if(set == 0x4)P20 = 1;
+	if(set == 0x5)P46 = 1;
+	if(set == 0x6)P45 = 1;
+	if(set == 0x7)P27 = 1;
+	if(set == 0x8)P26 = 1;
+    if(set == 0x9)P25 = 1;	
+}
+
+void led_col_clr(u8 clr) {
+	if(clr == 0x0)P24 = 0;
+	if(clr == 0x1)P23 = 0;
+	if(clr == 0x2)P22 = 0;
+	if(clr == 0x3)P21 = 0;
+	if(clr == 0x4)P20 = 0;
+	if(clr == 0x5)P46 = 0;
+	if(clr == 0x6)P45 = 0;
+	if(clr == 0x7)P27 = 0;
+	if(clr == 0x8)P26 = 0;
+    if(clr == 0x9)P25 = 0;		
+}
+
+void led_row_clr(u8 clr) {
+	
+	if(clr < 21)
+		pio_set[clr].func_ptr(0);
+}
+
+void led_row_set(u8 set) {
+	
+	if(set < 21)
+		pio_set[set].func_ptr(1);
+}
 
 
 u8 row_curr = 0;

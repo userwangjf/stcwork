@@ -4,6 +4,94 @@
 		"selected_items":
 		[
 			[
+				"w25",
+				"w25qxx_WriteByte(u32 WriteAddr, u8 *pBuffer, u16 numByte)\tvoid"
+			],
+			[
+				"CLR",
+				"CLR_RI2()\tmacro"
+			],
+			[
+				"CR",
+				"CLR_RI2()\tmacro"
+			],
+			[
+				"Uart1_",
+				"Uart1_Tx(u8 *string)\tvoid"
+			],
+			[
+				"mu",
+				"music_addr\tu32"
+			],
+			[
+				"w",
+				"w25qxx_ReadBytes(u32 ReadAddr, u8 *pBuffer, u16 NumByte)\tvoid"
+			],
+			[
+				"fifo",
+				"fifo_test()\tvoid"
+			],
+			[
+				"music",
+				"music_len\tu32"
+			],
+			[
+				"w25qxx",
+				"w25qxx_ReadBytes(u32 ReadAddr, u8 *pBuffer, u16 NumByte)\tvoid"
+			],
+			[
+				"s",
+				"spec\tunion romfs_spec"
+			],
+			[
+				"rofs",
+				"romfs_namei(u8 *dir)\tstruct romfs_inode *"
+			],
+			[
+				"fifo_",
+				"fifo_dat_buf"
+			],
+			[
+				"FIFO",
+				"FIFO_LEN\tmacro"
+			],
+			[
+				"w25qxx_read",
+				"w25qxx_ReadBytes(u32 ReadAddr, u8 *pBuffer, u16 NumByte)\tvoid"
+			],
+			[
+				"led_",
+				"led_col_dis()\tvoid"
+			],
+			[
+				"write",
+				"write_addr\tu32"
+			],
+			[
+				"disp",
+				"disp_on(u8 x, u8 y)\tvoid"
+			],
+			[
+				"w25qxx_E",
+				"w25qxx_EraseSector(u32 SectorAddr)\tvoid"
+			],
+			[
+				"Uart1",
+				"Uart1_Tx(u8 *string)\tvoid"
+			],
+			[
+				"w25qxxread",
+				"w25qxx_ReadBytes(u32 ReadAddr, u8 *pBuffer, u16 NumByte)\tvoid"
+			],
+			[
+				"shell",
+				"shell_rx_buf\tu8 [140]"
+			],
+			[
+				"w25qxx_w",
+				"w25qxx_WriteByte(u32 WriteAddr, u8 *pBuffer, u16 numByte)\tvoid"
+			],
+			[
 				"de",
 				"define"
 			],
@@ -38,10 +126,6 @@
 			[
 				"r",
 				"rdata\tu32"
-			],
-			[
-				"write",
-				"write_sector_b(u16 index, u32 wdata)\tvoid"
 			],
 			[
 				"UART1",
@@ -104,10 +188,6 @@
 				"music_shine\tconst u8 []"
 			],
 			[
-				"mu",
-				"music_len\tu16"
-			],
-			[
 				"mode_",
 				"mode_select(u8 key)\tvoid"
 			],
@@ -120,64 +200,28 @@
 	"buffers":
 	[
 		{
+			"file": "music/music.h",
+			"settings":
+			{
+				"buffer_size": 155,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "tetris/tetris_init.c",
+			"settings":
+			{
+				"buffer_size": 3047,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
 			"file": "app/main.c",
 			"settings":
 			{
-				"buffer_size": 5836,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "w25qxx/w25qxx.c",
-			"settings":
-			{
-				"buffer_size": 14388,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "save/save.c",
-			"settings":
-			{
-				"buffer_size": 2988,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "w25qxx/w25qxx.h",
-			"settings":
-			{
-				"buffer_size": 1839,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "w25qxx/w25qxxConfig.h",
-			"settings":
-			{
-				"buffer_size": 279,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "save/save_init.c",
-			"settings":
-			{
-				"buffer_size": 1639,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "save/save.h",
-			"settings":
-			{
-				"buffer_size": 566,
+				"buffer_size": 6516,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -186,7 +230,123 @@
 			"file": "xmodem/xmodem.c",
 			"settings":
 			{
-				"buffer_size": 2063,
+				"buffer_size": 1935,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "xmodem/xmodem_init.c",
+			"settings":
+			{
+				"buffer_size": 1682,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "snake/snake.c",
+			"settings":
+			{
+				"buffer_size": 2926,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "w25qxx/w25qxx.h",
+			"settings":
+			{
+				"buffer_size": 1864,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "w25qxx/w25qxx.c",
+			"settings":
+			{
+				"buffer_size": 14612,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "bsp/USART.C",
+			"settings":
+			{
+				"buffer_size": 5321,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "bsp/STC15Fxxxx.H",
+			"settings":
+			{
+				"buffer_size": 30890,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "bsp/USART.h",
+			"settings":
+			{
+				"buffer_size": 1393,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "shell/shell.h",
+			"settings":
+			{
+				"buffer_size": 446,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "romfs/fifo.c",
+			"settings":
+			{
+				"buffer_size": 1719,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "bsp/timer.c",
+			"settings":
+			{
+				"buffer_size": 4960,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "romfs/fifo.h",
+			"settings":
+			{
+				"buffer_size": 209,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "shell/shell.c",
+			"settings":
+			{
+				"buffer_size": 4027,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "music/music.c",
+			"settings":
+			{
+				"buffer_size": 1535,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -252,43 +412,60 @@
 	},
 	"expanded_folders":
 	[
-		"/F/10.github/stcwork/08.game2"
+		"/G/WORK/github/stcwork/08.game2",
+		"/G/WORK/github/stcwork/08.game2/music",
+		"/G/WORK/github/stcwork/08.game2/snake",
+		"/G/WORK/github/stcwork/08.game2/xmodem"
 	],
 	"file_history":
 	[
-		"/F/10.github/stcwork/08.game2/w25qxx/README.md",
-		"/F/10.github/stcwork/08.game2/ST3_STC.sublime-project",
-		"/F/10.github/stcwork/08.game2/romfs/romfs.h",
-		"/F/10.github/stcwork/08.game2/romfs/romfs.c",
-		"/F/10.github/stcwork/08.game2/save/save.h",
-		"/F/10.github/stcwork/08.game2/save/save_init.c",
-		"/F/10.github/stcwork/08.game2/save/save.c",
+		"/G/WORK/github/stcwork/08.game2/bsp/STC15Fxxxx.H",
+		"/G/WORK/github/stcwork/08.game2/xmodem/xmodem_init.c",
+		"/G/WORK/github/stcwork/08.game2/bsp/core.c",
+		"/G/WORK/github/stcwork/08.game2/bsp/crc.c",
+		"/G/WORK/github/stcwork/08.game2/bsp/USART.C",
+		"/G/WORK/github/stcwork/08.game2/app/led_disp.c",
+		"/G/WORK/github/stcwork/08.game2/w25qxx/w25qxx.c",
+		"/G/WORK/github/stcwork/08.game2/shell/shell.c",
+		"/G/WORK/github/stcwork/08.game2/romfs/fifo.c",
+		"/G/WORK/github/stcwork/08.game2/romfs/fifo.h",
+		"/G/WORK/github/stcwork/08.game2/bsp/config.h",
+		"/G/WORK/github/stcwork/08.game2/app/main.c",
+		"/G/WORK/github/stcwork/08.game2/music/music.c",
+		"/G/WORK/romfs_dir/wav/readme.txt",
+		"/G/WORK/github/stcwork/08.game2/romfs/romfs.c",
+		"/G/WORK/github/stcwork/08.game2/romfs/romfs.h",
+		"/G/WORK/github/stcwork/08.game2/romfs/romfs_init.c",
+		"/G/WORK/github/stcwork/08.game2/shell/shell.h",
+		"/G/WORK/github/stcwork/08.game2/w25qxx/w25qxx.h",
+		"/G/WORK/github/stcwork/08.game2/bsp/timer.c",
+		"/G/WORK/github/stcwork/08.game2/app/led_scan.h",
+		"/G/WORK/github/stcwork/08.game2/xmodem/xmodem.h",
+		"/G/WORK/github/stcwork/08.game2/xmodem/xmodem.c",
+		"/G/WORK/github/stcwork/08.game2/bsp/delay.c",
+		"/C/Keil/serial.ini",
+		"/G/WORK/github/stcwork/08.game2/prj/stc.MAP",
+		"/G/WORK/github/stcwork/08.game2/app/key_scan.h",
+		"/G/WORK/github/stcwork/08.game2/w25qxx/w25qxxConfig.h",
+		"/G/WORK/github/stcwork/08.game2/oled/oled.c",
+		"/G/WORK/github/stcwork/08.game2/bsp/type.h",
+		"/G/WORK/github/stcwork/08.game2/save/save.c",
+		"/G/WORK/github/stcwork/08.game2/save/save_init.c",
+		"/G/WORK/github/stcwork/08.game2/save/save.h",
+		"/G/WORK/romfs_dir/romfs.txt",
 		"/G/WORK/github/stcwork/08.game2/save/循环持久化数据.c",
 		"/G/WORK/github/stcwork/08.game2/tetris/brick.c",
 		"/G/WORK/github/stcwork/08.game2/tetris/tetris.h",
 		"/G/WORK/github/stcwork/08.game2/bsp/EEPROM.c",
-		"/G/WORK/github/stcwork/08.game2/romfs/romfs_init.c",
 		"/G/WORK/github/stcwork/08.game2/bsp/Exti.c",
-		"/G/WORK/github/stcwork/08.game2/bsp/delay.c",
-		"/G/WORK/github/stcwork/08.game2/bsp/config.h",
 		"/G/WORK/github/stcwork/08.game2/bsp/EEPROM.h",
-		"/G/WORK/github/stcwork/08.game2/save/save.h",
-		"/G/WORK/github/stcwork/08.game2/save/save.c",
-		"/G/WORK/github/stcwork/08.game2/bsp/type.h",
 		"/G/WORK/github/stcwork/08.game2/tetris/tetris_init.c",
 		"/G/WORK/github/stcwork/08.game2/tetris/tetris.c",
-		"/G/WORK/github/stcwork/08.game2/w25qxx/w25qxx.c",
-		"/G/WORK/github/stcwork/08.game2/w25qxx/w25qxx.h",
 		"/G/WORK/github/stcwork/08.game2/app/key_scan.h.orig",
 		"/G/WORK/github/stcwork/08.game2/app/key_scan.c.orig",
-		"/G/WORK/github/stcwork/08.game2/bsp/crc.c",
-		"/G/WORK/github/stcwork/08.game2/bsp/core.c",
 		"/F/Tools/SublimeTextBuild3176x64/Data/Packages/toastyle/toastyle.py",
 		"/G/WORK/github/stcwork/08.game2/music/music.c.orig",
-		"/G/WORK/github/stcwork/08.game2/music/music.c",
 		"/G/WORK/github/stcwork/08.game2/music/music.h",
-		"/G/WORK/github/stcwork/08.game2/romfs/romfs.c",
-		"/G/WORK/github/stcwork/08.game2/app/main.c",
 		"/C/AStyle/astyle中文帮助",
 		"/F/Tools/SublimeTextBuild3176x64/Data/Packages/toastyle/Context.sublime-menu",
 		"/F/Tools/SublimeTextBuild3176x64/Data/Packages/toastyle/Main.sublime-menu",
@@ -298,7 +475,6 @@
 		"/F/Tools/SublimeTextBuild3176x64/Data/Packages/User/SublimeClang.sublime-settings",
 		"/F/Tools/SublimeTextBuild3176x64/Data/Packages/terminal/Terminal.py",
 		"/C/showParam.bat",
-		"/G/WORK/github/stcwork/08.game2/w25qxx/w25qxxConfig.h",
 		"/G/WORK/github/stcwork/08.game2/bsp/core.h",
 		"/G/WORK/github/stcwork/08.game2/bsp/GPIO.c",
 		"/F/Tools/SublimeTextBuild3176x64/Data/Packages/SublimeClang/sublimeclang.py",
@@ -307,8 +483,6 @@
 		"/F/Tools/SublimeTextBuild3176x64/Data/Packages/sublime_terminal/Terminal.sublime-settings",
 		"/F/Tools/SublimeTextBuild3176x64/Data/Packages/User/SublimeAStyleFormatter.sublime-settings",
 		"/F/Tools/SublimeTextBuild3176x64/Data/Packages/SublimeAStyleFormatter/SublimeAStyleFormatter.sublime-settings",
-		"/G/WORK/github/stcwork/08.game2/xmodem/xmodem.c",
-		"/G/WORK/github/stcwork/08.game2/xmodem/xmodem_init.c",
 		"/F/Tools/SublimeTextBuild3176x64/Packages/Python.sublime-package",
 		"/G/WORK/github/stcwork/08.game2/w25qxx/README.md",
 		"/G/WORK/github/stcwork/08.game2/游戏机2.txt",
@@ -325,7 +499,6 @@
 		"/F/Tools/SublimeTextBuild3176x64/Data/Packages/User/Anaconda.sublime-settings",
 		"/G/08.game2/bsp/ADC.c.gb2312",
 		"/G/WORK/github/stcwork/08.game2/snake/snake.c",
-		"/G/WORK/github/stcwork/08.game2/bsp/timer.c",
 		"/G/WORK/github/stcwork/08.game2/bsp/GPIO.h",
 		"/G/WORK/github/stcwork/08.game2/bsp/PCA.c",
 		"/F/Tools/SublimeTextBuild3176x64/sublime.py",
@@ -341,11 +514,11 @@
 	],
 	"find":
 	{
-		"height": 27.2
+		"height": 28.0754716981
 	},
 	"find_in_files":
 	{
-		"height": 102.71697998,
+		"height": 105.433962264,
 		"where_history":
 		[
 			"<open folders>"
@@ -356,8 +529,21 @@
 		"case_sensitive": false,
 		"find_history":
 		[
-			"W25QXX_",
-			"W25qxx_",
+			"Uart1_Tx",
+			"backgangqin.wav钢琴背景\ndaojishi.wav倒计时\ndingling.wav叮铃\ndushen.wav赌神出场\nendmusic.wav结尾音乐\nfaguang.wav发光\nguzhang.wav鼓掌\nkaichang.wav开场\nkaichang2.wav开场\nkehuanclick.wav科幻点击\nkuaimen.wav快门\nmalifail.wav玛丽失败\nmofa.wav魔法\nqiaoluo.wav敲锣\nqqmess.wavQQ消息\nshuidi.wav水滴\nsysfail.wav系统失败\ntupaopao.wav吐泡泡\nzh",
+			"backgangqin",
+			"music_play_on",
+			"mucis_ptr_play",
+			"fifo_empty",
+			"fifo_level",
+			"romfs_init",
+			"xm_put_char",
+			"rx->",
+			"TYPE BASE LENGTH RELOCATION SEGMENT NAME",
+			"STACK",
+			"set",
+			"init",
+			"Uart2_Tx",
 			"save_end",
 			"tetris_random",
 			"SectorSize",
@@ -393,7 +579,15 @@
 		"regex": false,
 		"replace_history":
 		[
-			"w25qxx_",
+			"SHELL_TX",
+			"music_on",
+			"music_play",
+			"fifo_last",
+			"fifo_used",
+			"xm_putchar",
+			"xm_",
+			"clr",
+			"set",
 			"save_max"
 		],
 		"reverse": false,
@@ -410,19 +604,49 @@
 			[
 				{
 					"buffer": 0,
-					"file": "app/main.c",
+					"file": "music/music.h",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5836,
+						"buffer_size": 155,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								680,
-								680
+								145,
+								145
+							]
+						],
+						"settings":
+						{
+							"is_init_dirty_state": false,
+							"origin_encoding": "ASCII",
+							"syntax": "Packages/C++/C++.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 16,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "tetris/tetris_init.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3047,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1296,
+								1296
 							]
 						],
 						"settings":
@@ -433,65 +657,38 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 716.8,
+						"translation.y": 272.603773585,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "w25qxx/w25qxx.c",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 14388,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5323,
-								5323
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 5175.2,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
+					"stack_index": 15,
 					"type": "text"
 				},
 				{
 					"buffer": 2,
-					"file": "save/save.c",
+					"file": "app/main.c",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2988,
+						"buffer_size": 6516,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2672,
-								2672
+								4997,
+								4997
 							]
 						],
 						"settings":
 						{
+							"is_init_dirty_state": false,
+							"origin_encoding": "UTF-8",
 							"syntax": "Packages/C++/C.sublime-syntax",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2470.4,
+						"translation.y": 5174.94339623,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -499,55 +696,395 @@
 				},
 				{
 					"buffer": 3,
-					"file": "w25qxx/w25qxx.h",
+					"file": "xmodem/xmodem.c",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1839,
+						"buffer_size": 1935,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1001,
-								994
+								0,
+								0
 							]
 						],
 						"settings":
 						{
-							"origin_encoding": "ASCII",
-							"syntax": "Packages/C++/C++.sublime-syntax",
+							"is_init_dirty_state": false,
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/C++/C.sublime-syntax",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 324.0,
+						"translation.y": 208.301886792,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "xmodem/xmodem_init.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1682,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								604,
+								604
+							]
+						],
+						"settings":
+						{
+							"is_init_dirty_state": false,
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1368.45283019,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "snake/snake.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2926,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 4,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "w25qxx/w25qxxConfig.h",
+					"buffer": 6,
+					"file": "w25qxx/w25qxx.h",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 279,
+						"buffer_size": 1864,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								64,
-								57
+								765,
+								765
 							]
 						],
 						"settings":
 						{
+							"is_init_dirty_state": false,
+							"origin_encoding": "ASCII",
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 547.018867925,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "w25qxx/w25qxx.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 14612,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								928,
+								920
+							]
+						],
+						"settings":
+						{
+							"is_init_dirty_state": false,
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2351.09433962,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "bsp/USART.C",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5321,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3365,
+								3365
+							]
+						],
+						"settings":
+						{
+							"is_init_dirty_state": false,
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 5054.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "bsp/STC15Fxxxx.H",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 30890,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								10653,
+								10653
+							]
+						],
+						"settings":
+						{
+							"is_init_dirty_state": false,
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/C++/C++.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 7948.98113208,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "bsp/USART.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1393,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								261,
+								261
+							]
+						],
+						"settings":
+						{
+							"is_init_dirty_state": false,
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 114.113207547,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "shell/shell.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 446,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								194,
+								194
+							]
+						],
+						"settings":
+						{
+							"is_init_dirty_state": false,
 							"origin_encoding": "ASCII",
 							"syntax": "Packages/C++/C++.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "romfs/fifo.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1719,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1109,
+								1109
+							]
+						],
+						"settings":
+						{
+							"is_init_dirty_state": false,
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1287.8490566,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "bsp/timer.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4960,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1933,
+								1933
+							]
+						],
+						"settings":
+						{
+							"in_converting": true,
+							"is_init_dirty_state": false,
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1006.18867925,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "romfs/fifo.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 209,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								199,
+								199
+							]
+						],
+						"settings":
+						{
+							"is_init_dirty_state": false,
+							"origin_encoding": "ASCII",
+							"syntax": "Packages/C++/C++.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 14,
+					"type": "text"
+				},
+				{
+					"buffer": 15,
+					"file": "shell/shell.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4027,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2027,
+								2027
+							]
+						],
+						"settings":
+						{
+							"is_init_dirty_state": false,
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -557,89 +1094,34 @@
 					"type": "text"
 				},
 				{
-					"buffer": 5,
-					"file": "save/save_init.c",
+					"buffer": 16,
+					"file": "music/music.c",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1639,
+						"buffer_size": 1535,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1424,
-								1424
+								1217,
+								1217
 							]
 						],
 						"settings":
 						{
+							"is_init_dirty_state": false,
+							"origin_encoding": "ASCII",
 							"syntax": "Packages/C++/C.sublime-syntax",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1458.0,
+						"translation.y": 151.245283019,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "save/save.h",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 566,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								472,
-								472
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C++.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "xmodem/xmodem.c",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2063,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								281,
-								281
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
+					"stack_index": 13,
 					"type": "text"
 				}
 			]
@@ -647,7 +1129,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 27.2
+		"height": 28.0754716981
 	},
 	"input":
 	{
@@ -696,7 +1178,7 @@
 	"project": "ST3_STC.sublime-project",
 	"replace":
 	{
-		"height": 74.4
+		"height": 52.5283018868
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -706,15 +1188,79 @@
 		"selected_items":
 		[
 			[
-				"save",
-				"save\\save.c"
+				"main.c",
+				"app\\main.c"
+			],
+			[
+				"she",
+				"shell\\shell.h"
+			],
+			[
+				"xm",
+				"xmodem\\xmodem_init.c"
+			],
+			[
+				"main",
+				"app\\main.c"
+			],
+			[
+				"s",
+				"shell\\shell.c"
+			],
+			[
+				"uart",
+				"bsp\\USART.h"
+			],
+			[
+				"timer",
+				"bsp\\timer.c"
+			],
+			[
+				"mai",
+				"app\\main.c"
+			],
+			[
+				"fifo",
+				"romfs\\fifo.c"
+			],
+			[
+				"tim",
+				"bsp\\timer.c"
+			],
+			[
+				"ter",
+				"tetris\\tetris_init.c"
+			],
+			[
+				"shell",
+				"shell\\shell.c"
+			],
+			[
+				"mu",
+				"music\\music.c"
+			],
+			[
+				"ma",
+				"app\\main.c"
 			],
 			[
 				"config",
 				"bsp\\config.h"
 			],
 			[
-				"w25x",
+				"xmo",
+				"xmodem\\xmodem.c"
+			],
+			[
+				"x",
+				"xmodem\\xmodem.c"
+			],
+			[
+				"xme",
+				"xmodem\\xmodem_init.c"
+			],
+			[
+				"w2",
 				"w25qxx\\w25qxx.h"
 			],
 			[
@@ -722,8 +1268,12 @@
 				"w25qxx\\w25qxx.c"
 			],
 			[
-				"main",
-				"app\\main.c"
+				"save",
+				"save\\save.h"
+			],
+			[
+				"w25x",
+				"w25qxx\\w25qxx.h"
 			],
 			[
 				"w",
@@ -746,10 +1296,6 @@
 				"xmodem\\xmodem_init.c"
 			],
 			[
-				"ter",
-				"tetris\\tetris.c"
-			],
-			[
 				"te",
 				"tetris\\tetris_init.c"
 			],
@@ -768,10 +1314,6 @@
 			[
 				"sna",
 				"snake\\snake.c"
-			],
-			[
-				"timer",
-				"bsp\\timer.c"
 			]
 		],
 		"width": 0.0

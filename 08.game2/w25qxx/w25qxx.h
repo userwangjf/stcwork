@@ -48,6 +48,7 @@ void w25qxx_WaitForWriteEnd(void);
 void w25qxx_ReadBytes(u32 ReadAddr, u8* pBuffer, u16 NumByte);
 void w25qxx_WriteByte(u32 WriteAddr, u8* pBuffer, u16 numByte);
 void w25qxx_EraseSector(u32 SectorAddr);
+void w25qxx_EraseChip();
 
 void w25qxx_ReadUniqID(void);
 u8 w25qxx_ReadStatusRegister(u8	SelectStatusRegister_1_2_3);

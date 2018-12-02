@@ -45,14 +45,14 @@ void mode_select(u8 key)
 }
 
 
-
 void main()
 {
 	u8 idle_cnt = 0;
 	bit uart1_ren = 0;
-	u8 key = 0xff;
+	unsigned char data key = 0xff;
 	u8 xon = 0;
-
+	u8 i;
+	u8 rbuf[32];
 
 	P0 = 0xff;
 	P1 = 0xff;
@@ -62,45 +62,64 @@ void main()
 	P5 = 0xff;
 
 	GPIO_Config();
+
 	Timer_config();
 	PCA_config();
 	disp_clear();
 
+	// led_col_dis();
+	// led_row_dis();
+	// led_row_clr(20);
+	// for(i=0;i<10;i++) {
+	// 	led_col_set(i);
+	// 	delay_ms(200);
+	// }
+
 	EA = 1;
 
    	UART_config(1,115200);
-	Uart1_Tx("\r\nHelloUart1\r\n");
+
+	SHELL_TX("\r\nHelloUart\r\n");
 
 	if(checkSystem1())
-		Uart1_Tx("\r\nlittle endian");
+		SHELL_TX("\r\nlittle endian");
 	else
-		Uart1_Tx("\r\nbig endian");
+		SHELL_TX("\r\nbig endian");
 
 	//测试使用STC的内部EEPROM保存掉电不丢失的数据
 	//save_test();
 
+	//w25qxx_Init();
+
+	//fifo_test();
 
 
-	//snake_init();
-	//tetris_init();
+	SHELL_TX("\r\nstart shell\r\n");
+
+	/*
+	delay_ms(200);
+	EA = 0;
+	while(1)
+	{
+		if(RI2)
+		{
+			CLR_RI2();
+			xon = S2BUF;
+			S2BUF = xon;
+		}
+	}*/
 
 	while(1)
 	{
-		#if 0
+		#if 1
 		if(cur_task_id == 0)
 		{
 			cur_task_id = 0xff;
-			idle_cnt++;
-			if(idle_cnt == 100)
-			{
-				//disp_on(0,xon++);
-				disp_on(xon++,0);
-				idle_cnt = 0;	
-			}
+			shell_run();
 		}
 		#endif
 
-		#if 1
+		#if 0
 		if(cur_task_id == 1)
 		{
 			cur_task_id = 0xff;
@@ -116,7 +135,6 @@ void main()
 		 		key = 0xff;
 		 	}
 			#if 0
-			key = key_get();
 			//显示按键编码
 			if(key != 0xff)
 			{
@@ -129,7 +147,7 @@ void main()
 		}
 		#endif
 
-	   	#if 1
+	   	#if 0
 		if(cur_task_id == 2)
 		{
 			cur_task_id = 0xff;
@@ -148,6 +166,33 @@ void main()
 			
 		}
 		#endif
+
+		#if 0
+		//从文件系统读数据
+		if(cur_task_id == 3)
+		{
+			cur_task_id = 0xff;
+
+			if(music_on) {
+				if(fifo_last() >= 0x20) {
+					w25qxx_ReadBytes(music_addr, rbuf, 32);
+					music_addr += 32;
+					fifo_wr(rbuf,32);
+				}
+				if(fifo_last() >= 0x20) {
+					w25qxx_ReadBytes(music_addr, rbuf, 32);
+					music_addr += 32;
+					fifo_wr(rbuf,32);
+				}
+				if(fifo_last() >= 0x20) {
+					w25qxx_ReadBytes(music_addr, rbuf, 32);
+					music_addr += 32;
+					fifo_wr(rbuf,32);
+				}
+			}
+		}
+		#endif
+
 	}
 }
 
@@ -159,7 +204,7 @@ void GPIO_Config(void)
 	GPIO_Init.Mode = GPIO_OUT_PP;		//指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
 
 	//配置键盘列,P3.0~P3.5
-	#if 1
+	#if 0
 	GPIO_Init.Pin = 0x3f;
 	GPIO_Init.Mode = GPIO_PullUp;
 	GPIO_Inilize(GPIO_P3,&GPIO_Init);
@@ -173,7 +218,7 @@ void GPIO_Config(void)
 	#endif
 
 	//LED列驱动，正极
-	#if 1
+	#if 0
 	GPIO_Init.Pin = 0xff;
 	GPIO_Init.Mode = GPIO_OUT_PP;
 	GPIO_Inilize(GPIO_P2,&GPIO_Init);
@@ -184,7 +229,7 @@ void GPIO_Config(void)
 	#endif
 
 	//LED行驱动，负极
-	#if 1
+	#if 0
 	//P0.0~P0.7
 	GPIO_Init.Pin = 0xff;
 	GPIO_Init.Mode = GPIO_OUT_PP;
@@ -235,8 +280,8 @@ void UART_config(u8 int_en,u32 rate)
 	USART_Configuration(USART1, &COMx_InitStructure);		//初始化串口1 USART1,USART2
 
 	//UART2
-	#if 0
-	COMx_InitStructure.UART_Interrupt = DISABLE;
+	#if 1
+	COMx_InitStructure.UART_Interrupt = ENABLE;
    	COMx_InitStructure.UART_P_SW = UART2_SW_P10_P11;
 	USART_Configuration(USART2, &COMx_InitStructure);
 	#endif
@@ -286,11 +331,5 @@ void EXTI_config(void)
 	//作为超声echo的接收
 	Ext_Inilize(EXT_INT0,&exti);
 }
-
-
-
-
-
-
 
 

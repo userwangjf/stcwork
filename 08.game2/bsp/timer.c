@@ -52,12 +52,13 @@ u8 cur_task_id = 0;
 /********************* Timer1中断函数************************/
 void timer1_int (void) interrupt TIMER1_VECTOR
 {
- 	led_scan();
+ 	//led_scan();
 
 	cur_task_id = timer1_step;
 
 	timer1_step++;
-	if(timer1_step >= 20)timer1_step = 0;
+	if(timer1_step >= 10)timer1_step = 0;
+	//5ms一个周期
 
 }
 

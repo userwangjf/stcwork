@@ -2,7 +2,7 @@
 #ifndef __XMODEM_H__
 #define __XMODEM_H__
 
-#define XMODEM_MAX_RETRY 	60
+#define XMODEM_MAX_RETRY 	20
 #define XMODEM_BUF_LEN 		132		//使用校验和方式
 
 #define SOH  0x01

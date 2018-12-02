@@ -57,6 +57,9 @@
 #include "music/music.h"
 #include "save/save.h"
 
+#include "romfs/romfs.h"
+#include "romfs/fifo.h"
+
 extern u8 cur_task_id;
 
 

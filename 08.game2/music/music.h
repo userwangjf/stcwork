@@ -4,13 +4,11 @@
 #define __MUSIC_H__
 
 
-CODE u8 music_sin[];
-extern CODE u8 music_line[];
-extern CODE u8 music_dat2[];
-extern CODE u8 music_shine[];
-
 u8 music_play();
-void music_on(u8 type,u8 times);
+void music_start(char* name,u8 times);
+
+extern u8 music_on;
+extern u32 music_addr;
 
 
 #endif

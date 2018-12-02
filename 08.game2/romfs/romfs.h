@@ -35,7 +35,7 @@ struct romfs_super_block {
 	u32 word1;
 	u32 size;
 	u32 checksum;
-	u8  name[0];
+	u8  name[16];
 };
 
 //在标准里，regular file的spec段没有使用，此结构将此域段作为文件数据的位置reg_data
@@ -56,14 +56,11 @@ struct romfs_inode {
 	union romfs_spec spec;
 	u32 size;
 	u32 checksum;
-	u8  name[0];
+	u8  name[16];
 };
 
-struct romfs_init
-{
-	//从block设备地址为addr的位置度len的数据，存入buf。
-	u8 (*romfs_rd_block)(u8* buf, u32 addr, u8 len);
-};
+
+
 
 struct romfs_file
 {
@@ -72,6 +69,11 @@ struct romfs_file
 	u32 file_seek;
 	u32 file_flag;
 };
+
+//从block设备地址为addr的位置读len的数据，存入buf。
+u8 romfs_rd_block(u32 addr, u8* buf, u16 len);
+
+struct romfs_inode* romfs_namei(u8* dir);
 
 
 #endif

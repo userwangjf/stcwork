@@ -108,14 +108,7 @@ s8 xmodem_start(struct xmodem_receiver *rx)
 			cur_packet++;
 			//回调函数
 			rx->writer(&prx[3], 128);
-#if 1
-			for (i = 0; i < cur_char; i++)
-			{
-				Uart2_Tx(byte2str(prx[i]));
-				Uart2_Tx(",");
-			}
-			Uart2_Tx("\r\n");
-#endif
+
 			rx->rx_ok_cnt++;
 			cur_char = 0;
 			rx->put_char(ACK);

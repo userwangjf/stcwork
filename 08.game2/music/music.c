@@ -2,50 +2,93 @@
 #include "bsp/config.h"
 #include "music/music.h"
 
-u32 mucis_ptr_play = 0;
-u8 music_play_on = 0;
-u8 music_type = 0;
+u32 music_addr = 0;
+u32 music_len = 0;
+u8 music_on = 0;
 
-typedef struct
-{
-    u8* music_dat;
-    u16 music_len;
-} music_list;
+//"/wav/backgangqin.wav"
+//"/wav/daojishi.wav"
+//"/wav/dingling.wav"
+//"/wav/dushen.wav"
+//"/wav/endmusic.wav"
+//"/wav/faguang.wav"
+//"/wav/guzhang.wav"
+//"/wav/kaichang.wav"
+//"/wav/kaichang2.wav"
+//"/wav/kehuanclick.wav"
+//"/wav/kuaimen.wav"
+//"/wav/malifail.wav"
+//"/wav/mofa.wav"
+//"/wav/qiaoluo.wav"
+//"/wav/qqmess.wav"
+//"/wav/shuidi.wav"
+//"/wav/sysfail.wav"
+//"/wav/tupaopao.wav"
+//"/wav/zhuangchang.wav"
 
-music_list music_rom[10] = {{music_line,6268},{0,0}};
-//music_list music_rom[10] = {{music_line,6268},{music_shine,26120}};
+u8 pi = 0;
+u8 pbuf[128];
 
-u8 music_play()
-{
-    u8 tmp;
-    if(music_play_on)
-    {
-        if(mucis_ptr_play >= music_rom[music_type].music_len)
-        {
-            mucis_ptr_play = 0;
-            music_play_on--;
-        }
-        tmp = music_rom[music_type].music_dat[mucis_ptr_play++];
-        return tmp;
+u8 music_play() {
+	u8 tmp;
 
-        //增加、减少音量，no use
-        // if(tmp > 0x80)
-        // 	return 0x80 + (tmp - 0x80) /2;
-        // else
-        // 	return 0x80 - (0x80 - tmp) / 2;
-    }
+	if(music_on) {
+		if(music_len > 0) {
+			music_len--;
 
-    return 0x80;
+			if(fifo_get(1) > 0) {
+				fifo_rd(&tmp, 1);
+				if(pi < 128) {
+					pbuf[pi++] = tmp;
+				}
+				
+				return tmp;
+			}
+		} else {
+			music_on = 0;
+		}
+
+		//增加、减少音量，no use
+		// if(tmp > 0x80)
+		// 	return 0x80 + (tmp - 0x80) /2;
+		// else
+		// 	return 0x80 - (0x80 - tmp) / 2;
+	}
+
+	return 0x80;
 }
 
-void music_on(u8 type,u8 times)
-{
-    EA = 0;
-    music_play_on = times;
-    music_type = type;
-    EA = 1;
+void music_start(char* name, u8 times) {
+	struct romfs_inode* file;
+	file = romfs_namei(name);
+
+	Uart1_Tx("\r\n");
+	for(pi=0;pi<128;pi++) {
+		Uart1_Tx(byte2str(pbuf[pi]));
+		Uart1_Tx(",");
+	}
+	Uart1_Tx("\r\n");
+	pi = 0;
+
+	if(file == NULL) {
+		Uart1_Tx("\r\nNO FIND: ");
+		Uart1_Tx(name);
+		Uart1_Tx("\r\n");
+		return;
+	}
+
+	music_len = file->size;
+	music_addr = file->spec.file_data;
+	Uart1_Tx("\r\n");
+	Uart1_Tx(hex2str(music_addr));
+	Uart1_Tx(",");
+	Uart1_Tx(hex2str(music_len));
+	Uart1_Tx("\r\n");
+	EA = 0;
+	music_on = times;
+	EA = 1;
 }
 
 
-#include "music/music_dat1.c"
+//#include "music/music_dat1.c"
 //#include "music/music_dat3.c"
