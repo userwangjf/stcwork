@@ -1,0 +1,16 @@
+dingling.wav叮铃
+faguang.wav发光
+guzhang.wav故障
+kaichang.wav开场
+kuaimen.wav快门
+qiaoluo.wav敲锣
+shuidi.wav水滴
+tupaopao.wav吐泡泡
+malifail.wav玛丽失败
+sysfail.wav系统失败
+dushen.wav赌神出场
+endmusic.wav结尾音乐
+kehuanclick.wav科幻点击
+backgangqin.wav钢琴背景
+zhuangchang.wav转场
+qqmess.wavQQ消息
