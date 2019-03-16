@@ -151,7 +151,7 @@ void	PCA_Init(u8 PCA_id, PCA_InitTypeDef *PCAx)
 // 返回: none.
 // 版本: V1.0, 2012-11-22
 //========================================================================
-void	PCA_Handler (void) interrupt PCA_VECTOR
+void	PCA_Handler (void) interrupt PCA_VECTOR INT_USING
 {
 	EA = 0;
 	if(CCF0)		//PCA模块0中断

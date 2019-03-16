@@ -12,15 +12,12 @@
 
 extern u8 hex_str[11];
 
-void printk(char *str,...);
+
 void shell_rx_dat(u8 dat);
 void shell_init(void);
-void shell_run(void);
-u8* hex2str(u32 hex);
-u8* byte2str(u8 hex);
-u8 str2dec(u8 *str);
-u8 *dec2str(u32 dec);
-u32 str2hex(u8 *str);
+void shell_run(fifo_ctrl* fifo);
+
+int mini_snprintf(char* buffer, unsigned int buffer_len, const char *fmt, ...);
 
 #endif
 

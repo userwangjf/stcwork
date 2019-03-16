@@ -29,7 +29,8 @@
 
 ******************************************/
 
-#include	"delay.h"
+#include	"bsp/config.h"
+#include	"bsp/delay.h"
 
 
 

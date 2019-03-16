@@ -15,7 +15,7 @@ typedef struct
 	s8 y[SNAKE_MAX];
 	u8 length;			//蛇的节数
 	u8 direc;			/*蛇移动方向*/
-	int life_time;		//蛇存活时间
+	u16 life_time;		//蛇存活时间
 	u8 life;			//蛇的生命,1活着,0死亡
 }snake_body;
 

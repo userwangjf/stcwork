@@ -2,8 +2,7 @@
 #ifndef __USART_H
 #define __USART_H	 
 
-#include "config.h"
-#include "shell/shell.h"
+
 
 //是否等待上次发送完成
 #define UART_TX_WAIT		1

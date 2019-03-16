@@ -5,7 +5,6 @@
 #define MAP_WIDTH                   10  // 地图宽,需要小于16
 #define MAP_HEIGHT                  21  // 地图高
 
-
 typedef struct
 {
     s8 x;               //!< brick在地图中的x坐标
@@ -79,7 +78,7 @@ extern void tetris_start(
     void (*draw_box_to_map)(u8 x, u8 y, u8 color),
     u8 (*get_random)(void),
     void (*remove_line_num)(u8 line)
-    );
+);
 
 #endif
 

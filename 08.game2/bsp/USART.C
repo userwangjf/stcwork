@@ -1,7 +1,8 @@
 
 
 
-#include "USART.h"
+#include "bsp/config.h"
+#include "bsp/USART.h"
 
 
 bool uart1_tx_rdy = 1;
@@ -11,7 +12,6 @@ u8 uart1_echo_buf = 0;
 bool uart2_tx_rdy = 1;
 u8* uart2_tx_ptr;
 u8 uart2_echo_buf = 0;
-
 
 u8 USART_Configuration(u8 UARTx, COMx_InitDefine *COMx) {
 	u32	j;
@@ -171,40 +171,8 @@ void Uart2_Tx(u8* string) {
 	SET_TI2();//触发发送中断
 }
 
-//发送时，仅拷贝指针，不拷贝数据。
-void Uart1_Tx(u8 *string) {
-	//不能打断echo
-	while(uart1_echo_buf != 0);
 
-	//等待上一次传输完成
-	#if UART_TX_WAIT
 
-	//等上次传输完成。
-	while(!uart1_tx_rdy);
-
-	#else
-
-	//发生溢出错误，打印~
-	if(!uart1_tx_rdy) {
-		ES = 0;
-
-		while(!TI);
-
-		SBUF = '~';
-
-		while(!TI);
-
-		ES = 1;
-	}
-
-	#endif
-	uart1_tx_rdy = 0;
-	uart1_tx_ptr = string;
-
-	while(uart1_echo_buf != 0);
-
-	TI = 1;					//触发发送中断
-}
 
 void Uart1_Echo(u8 dat) {
 	uart1_echo_buf = dat;
@@ -234,45 +202,61 @@ bool Uart2_Busy(void) {
 		return 1;
 }
 
+u32 tx_cnt = 0;
+
+//发送时，仅拷贝指针，不拷贝数据。
+void Uart1_Tx(u8 *string) {
+	u16 len;
+	u16 tlen;
+	len = strlen(string);
+	tlen = fifo_wr(&fifo_uart1_tx, string, len);
+	tx_cnt += tlen;
+	//发送没有启动
+	if(uart1_tx_rdy) {
+		uart1_tx_rdy = 0;
+		TI = 1;
+	}
+
+	//如果空间不足,则等待前一次全部发送完毕后再重试.
+	//只重试一次,要求缓冲区必须大于需要发送的内容.
+	if(tlen < len) {
+		while(!uart1_tx_rdy);
+		string += tlen;
+		tlen = fifo_wr(&fifo_uart1_tx, string, len - tlen);
+		tx_cnt += tlen;
+		uart1_tx_rdy = 0;
+		TI = 1;
+	}
+}
+
 /********************* UART1中断函数************************/
-void UART1_int(void) interrupt UART1_VECTOR {
+void UART1_int(void) interrupt UART1_VECTOR INT_USING {
 	u8 tmp;
 
 	if(RI) {
 		RI = 0;
 		tmp = SBUF;
-		shell_rx_dat(tmp);
+		fifo_wr_isr(&fifo_uart1_rx,&tmp,1);
 	}
 
 	if(TI) {
 		TI = 0;
 
-		//ECHO有最高优先级，插队了。
-		if(uart1_echo_buf == 0xff) {
-			uart1_echo_buf = 0;
-
-			if(!uart1_tx_rdy)//上次发送未完成
-				SBUF = *uart1_tx_ptr++;
-		} else if(uart1_echo_buf != 0) {
-			SBUF = uart1_echo_buf;
-			uart1_echo_buf = 0xff;
-		} else if(uart1_tx_rdy)
-			;
-		else if(*uart1_tx_ptr == 0)
+		if(fifo_rd_isr(&fifo_uart1_tx, &tmp, 1) > 0) {
+			SBUF = tmp;
+		} else
 			uart1_tx_rdy = 1;
-		else
-			SBUF = *uart1_tx_ptr++;
 	}
 }
 
 /********************* UART2中断函数************************/
-void UART2_int(void) interrupt UART2_VECTOR {
+void UART2_int(void) interrupt UART2_VECTOR INT_USING {
 	u8 tmp;
 
 	if(RI2) {
 		CLR_RI2();
 		tmp = S2BUF;
-		shell_rx_dat(tmp);
+		//shell_rx_dat(tmp);
 	}
 
 	if(TI2) {

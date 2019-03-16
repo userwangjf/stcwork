@@ -2,13 +2,11 @@
 #include "bsp/config.h"
 #include "tetris/tetris.h"
 
-
 u8 is_game_over = 0;
-
 
 // 为了preview brick显示美观, 将方块在4 * 4 的点阵中居中
 // 实际上这个是可以直接使用方块数据表的, 但要略做更改, 懒得再算表了
-const u16 preview_brick_table[BRICK_TYPE] =
+code u16 preview_brick_table[BRICK_TYPE] =
 {
 	0x0360,     // S
 	0x0C60,     // Z
@@ -19,9 +17,8 @@ const u16 preview_brick_table[BRICK_TYPE] =
 	0x0E40,     // T
 };
 
-
 // 方块数据表
-const u16 brick_table[BRICK_TYPE][BRICK_NUM_OF_TYPE] =
+code u16 brick_table[BRICK_TYPE][BRICK_NUM_OF_TYPE] =
 {
 	{ 0x6C00, 0x4620, 0x06C0, 0x8C40 },     // S
 	{ 0xC600, 0x2640, 0x0C60, 0x4C80 },     // Z
@@ -32,9 +29,8 @@ const u16 brick_table[BRICK_TYPE][BRICK_NUM_OF_TYPE] =
 	{ 0xE400, 0x2620, 0x04E0, 0x8C80 }      // T
 };
 
-
 // 旋转掩码表
-const u16 rotate_mask[BRICK_TYPE][BRICK_NUM_OF_TYPE] =
+code u16 rotate_mask[BRICK_TYPE][BRICK_NUM_OF_TYPE] =
 {
 	{ 0xEE20, 0x66E0, 0x8EE0, 0xECC0 },     // S
 	{ 0xE660, 0x2EE0, 0xEE80, 0xCCE0 },     // Z
@@ -46,7 +42,7 @@ const u16 rotate_mask[BRICK_TYPE][BRICK_NUM_OF_TYPE] =
 };
 
 // 下一个方块的y坐标初始值
-const s8 brick_start_y[BRICK_TYPE] =
+code s8 brick_start_y[BRICK_TYPE] =
 {
 //   S   Z   L   J   I   O   T
 	1, 1, 1, 1, 1, 1, 1
@@ -63,8 +59,6 @@ brick_t curr_brick;              // 当前方块
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
-
-
 
 //创建一个新的方块
 void create_new_brick ( brick_t* brick )

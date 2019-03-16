@@ -64,8 +64,7 @@ bool w25qxx_Init(void) {
 			break;
 	}
 
-	SHELL_TX("\r\n");
-	SHELL_TX(hex2str(id));
+	printk("\r\nw25qxx_Init: 0x%x", id);
 
 	if(i >= 10)
 		return 0;
@@ -283,8 +282,8 @@ void w25qxx_WriteByte(u32 WriteAddr, u8* pBuffer, u16 numByte) {
 	for(i = 0; i < numByte; i++) {
 		w25qxx_Spi(pBuffer[i]);
 	}
-	#endif
 
+	#endif
 	w25qxx_CS_SET;
 	w25qxx_WaitForWriteEnd();
 }
@@ -293,44 +292,40 @@ void w25qxx_WriteByte(u32 WriteAddr, u8* pBuffer, u16 numByte) {
 void w25qxx_test() {
 	u8 i;
 	u8 rdata[8];
-
 	w25qxx_Init();
-
 	w25qxx_ReadBytes(0, rdata, 16);
+	printk("\r\n");
 
-	SHELL_TX("\r\n");
-		for(i = 0; i < 8; i++) {
-		SHELL_TX(byte2str(rdata[i]));
-		SHELL_TX(",");
+	for(i = 0; i < 8; i++) {
+		printk("0x%x,",rdata[i]);
 	}
 
 	w25qxx_ReadBytes(0x80, rdata, 8);
+	printk("\r\n");
 
-	SHELL_TX("\r\n");
-		for(i = 0; i < 8; i++) {
-		SHELL_TX(byte2str(rdata[i]));
-		SHELL_TX(",");
+	for(i = 0; i < 8; i++) {
+		printk("0x%x,",rdata[i]);
 	}
 
-#if 0
-	for(i=0;i<8;i++)
-		rdata[i] = 0x55 +i;
+	#if 0
 
-	w25qxx_WriteByte(0,rdata,8);
-	for(i=0;i<8;i++)
+	for(i = 0; i < 8; i++)
+		rdata[i] = 0x55 + i;
+
+	w25qxx_WriteByte(0, rdata, 8);
+
+	for(i = 0; i < 8; i++)
 		rdata[i] = 0;
 
 	w25qxx_ReadBytes(0, rdata, 8);
+	printk("\r\n");
 
-	SHELL_TX("\r\n");
 	for(i = 0; i < 8; i++) {
-		SHELL_TX(byte2str(rdata[i]));
-		SHELL_TX(",");
+		printk("0x%x,",rdata[i]);
 	}
 
 	w25qxx_EraseSector(0);
-#endif
-
+	#endif
 }
 
 

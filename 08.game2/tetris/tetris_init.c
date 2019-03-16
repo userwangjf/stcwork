@@ -82,7 +82,8 @@ void tetris_get_score ( u8 line )
 			break;
 	}
 
-	
+	if(line)
+		music_start("/wav/line.wav", 1);
 
 	// 每25行升一级
 	if(tetris_level < 10)
@@ -140,7 +141,7 @@ void tetris_run ( u8 key )
 		tetris_init();
 		return;
 	}
-	
+
 	//游戏结束
 	if ( tetris_is_game_over() )
 	{
@@ -156,7 +157,7 @@ void tetris_run ( u8 key )
 		refresh = 0;
 
 	// 自由向下移动，级别越高速度越快
-	if ( time_count >= ( 100 - tetris_level*5 ) )
+	if ( time_count >= ( 150 - tetris_level*5 ) )
 	{
 		time_count = 0;
 

@@ -18,9 +18,9 @@
 
 
 //消抖动，按键扫描次数。如果连续5次都是扫描的都是相同键值，则认为是有效键值，否则是误触发
-#define KEYDEBOUNCE 		5
+#define KEYDEBOUNCE 		8
 //重复触发间隔
-#define KEY_REPEAT_DLY	 	5
+#define KEY_REPEAT_DLY	 	8
 //重复触发等待
 #define KEY_REPEAT_WAIT		20
 

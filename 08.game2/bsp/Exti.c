@@ -3,26 +3,26 @@
 
 
 /********************* INT0中断函数 *************************/
-void Ext_INT0(void) interrupt INT0_VECTOR using 2 {	//进中断时已经清除标志
+void Ext_INT0(void) interrupt INT0_VECTOR INT_USING {	//进中断时已经清除标志
 	//usound_echo();
 }
 
 /********************* INT1中断函数 *************************/
-void Ext_INT1(void) interrupt INT1_VECTOR {	//进中断时已经清除标志
+void Ext_INT1(void) interrupt INT1_VECTOR INT_USING {	//进中断时已经清除标志
 }
 
 /********************* INT2中断函数 *************************/
-void Ext_INT2(void) interrupt INT2_VECTOR {	//
+void Ext_INT2(void) interrupt INT2_VECTOR INT_USING {	//
 	INT_CLKO &= 0xef;
 	INT_CLKO |= 0x10;
 }
 
 /********************* INT3中断函数 *************************/
-void Ext_INT3(void) interrupt INT3_VECTOR {
+void Ext_INT3(void) interrupt INT3_VECTOR INT_USING {
 }
 
 /********************* INT4中断函数 *************************/
-void Ext_INT4(void) interrupt INT4_VECTOR {
+void Ext_INT4(void) interrupt INT4_VECTOR INT_USING {
 }
 
 //========================================================================

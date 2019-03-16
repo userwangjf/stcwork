@@ -86,7 +86,7 @@ u16	Get_ADC10bitResult(u8 channel)	//channel = 0~7
 // 返回: none.
 // 版本: V1.0, 2012-10-22
 //========================================================================
-void ADC_int (void) interrupt ADC_VECTOR
+void ADC_int (void) interrupt ADC_VECTOR INT_USING
 {
 	ADC_CONTR &= ~ADC_FLAG;
 }

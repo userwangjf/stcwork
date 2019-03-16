@@ -56,20 +56,18 @@ void save_init()
 
 #if 1
 	u32 CODE * psave;
-	Uart1_Tx("\r\n");
+	printk("\r\n");
 	psave = (u32 CODE *)SECTOR_A;
 	for (i = 0; i < 1; i++) {
-		Uart1_Tx(hex2str(*psave));
-		Uart1_Tx(",");
+		printk("0x%x,",*psave);
 		psave++;
 	}
 
 	//读最后一个sector的校验码
-	Uart1_Tx("\r\n");
+	printk("\r\n");
 	psave = (u32 CODE *)0xE700;
 	for (i = 0; i < 0x40; i++) {
-		Uart1_Tx(hex2str(*psave));
-		Uart1_Tx(",");
+		printk("0x%x,",*psave);
 		psave++;
 	}
 
@@ -79,12 +77,9 @@ void save_init()
 
 
 #if 1
-	Uart1_Tx("\r\n");
-	Uart1_Tx(hex2str(save_wptr));
-	Uart1_Tx("\r\n");
-	Uart1_Tx(byte2str((u8)save_max));
-	Uart1_Tx("\r\n");
-	Uart1_Tx(byte2str(save_select));
+	printk("\r\nsave_wptr: 0x%x",(u32)save_wptr);
+	printk("\r\nsave_max : 0x%x",(u32)save_max);
+	printk("\r\nsave_select: 0x%x",(u32)save_select);
 #endif
 
 }
@@ -97,10 +92,8 @@ void save_test() {
 	save_init();
 	save_read(1, &mysave1, 0x5511);
 	save_read(2, &mysave2, 0x5522);
-	Uart1_Tx("\r\nmysave1: ");
-	Uart1_Tx(hex2str(mysave1));
-	Uart1_Tx("\r\nmysave2: ");
-	Uart1_Tx(hex2str(mysave2));
+	printk("\r\nmysave1: 0x%x", (u32)mysave1);
+	printk("\r\nmysave2: 0x%x", (u32)mysave2);
 	mysave1 += 2;
 	mysave2 += 3;
 	save_write(1, mysave1);

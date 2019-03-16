@@ -2,7 +2,7 @@
 #ifndef __XMODEM_H__
 #define __XMODEM_H__
 
-#define XMODEM_MAX_RETRY 	20
+#define XMODEM_MAX_RETRY 	30
 #define XMODEM_BUF_LEN 		132		//使用校验和方式
 
 #define SOH  0x01
@@ -13,19 +13,23 @@
 #define CAN  0x18
 #define CTRLZ 0x1A
 
-struct xmodem_receiver {
-	s16 (*get_char)(void); 	 	//接收字符函数，带超时
-	void (*put_char)(u8 c);		//发送字符
-	u8 (*get_first)(void);		//接收第一个字符。
-	void (*delay_1s)(void); 	//延时1秒。
-	u8 (*writer)(u8* buff, u8 size);	//接收一帧数据后保存
-	u8* rx_buf;							//临时接收缓存，需要大于132.
-	u32 rx_ok_cnt;						//接收成功的帧计数
-};
+s8 xmodem_rx(char* rx);
+u8 xm_save(u8* buff, u8 size);
+s8 xmodem_start(char *xm_rx_buf);
+u8 xmodem_check(u8* buff, u8 pkt_num);
+u8 xmodem_sum(const u8 *buf, int sz);
 
-s8 xmodem_rx(struct xmodem_receiver *rx);
 
 void xmodem_init(u8* rx_buf);
+u8 xm_save(u8* buff, u8 size);
+void xm_delay1s();
+u8 xm_get_first();
+void xm_putchar(u8 ch);
+s16 xm_getchar();
+
+
+extern u32 xm_rx_ok_cnt;
+
 
 #endif
 
