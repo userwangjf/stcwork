@@ -10,6 +10,8 @@ void task_ds3231(u8 task_id)
 	
 	ds3231_print_time();
 	
+	ds3231_getConv();
+	
 	os_debug(task_id);
 	
 }

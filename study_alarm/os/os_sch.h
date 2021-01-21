@@ -3,10 +3,10 @@
 #define __OS_SCH_H__
 
 //调试打印开关
-#define OS_DBG_EN		0
+#define OS_DBG_EN		1
 
-//打印对应任务的最大延时
-#define OS_DBG_DLY_ID	0xff
+//统计演示的task_id
+#define OS_ID_MAX_DLY   0x0
 
 //定义系统支持的最大任务个数，可用任务为OS_TSK_MAX-1。
 //使用51的idata存储系统数据结构，ram有限，不要超过16个

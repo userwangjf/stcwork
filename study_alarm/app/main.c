@@ -33,6 +33,8 @@ void main()
 	init_595();
 	//test_595();
 	
+	os_test();
+	
 	//初始化操作系统
 	os_init();
 	

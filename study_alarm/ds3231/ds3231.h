@@ -41,6 +41,7 @@ void ds3231_updateTime(void);
 void ds3231_write(u8 addr, u8 byte);
 u8 ds3231_read(u8 addr);
 void ds3231_print_time();
+u16 ds3231_getConv(void);
 
 
 #endif

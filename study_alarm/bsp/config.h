@@ -40,8 +40,5 @@
 
 #include "bsp/printk.h"
 
-extern u8 cur_task_id;
-
-
 
 #endif

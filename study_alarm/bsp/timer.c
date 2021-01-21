@@ -47,7 +47,6 @@ void timer0_int (void) interrupt TIMER0_VECTOR using 3
 extern void bright_595();
 
 u8 timer1_step = 0;
-u8 cur_task_id = 0;
 /********************* Timer1中断函数************************/
 void timer1_int (void) interrupt TIMER1_VECTOR
 {
@@ -55,11 +54,6 @@ void timer1_int (void) interrupt TIMER1_VECTOR
 	EA = 0;
 	
 	bright_595();
-
-	cur_task_id = timer1_step;
-
-	timer1_step++;
-	if(timer1_step >= 10)timer1_step = 0;
 
 	EA = 1;
 }

@@ -109,12 +109,24 @@ void ds3231_startConv(void)
 
 }
 
-//获取温度值
+//获取温度值,放大100倍
 u16 ds3231_getConv(void)
 {
+	u8 temph;
+	u16 temp;
+	u8 templ;
 	//启动转换失败
-	if(ds3231_conv == 0)return 0;
+	temph = ds3231_read(DS3231_TEMPH);
+	templ = ds3231_read(DS3231_TEMPL);
+	
+	templ >>= 6;
+	
+	temp = (temph << 2) + templ;
+	
+	temp *= 25;
+	
+	printk("\r\n%d",(u32)temp);
 	
 	
-	return 0;	
+	return temp;	
 }
